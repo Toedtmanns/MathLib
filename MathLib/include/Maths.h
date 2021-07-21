@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <vector>
 #include <stdexcept>
+#include <stdlib.h>
 
 #ifndef ARRAY_SIZE 
 #define ARRAY_SIZE(x) (sizeof((x)) / sizeof((x)[0])
@@ -143,38 +144,38 @@ namespace MathLib
 
 		EXPORT void PrintContent(MatrixI *mat);
 		EXPORT void PrintProperties(MatrixI *mat);
-		EXPORT int MatrixGetDet(MatrixI **mat);
-		EXPORT MatrixI MatrixAdd(MatrixI **mat, int value);
-		EXPORT MatrixI MatrixSub(MatrixI **mat, int value);
-		EXPORT MatrixI MatrixMult(MatrixI **mat, int value);
-		EXPORT MatrixI MatrixDiv(MatrixI **mat, int value);
-		EXPORT MatrixI MatrixAdd(MatrixI **mat1, MatrixI **mat2);
-		EXPORT MatrixI MatrixSub(MatrixI **mat1, MatrixI **mat2);
-		EXPORT MatrixI MatrixMult(MatrixI **mat1, MatrixI **mat2);
-		EXPORT MatrixI MatrixOfMinors(MatrixI **mat);
-		EXPORT MatrixI MatrixOfCofactors(MatrixI **mat);
-		EXPORT MatrixI MatrixAdjugate(MatrixI **mat);
-		EXPORT MatrixF MatrixInverse(MatrixI **mat);
+		EXPORT int MatrixGetDet(MatrixI *mat);
+		EXPORT MatrixI MatrixAdd(MatrixI *mat, int value);
+		EXPORT MatrixI MatrixSub(MatrixI *mat, int value);
+		EXPORT MatrixI MatrixMult(MatrixI *mat, int value);
+		EXPORT MatrixI MatrixDiv(MatrixI *mat, int value);
+		EXPORT MatrixI MatrixAdd(MatrixI *mat1, MatrixI *mat2);
+		EXPORT MatrixI MatrixSub(MatrixI *mat1, MatrixI *mat2);
+		EXPORT MatrixI MatrixMult(MatrixI *mat1, MatrixI *mat2);
+		EXPORT MatrixI MatrixOfMinors(MatrixI *mat);
+		EXPORT MatrixI MatrixOfCofactors(MatrixI *mat);
+		EXPORT MatrixI MatrixAdjugate(MatrixI *mat);
+		EXPORT MatrixF MatrixInverse(MatrixI *mat);
 
 		EXPORT void PrintContent(MatrixF *mat);
 		EXPORT void PrintProperties(MatrixF *mat);
-		EXPORT double MatrixGetDet(MatrixF **mat);
-		EXPORT MatrixF MatrixAdd(MatrixF **mat, double value);
-		EXPORT MatrixF MatrixSub(MatrixF **mat, double value);
-		EXPORT MatrixF MatrixMult(MatrixF **mat, double value);
-		EXPORT MatrixF MatrixDiv(MatrixF **mat, double value);
-		EXPORT MatrixF MatrixAdd(MatrixF **mat1, MatrixF **mat2);
-		EXPORT MatrixF MatrixSub(MatrixF **mat1, MatrixF **mat2);
-		EXPORT MatrixF MatrixMult(MatrixF **mat1, MatrixF **mat2);
-		EXPORT MatrixF MatrixOfMinors(MatrixF **mat);
-		EXPORT MatrixF MatrixOfCofactors(MatrixF **mat);
-		EXPORT MatrixF MatrixAdjugate(MatrixF **mat);
-		EXPORT MatrixF MatrixInverse(MatrixF **mat);
+		EXPORT double MatrixGetDet(MatrixF *mat);
+		EXPORT MatrixF MatrixAdd(MatrixF *mat, double value);
+		EXPORT MatrixF MatrixSub(MatrixF *mat, double value);
+		EXPORT MatrixF MatrixMult(MatrixF *mat, double value);
+		EXPORT MatrixF MatrixDiv(MatrixF *mat, double value);
+		EXPORT MatrixF MatrixAdd(MatrixF *mat1, MatrixF *mat2);
+		EXPORT MatrixF MatrixSub(MatrixF *mat1, MatrixF *mat2);
+		EXPORT MatrixF MatrixMult(MatrixF *mat1, MatrixF *mat2);
+		EXPORT MatrixF MatrixOfMinors(MatrixF *mat);
+		EXPORT MatrixF MatrixOfCofactors(MatrixF *mat);
+		EXPORT MatrixF MatrixAdjugate(MatrixF *mat);
+		EXPORT MatrixF MatrixInverse(MatrixF *mat);
 
-		EXPORT MatrixI MatrixF2I(MatrixF **mat);
-		EXPORT MatrixF MatrixI2F(MatrixI **mat);
-		EXPORT bool MatrixIsSquare(MatrixI **mat, int dimension = -1);
-		EXPORT bool MatrixIsSquare(MatrixF **mat, int dimension = -1);
+		EXPORT MatrixI MatrixF2I(MatrixF *mat);
+		EXPORT MatrixF MatrixI2F(MatrixI *mat);
+		EXPORT bool MatrixIsSquare(MatrixI *mat, int dimension = -1);
+		EXPORT bool MatrixIsSquare(MatrixF *mat, int dimension = -1);
 
 		// Helper functions
 
@@ -219,7 +220,7 @@ namespace MathLib
 			Vector2D(Primitives::Point2D dir);
 			Vector2D(double angle, double length);
 
-			Vector2D Transform(Matrices::MatrixF **mat);
+			Vector2D Transform(Matrices::MatrixF *mat);
 			Vector2D Scale(double s);
 			Vector2D Scale(double sX, double sY);
 			Vector2D Rotate(double angle);
@@ -242,8 +243,8 @@ namespace MathLib
 
 	namespace Primitives
 	{
-		EXPORT Point2D Transform(Point2D point, Point2D origin, Matrices::MatrixF **transform);
-		EXPORT Line2D Transform(Line2D line, Point2D origin, Matrices::MatrixF **transform);
+		EXPORT Point2D Transform(Point2D point, Point2D origin, Matrices::MatrixF *transform);
+		EXPORT Line2D Transform(Line2D line, Point2D origin, Matrices::MatrixF *transform);
 	}
 
 	namespace Utility
@@ -267,5 +268,6 @@ namespace MathLib
 		EXPORT Vectors::Vector2D Line2Vector(Primitives::Point2D p1, Primitives::Point2D p2);
 		EXPORT double GetDistance(Primitives::Point2D p1, Primitives::Point2D p2);
 		EXPORT double GetDistance(Primitives::Point3D p1, Primitives::Point3D p2);
+		EXPORT int RandInt(int min, int max);
 	}
 }

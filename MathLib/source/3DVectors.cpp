@@ -16,7 +16,7 @@ namespace MathLib
 		}
 		Vector3D Vector3D::Transform(Matrices::MatrixF *mat)
 		{
-			if (!Matrices::MatrixIsSquare(&mat, 3))
+			if (!Matrices::MatrixIsSquare(mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
 
 			double dirX, dirY, dirZ;

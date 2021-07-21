@@ -187,27 +187,27 @@ namespace MathLib
 		{
 			printf("Rows: %i, Collumns: %i\n", mat->GetRowCount(), mat->GetCollumnCount());
 		}
-		int MatrixGetDet(MatrixI **mat)
+		int MatrixGetDet(MatrixI *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
 			int num = 0;
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 
 			if (dim == 2)
 			{
-				num = (*mat)->GetRow(0).GetAt(0) * (*mat)->GetRow(1).GetAt(1) - (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(0).GetAt(1);
+				num = mat->GetRow(0).GetAt(0) * mat->GetRow(1).GetAt(1) - mat->GetRow(1).GetAt(0) * mat->GetRow(0).GetAt(1);
 			}
 			else if (dim == 3)
 			{
-				int pos1 = (*mat)->GetRow(0).GetAt(0) * (*mat)->GetRow(1).GetAt(1) * (*mat)->GetRow(2).GetAt(2);
-				int pos2 = (*mat)->GetRow(0).GetAt(1) * (*mat)->GetRow(1).GetAt(2) * (*mat)->GetRow(2).GetAt(0);
-				int pos3 = (*mat)->GetRow(0).GetAt(2) * (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(2).GetAt(1);
+				int pos1 = mat->GetRow(0).GetAt(0) * mat->GetRow(1).GetAt(1) * mat->GetRow(2).GetAt(2);
+				int pos2 = mat->GetRow(0).GetAt(1) * mat->GetRow(1).GetAt(2) * mat->GetRow(2).GetAt(0);
+				int pos3 = mat->GetRow(0).GetAt(2) * mat->GetRow(1).GetAt(0) * mat->GetRow(2).GetAt(1);
 
-				int neg1 = (*mat)->GetRow(2).GetAt(0) * (*mat)->GetRow(1).GetAt(1) * (*mat)->GetRow(0).GetAt(2);
-				int neg2 = (*mat)->GetRow(2).GetAt(1) * (*mat)->GetRow(1).GetAt(2) * (*mat)->GetRow(0).GetAt(0);
-				int neg3 = (*mat)->GetRow(2).GetAt(2) * (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(0).GetAt(1);
+				int neg1 = mat->GetRow(2).GetAt(0) * mat->GetRow(1).GetAt(1) * mat->GetRow(0).GetAt(2);
+				int neg2 = mat->GetRow(2).GetAt(1) * mat->GetRow(1).GetAt(2) * mat->GetRow(0).GetAt(0);
+				int neg3 = mat->GetRow(2).GetAt(2) * mat->GetRow(1).GetAt(0) * mat->GetRow(0).GetAt(1);
 
 				num = pos1 + pos2 + pos3 - neg1 - neg2 - neg3;
 				//num = pos1 - neg2 + pos2 - neg3 + pos3 - neg1;
@@ -227,27 +227,27 @@ namespace MathLib
 						}
 						for (int row = 0; row < dim - 1; row++)
 						{
-							tempMat->SetNum(row, wCol, (*mat)->GetRow(row + 1).GetAt(col));
+							tempMat->SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
 						}
 						wCol++;
 					}
 
 					if (mCol % 2 == 0)
-						num += (*mat)->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
+						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
 					else
-						num -= (*mat)->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
+						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
 				}
 			}
 
 			return num;
 		}
-		MatrixI MatrixAdd(MatrixI **mat, int value)
+		MatrixI MatrixAdd(MatrixI *mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowI tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowI tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) + value);
 				}
@@ -256,13 +256,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixSub(MatrixI **mat, int value)
+		MatrixI MatrixSub(MatrixI *mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowI tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowI tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) - value);
 				}
@@ -271,13 +271,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixMult(MatrixI **mat, int value)
+		MatrixI MatrixMult(MatrixI *mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowI tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowI tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) * value);
 				}
@@ -286,13 +286,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixDiv(MatrixI **mat, int value)
+		MatrixI MatrixDiv(MatrixI *mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowI tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowI tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) / value);
 				}
@@ -301,60 +301,60 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixAdd(MatrixI **mat1, MatrixI **mat2)
+		MatrixI MatrixAdd(MatrixI *mat1, MatrixI *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetCollumnCount() || (*mat1)->GetRowCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
 				return MatrixI(0, 0);
 			}
-			MatrixI tempMat = MatrixI((*mat1)->GetRowCount(), (*mat1)->GetCollumnCount());
+			MatrixI tempMat = MatrixI(mat1->GetRowCount(), mat1->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat1->GetCollumnCount(); col++)
 				{
-					int num = (*mat1)->GetRow(row).GetAt(col) + (*mat2)->GetRow(row).GetAt(col);
+					int num = mat1->GetRow(row).GetAt(col) + mat2->GetRow(row).GetAt(col);
 					tempMat.SetNum(row, col, num);
 				}
 			}
 
 			return tempMat;
 		}
-		MatrixI MatrixSub(MatrixI **mat1, MatrixI **mat2)
+		MatrixI MatrixSub(MatrixI *mat1, MatrixI *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetCollumnCount() || (*mat1)->GetRowCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
 				return MatrixI(0, 0);
 			}
-			MatrixI tempMat = MatrixI((*mat1)->GetRowCount(), (*mat1)->GetCollumnCount());
+			MatrixI tempMat = MatrixI(mat1->GetRowCount(), mat1->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat1->GetCollumnCount(); col++)
 				{
-					int num = (*mat1)->GetRow(row).GetAt(col) - (*mat2)->GetRow(row).GetAt(col);
+					int num = mat1->GetRow(row).GetAt(col) - mat2->GetRow(row).GetAt(col);
 					tempMat.SetNum(row, col, num);
 				}
 			}
 
 			return tempMat;
 		}
-		MatrixI MatrixMult(MatrixI **mat1, MatrixI **mat2)
+		MatrixI MatrixMult(MatrixI *mat1, MatrixI *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetRowCount())
 				return MatrixI(0, 0);
 
-			MatrixI tempMat = MatrixI((*mat1)->GetRowCount(), (*mat2)->GetCollumnCount());
+			MatrixI tempMat = MatrixI(mat1->GetRowCount(), mat2->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetRowCount(); col++)
+				for (int col = 0; col < mat1->GetRowCount(); col++)
 				{
 					int num = 0;
 
-					for (int calcCol = 0; calcCol < (*mat1)->GetCollumnCount(); calcCol++)
+					for (int calcCol = 0; calcCol < mat1->GetCollumnCount(); calcCol++)
 					{
-						num = num + (*mat1)->GetRow(row).GetAt(calcCol) * (*mat2)->GetRow(calcCol).GetAt(col);
+						num = num + mat1->GetRow(row).GetAt(calcCol) * mat2->GetRow(calcCol).GetAt(col);
 					}
 
 					tempMat.SetNum(row, col, num);
@@ -363,12 +363,12 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixI MatrixOfMinors(MatrixI **mat)
+		MatrixI MatrixOfMinors(MatrixI *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 
 			MatrixI resMat = MatrixI(dim, dim);
 
@@ -392,75 +392,75 @@ namespace MathLib
 							if (col == mCol)
 								continue;
 
-							tempMat->SetNum(wRow, wCol, (*mat)->GetRow(row).GetAt(col));
+							tempMat->SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
 							wCol++;
 						}
 						wRow++;
 					}
 
-					resMat.SetNum(mRow, mCol, MatrixGetDet(&tempMat));
+					resMat.SetNum(mRow, mCol, MatrixGetDet(tempMat));
 				}
 			}
 
 			return resMat;
 		}
-		MatrixI MatrixOfCofactors(MatrixI **mat)
+		MatrixI MatrixOfCofactors(MatrixI *mat)
 		{
 			int counter = 0;
-			MatrixI resMat = MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
+			MatrixI resMat = MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					if (counter % 2 == 0)
-						resMat.SetNum(row, col, (*mat)->GetRow(row).GetAt(col));
+						resMat.SetNum(row, col, mat->GetRow(row).GetAt(col));
 					else
-						resMat.SetNum(row, col, -(*mat)->GetRow(row).GetAt(col));
+						resMat.SetNum(row, col, -mat->GetRow(row).GetAt(col));
 
 					counter++;
 				}
-				if ((*mat)->GetCollumnCount() % 2 == 0)
+				if (mat->GetCollumnCount() % 2 == 0)
 					counter++;
 			}
 
 			return resMat;
 		}
-		MatrixI MatrixAdjugate(MatrixI **mat)
+		MatrixI MatrixAdjugate(MatrixI *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 			MatrixI resMat = MatrixI(dim, dim);
 
 			for (int row = 0; row < dim; row++)
 			{
 				for (int col = 0; col < dim; col++)
 				{
-					resMat.SetNum(row, col, (*mat)->GetRow(col).GetAt(row));
+					resMat.SetNum(row, col, mat->GetRow(col).GetAt(row));
 				}
 			}
 
 			return resMat;
 		}
-		MatrixF MatrixInverse(MatrixI **mat)
+		MatrixF MatrixInverse(MatrixI *mat)
 		{
 			int determinant = MatrixGetDet(mat);
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 			MatrixF resMat = MatrixF(dim, dim);
 			MatrixI tempMat = MatrixI(dim, dim);
 
 			if (dim == 2)
 			{
-				resMat.SetNum(0, 0, (*mat)->GetRow(1).GetAt(1));
-				resMat.SetNum(0, 1, -1 * (double)(*mat)->GetRow(0).GetAt(1));
-				resMat.SetNum(1, 0, -1 * (double)(*mat)->GetRow(1).GetAt(0));
-				resMat.SetNum(1, 1, (*mat)->GetRow(0).GetAt(0));
+				resMat.SetNum(0, 0, mat->GetRow(1).GetAt(1));
+				resMat.SetNum(0, 1, -1 * (double)mat->GetRow(0).GetAt(1));
+				resMat.SetNum(1, 0, -1 * (double)mat->GetRow(1).GetAt(0));
+				resMat.SetNum(1, 1, mat->GetRow(0).GetAt(0));
 
 				MatrixF *pRMat = &resMat;
-				resMat = MatrixMult(&pRMat, 1 / MatrixGetDet(mat));
+				resMat = MatrixMult(pRMat, 1 / MatrixGetDet(mat));
 				pRMat = nullptr;
 			}
 			else
@@ -468,10 +468,10 @@ namespace MathLib
 				MatrixI *pTMat = &tempMat;
 				MatrixF *pRMat = &resMat;
 				tempMat = MatrixOfMinors(mat);
-				tempMat = MatrixOfCofactors(&pTMat);
-				tempMat = MatrixAdjugate(&pTMat);
-				resMat = MatrixI2F(&pTMat);
-				resMat = MatrixMult(&pRMat, 1 / determinant);
+				tempMat = MatrixOfCofactors(pTMat);
+				tempMat = MatrixAdjugate(pTMat);
+				resMat = MatrixI2F(pTMat);
+				resMat = MatrixMult(pRMat, 1 / determinant);
 			}
 
 			return resMat;
@@ -494,27 +494,27 @@ namespace MathLib
 		{
 			printf("Rows: %i, Collumns: %i\n", mat->GetRowCount(), mat->GetCollumnCount());
 		}
-		double MatrixGetDet(MatrixF **mat)
+		double MatrixGetDet(MatrixF *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
 			double num = 0;
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 
 			if (dim == 2)
 			{
-				num = (*mat)->GetRow(0).GetAt(0) * (*mat)->GetRow(1).GetAt(1) - (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(0).GetAt(1);
+				num = mat->GetRow(0).GetAt(0) * mat->GetRow(1).GetAt(1) - mat->GetRow(1).GetAt(0) * mat->GetRow(0).GetAt(1);
 			}
 			else if (dim == 3)
 			{
-				double pos1 = (*mat)->GetRow(0).GetAt(0) * (*mat)->GetRow(1).GetAt(1) * (*mat)->GetRow(2).GetAt(2);
-				double pos2 = (*mat)->GetRow(0).GetAt(1) * (*mat)->GetRow(1).GetAt(2) * (*mat)->GetRow(2).GetAt(0);
-				double pos3 = (*mat)->GetRow(0).GetAt(2) * (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(2).GetAt(1);
+				double pos1 = mat->GetRow(0).GetAt(0) * mat->GetRow(1).GetAt(1) * mat->GetRow(2).GetAt(2);
+				double pos2 = mat->GetRow(0).GetAt(1) * mat->GetRow(1).GetAt(2) * mat->GetRow(2).GetAt(0);
+				double pos3 = mat->GetRow(0).GetAt(2) * mat->GetRow(1).GetAt(0) * mat->GetRow(2).GetAt(1);
 
-				double neg1 = (*mat)->GetRow(2).GetAt(0) * (*mat)->GetRow(1).GetAt(1) * (*mat)->GetRow(0).GetAt(2);
-				double neg2 = (*mat)->GetRow(2).GetAt(1) * (*mat)->GetRow(1).GetAt(2) * (*mat)->GetRow(0).GetAt(0);
-				double neg3 = (*mat)->GetRow(2).GetAt(2) * (*mat)->GetRow(1).GetAt(0) * (*mat)->GetRow(0).GetAt(1);
+				double neg1 = mat->GetRow(2).GetAt(0) * mat->GetRow(1).GetAt(1) * mat->GetRow(0).GetAt(2);
+				double neg2 = mat->GetRow(2).GetAt(1) * mat->GetRow(1).GetAt(2) * mat->GetRow(0).GetAt(0);
+				double neg3 = mat->GetRow(2).GetAt(2) * mat->GetRow(1).GetAt(0) * mat->GetRow(0).GetAt(1);
 
 				num = pos1 + pos2 + pos3 - neg1 - neg2 - neg3;
 			}
@@ -533,27 +533,27 @@ namespace MathLib
 						}
 						for (int row = 0; row < dim - 1; row++)
 						{
-							tempMat->SetNum(row, wCol, (*mat)->GetRow(row + 1).GetAt(col));
+							tempMat->SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
 						}
 						wCol++;
 					}
 
 					if (mCol % 2 == 0)
-						num += (*mat)->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
+						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
 					else
-						num -= (*mat)->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
+						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
 				}
 			}
 
 			return num;
 		}
-		MatrixF MatrixAdd(MatrixF **mat, double value)
+		MatrixF MatrixAdd(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowF tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowF tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) + value);
 				}
@@ -562,13 +562,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixF MatrixSub(MatrixF **mat, double value)
+		MatrixF MatrixSub(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowF tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowF tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) - value);
 				}
@@ -577,13 +577,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixF MatrixMult(MatrixF **mat, double value)
+		MatrixF MatrixMult(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowF tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowF tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) * value);
 				}
@@ -592,13 +592,13 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixF MatrixDiv(MatrixF **mat, double value)
+		MatrixF MatrixDiv(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				RowF tempRow = (*mat)->GetRow(row);
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				RowF tempRow = mat->GetRow(row);
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) / value);
 				}
@@ -607,60 +607,60 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixF MatrixAdd(MatrixF **mat1, MatrixF **mat2)
+		MatrixF MatrixAdd(MatrixF *mat1, MatrixF *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetCollumnCount() || (*mat1)->GetRowCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
 				return MatrixF(0, 0);
 			}
-			MatrixF tempMat = MatrixF((*mat1)->GetRowCount(), (*mat1)->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat1->GetRowCount(), mat1->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat1->GetCollumnCount(); col++)
 				{
-					double num = (*mat1)->GetRow(row).GetAt(col) + (*mat2)->GetRow(row).GetAt(col);
+					double num = mat1->GetRow(row).GetAt(col) + mat2->GetRow(row).GetAt(col);
 					tempMat.SetNum(row, col, num);
 				}
 			}
 
 			return tempMat;
 		}
-		MatrixF MatrixSub(MatrixF **mat1, MatrixF **mat2)
+		MatrixF MatrixSub(MatrixF *mat1, MatrixF *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetCollumnCount() || (*mat1)->GetRowCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
 				return MatrixF(0, 0);
 			}
-			MatrixF tempMat = MatrixF((*mat1)->GetRowCount(), (*mat1)->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat1->GetRowCount(), mat1->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat1->GetCollumnCount(); col++)
 				{
-					double num = (*mat1)->GetRow(row).GetAt(col) - (*mat2)->GetRow(row).GetAt(col);
+					double num = mat1->GetRow(row).GetAt(col) - mat2->GetRow(row).GetAt(col);
 					tempMat.SetNum(row, col, num);
 				}
 			}
 
 			return tempMat;
 		}
-		MatrixF MatrixMult(MatrixF **mat1, MatrixF **mat2)
+		MatrixF MatrixMult(MatrixF *mat1, MatrixF *mat2)
 		{
-			if ((*mat1)->GetCollumnCount() != (*mat2)->GetRowCount())
+			if (mat1->GetCollumnCount() != mat2->GetRowCount())
 				return MatrixF(0, 0);
 
-			MatrixF tempMat = MatrixF((*mat1)->GetRowCount(), (*mat2)->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat1->GetRowCount(), mat2->GetCollumnCount());
 
-			for (int row = 0; row < (*mat1)->GetRowCount(); row++)
+			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat1)->GetRowCount(); col++)
+				for (int col = 0; col < mat1->GetRowCount(); col++)
 				{
 					double num = 0;
 
-					for (int calcCol = 0; calcCol < (*mat1)->GetCollumnCount(); calcCol++)
+					for (int calcCol = 0; calcCol < mat1->GetCollumnCount(); calcCol++)
 					{
-						num = num + (*mat1)->GetRow(row).GetAt(calcCol) * (*mat2)->GetRow(calcCol).GetAt(col);
+						num = num + mat1->GetRow(row).GetAt(calcCol) * mat2->GetRow(calcCol).GetAt(col);
 					}
 
 					tempMat.SetNum(row, col, num);
@@ -669,12 +669,12 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixOfMinors(MatrixF **mat)
+		MatrixF MatrixOfMinors(MatrixF *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 
 			MatrixF resMat = MatrixF(dim, dim);
 
@@ -698,83 +698,83 @@ namespace MathLib
 							if (col == mCol)
 								continue;
 
-							tempMat->SetNum(wRow, wCol, (*mat)->GetRow(row).GetAt(col));
+							tempMat->SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
 							wCol++;
 						}
 						wRow++;
 					}
 
-					resMat.SetNum(mRow, mCol, MatrixGetDet(&tempMat));
+					resMat.SetNum(mRow, mCol, MatrixGetDet(tempMat));
 				}
 			}
 
 			return resMat;
 		}
-		MatrixF MatrixOfCofactors(MatrixF **mat)
+		MatrixF MatrixOfCofactors(MatrixF *mat)
 		{
 			int counter = 0;
-			MatrixF resMat = MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
+			MatrixF resMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 
-			for (int row = 0; row < (*mat)->GetRowCount(); row++)
+			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
-				for (int col = 0; col < (*mat)->GetCollumnCount(); col++)
+				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
 					if (counter % 2 == 0)
-						resMat.SetNum(row, col, (*mat)->GetRow(row).GetAt(col));
+						resMat.SetNum(row, col, mat->GetRow(row).GetAt(col));
 					else
-						resMat.SetNum(row, col, -(*mat)->GetRow(row).GetAt(col));
+						resMat.SetNum(row, col, -mat->GetRow(row).GetAt(col));
 
 					counter++;
 				}
-				if ((*mat)->GetCollumnCount() % 2 == 0)
+				if (mat->GetCollumnCount() % 2 == 0)
 					counter++;
 			}
 
 			return resMat;
 		}
-		MatrixF MatrixAdjugate(MatrixF **mat)
+		MatrixF MatrixAdjugate(MatrixF *mat)
 		{
-			if ((*mat)->GetRowCount() != (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 			MatrixF resMat = MatrixF(dim, dim);
 
 			for (int row = 0; row < dim; row++)
 			{
 				for (int col = 0; col < dim; col++)
 				{
-					resMat.SetNum(row, col, (*mat)->GetRow(col).GetAt(row));
+					resMat.SetNum(row, col, mat->GetRow(col).GetAt(row));
 				}
 			}
 
 			return resMat;
 		}
-		MatrixF MatrixInverse(MatrixF **mat)
+		MatrixF MatrixInverse(MatrixF *mat)
 		{
 			double determinant = MatrixGetDet(mat);
 
-			int dim = (*mat)->GetRowCount();
+			int dim = mat->GetRowCount();
 			MatrixF resMat = MatrixF(dim, dim);
 
 			if (dim == 2)
 			{
-				resMat.SetNum(0, 0, (*mat)->GetRow(1).GetAt(1));
-				resMat.SetNum(0, 1, -1 * (double)(*mat)->GetRow(0).GetAt(1));
-				resMat.SetNum(1, 0, -1 * (double)(*mat)->GetRow(1).GetAt(0));
-				resMat.SetNum(1, 1, (*mat)->GetRow(0).GetAt(0));
+				resMat.SetNum(0, 0, mat->GetRow(1).GetAt(1));
+				resMat.SetNum(0, 1, -1 * (double)mat->GetRow(0).GetAt(1));
+				resMat.SetNum(1, 0, -1 * (double)mat->GetRow(1).GetAt(0));
+				resMat.SetNum(1, 1, mat->GetRow(0).GetAt(0));
 
 				MatrixF *pRMat = &resMat;
-				resMat = MatrixMult(&pRMat, 1 / MatrixGetDet(mat));
+				resMat = MatrixMult(pRMat, 1 / MatrixGetDet(mat));
 				pRMat = nullptr;
 			}
 			else
 			{
 				MatrixF *pRMat = &resMat;
 				resMat = MatrixOfMinors(mat);
-				resMat = MatrixOfCofactors(&pRMat);
-				resMat = MatrixAdjugate(&pRMat);
-				resMat = MatrixMult(&pRMat, 1 / determinant);
+				resMat = MatrixOfCofactors(pRMat);
+				resMat = MatrixAdjugate(pRMat);
+				resMat = MatrixMult(pRMat, 1 / determinant);
 			}
 
 			return resMat;
@@ -782,37 +782,37 @@ namespace MathLib
 		
 		// Conversion and checking functions
 
-		MatrixI MatrixF2I(MatrixF **mat)
+		MatrixI MatrixF2I(MatrixF *mat)
 		{
-			MatrixI resMat = MatrixI((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
+			MatrixI resMat = MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 
 			for (int row = 0; row < resMat.GetRowCount(); row++)
 			{
 				for (int col = 0; col < resMat.GetCollumnCount(); col++)
 				{
-					resMat.SetNum(row, col, (*mat)->GetRow(row).GetAt(col));
+					resMat.SetNum(row, col, mat->GetRow(row).GetAt(col));
 				}
 			}
 
 			return resMat;
 		}
-		MatrixF MatrixI2F(MatrixI **mat)
+		MatrixF MatrixI2F(MatrixI *mat)
 		{
-			MatrixF resMat = MatrixF((*mat)->GetRowCount(), (*mat)->GetCollumnCount());
+			MatrixF resMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 
 			for (int row = 0; row < resMat.GetRowCount(); row++)
 			{
 				for (int col = 0; col < resMat.GetCollumnCount(); col++)
 				{
-					resMat.SetNum(row, col, (*mat)->GetRow(row).GetAt(col));
+					resMat.SetNum(row, col, mat->GetRow(row).GetAt(col));
 				}
 			}
 
 			return resMat;
 		}
-		bool MatrixIsSquare(MatrixI **mat, int dimension)
+		bool MatrixIsSquare(MatrixI *mat, int dimension)
 		{
-			if ((*mat)->GetRowCount() == (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -820,7 +820,7 @@ namespace MathLib
 				}
 				else
 				{
-					if ((*mat)->GetRowCount() == dimension)
+					if (mat->GetRowCount() == dimension)
 						return true;
 					else
 						return false;
@@ -828,9 +828,9 @@ namespace MathLib
 			}
 			return false;
 		}
-		bool MatrixIsSquare(MatrixF **mat, int dimension)
+		bool MatrixIsSquare(MatrixF *mat, int dimension)
 		{
-			if ((*mat)->GetRowCount() == (*mat)->GetCollumnCount())
+			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -838,7 +838,7 @@ namespace MathLib
 				}
 				else
 				{
-					if ((*mat)->GetRowCount() == dimension)
+					if (mat->GetRowCount() == dimension)
 						return true;
 					else
 						return false;

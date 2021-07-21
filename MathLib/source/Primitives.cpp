@@ -38,14 +38,14 @@ namespace MathLib
 		{
 			return PointAdd(p1, p2);
 		}
-		Point2D Transform(Point2D point, Point2D origin, Matrices::MatrixF **transform)
+		Point2D Transform(Point2D point, Point2D origin, Matrices::MatrixF *transform)
 		{
 			Vectors::Vector2D vec = Utility::Line2Vector(origin, point);
 			vec = vec.Transform(transform);
 
 			return origin + vec.direction;
 		}
-		Line2D Transform(Line2D line, Point2D origin, Matrices::MatrixF **transform)
+		Line2D Transform(Line2D line, Point2D origin, Matrices::MatrixF *transform)
 		{
 			Vectors::Vector2D vec1 = Utility::Line2Vector(origin, line.p1);
 			Vectors::Vector2D vec2 = Utility::Line2Vector(origin, line.p2);

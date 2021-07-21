@@ -144,5 +144,10 @@ namespace MathLib
 		{
 			return sqrt(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
 		}
+		int RandInt(int min, int max)
+		{
+			int range = max + 1 - min;
+			return rand() % range + min;
+		}
 	}
 }

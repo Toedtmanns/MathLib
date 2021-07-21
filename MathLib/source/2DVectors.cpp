@@ -17,15 +17,15 @@ namespace MathLib
 			direction.x += sin(angle * PI / 180) * length;
 			direction.y += cos(angle * PI / 180) * length;
 		}
-		Vector2D Vector2D::Transform(Matrices::MatrixF **transformation)
+		Vector2D Vector2D::Transform(Matrices::MatrixF *transformation)
 		{
 			if (!Matrices::MatrixIsSquare(transformation, 2))
 				throw std::invalid_argument("Matrix is not 2x2!");
 
 			double dirX, dirY;
 
-			dirX = direction.x * (*transformation)->GetRow(0).GetAt(0) + direction.y * (*transformation)->GetRow(1).GetAt(0);
-			dirY = direction.x * (*transformation)->GetRow(0).GetAt(1) + direction.y * (*transformation)->GetRow(1).GetAt(1);
+			dirX = direction.x * transformation->GetRow(0).GetAt(0) + direction.y * transformation->GetRow(1).GetAt(0);
+			dirY = direction.x * transformation->GetRow(0).GetAt(1) + direction.y * transformation->GetRow(1).GetAt(1);
 
 			return Vector2D(Primitives::Point2D(dirX, dirY));
 		}
@@ -52,7 +52,7 @@ namespace MathLib
 				cosf(Utility::Deg2Rad(angle))
 			);
 			Matrices::MatrixF *transform = Matrices::TransformF2x2(p1, p2);
-			return Transform(&transform);
+			return Transform(transform);
 		}
 		double Vector2D::GetAngle()
 		{
@@ -112,7 +112,7 @@ namespace MathLib
 		Vector3D VectorCrossProduct(Vector2D v1, Vector2D v2)
 		{
 			Matrices::MatrixF *vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
-			double zLength = Matrices::MatrixGetDet(&vectors);
+			double zLength = Matrices::MatrixGetDet(vectors);
 			Vector3D cProduct = Vector3D(Primitives::Point3D(0, 0, zLength));
 
 			return cProduct;
@@ -120,7 +120,7 @@ namespace MathLib
 		double VectorGetDeterminant(Vector2D v1, Vector2D v2)
 		{
 			Matrices::MatrixF *vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
-			return Matrices::MatrixGetDet(&vectors);
+			return Matrices::MatrixGetDet(vectors);
 		}
 		void PrintProperties(Vector2D v)
 		{
