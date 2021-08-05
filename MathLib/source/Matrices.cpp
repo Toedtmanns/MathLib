@@ -134,6 +134,17 @@ namespace MathLib
 
 		// MatrixF definition
 
+		MatrixF::MatrixF(int dim)
+			: rows(dim), collumns(dim)
+		{
+			matrix = std::vector<RowF>(dim);
+			for (int i = 0; i < dim; i++)
+			{
+				RowF temp = RowF(dim);
+				temp.SetNum(i, 1);
+				matrix[i] = temp;
+			}
+		}
 		MatrixF::MatrixF(int rows = 2, int collumns = 2)
 			: rows(rows), collumns(collumns)
 		{
@@ -168,6 +179,10 @@ namespace MathLib
 		void MatrixF::SetNum(int row, int collumn, double value)
 		{
 			matrix[row].SetNum(collumn, value);
+		}
+		MatrixF::~MatrixF()
+		{
+			matrix.clear();
 		}
 
 		// General MatrixI functions
@@ -485,7 +500,7 @@ namespace MathLib
 			{
 				for (int col = 0; col < mat->GetCollumnCount(); col++)
 				{
-					printf("%.2f\t", mat->GetRow(row).GetAt(col));
+					printf("%.3f\t", mat->GetRow(row).GetAt(col));
 				}
 				printf("\n");
 			}
@@ -542,6 +557,8 @@ namespace MathLib
 						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
 					else
 						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
+
+					delete tempMat;
 				}
 			}
 
@@ -549,7 +566,7 @@ namespace MathLib
 		}
 		MatrixF MatrixAdd(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowF tempRow = mat->GetRow(row);
@@ -557,14 +574,14 @@ namespace MathLib
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) + value);
 				}
-				tempMat->SetRow(row, tempRow);
+				tempMat.SetRow(row, tempRow);
 			}
 
-			return *tempMat;
+			return tempMat;
 		}
 		MatrixF MatrixSub(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowF tempRow = mat->GetRow(row);
@@ -572,14 +589,14 @@ namespace MathLib
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) - value);
 				}
-				tempMat->SetRow(row, tempRow);
+				tempMat.SetRow(row, tempRow);
 			}
 
-			return *tempMat;
+			return tempMat;
 		}
 		MatrixF MatrixMult(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowF tempRow = mat->GetRow(row);
@@ -587,10 +604,10 @@ namespace MathLib
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) * value);
 				}
-				tempMat->SetRow(row, tempRow);
+				tempMat.SetRow(row, tempRow);
 			}
 
-			return *tempMat;
+			return tempMat;
 		}
 		MatrixF MatrixDiv(MatrixF *mat, double value)
 		{
@@ -705,6 +722,7 @@ namespace MathLib
 					}
 
 					resMat.SetNum(mRow, mCol, MatrixGetDet(tempMat));
+					delete tempMat;
 				}
 			}
 
@@ -764,17 +782,14 @@ namespace MathLib
 				resMat.SetNum(1, 0, -1 * (double)mat->GetRow(1).GetAt(0));
 				resMat.SetNum(1, 1, mat->GetRow(0).GetAt(0));
 
-				MatrixF *pRMat = &resMat;
-				resMat = MatrixMult(pRMat, 1 / MatrixGetDet(mat));
-				pRMat = nullptr;
+				resMat = MatrixMult(&resMat, 1 / MatrixGetDet(mat));
 			}
 			else
 			{
-				MatrixF *pRMat = &resMat;
 				resMat = MatrixOfMinors(mat);
-				resMat = MatrixOfCofactors(pRMat);
-				resMat = MatrixAdjugate(pRMat);
-				resMat = MatrixMult(pRMat, 1 / determinant);
+				resMat = MatrixOfCofactors(&resMat);
+				resMat = MatrixAdjugate(&resMat);
+				resMat = MatrixMult(&resMat, 1 / determinant);
 			}
 
 			return resMat;
@@ -810,9 +825,9 @@ namespace MathLib
 
 			return resMat;
 		}
-		bool MatrixIsSquare(MatrixI *mat, int dimension)
+		bool MatrixIsSquare(const MatrixI &mat, int dimension)
 		{
-			if (mat->GetRowCount() == mat->GetCollumnCount())
+			if (mat.GetRowCount() == mat.GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -820,17 +835,14 @@ namespace MathLib
 				}
 				else
 				{
-					if (mat->GetRowCount() == dimension)
-						return true;
-					else
-						return false;
+					return mat.GetRowCount() == dimension;
 				}
 			}
 			return false;
 		}
-		bool MatrixIsSquare(MatrixF *mat, int dimension)
+		bool MatrixIsSquare(const MatrixF &mat, int dimension)
 		{
-			if (mat->GetRowCount() == mat->GetCollumnCount())
+			if (mat.GetRowCount() == mat.GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -838,10 +850,7 @@ namespace MathLib
 				}
 				else
 				{
-					if (mat->GetRowCount() == dimension)
-						return true;
-					else
-						return false;
+					return mat.GetRowCount() == dimension;
 				}
 			}
 			return false;

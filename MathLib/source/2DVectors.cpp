@@ -19,7 +19,7 @@ namespace MathLib
 		}
 		Vector2D Vector2D::Transform(Matrices::MatrixF *transformation)
 		{
-			if (!Matrices::MatrixIsSquare(transformation, 2))
+			if (!Matrices::MatrixIsSquare(*transformation, 2))
 				throw std::invalid_argument("Matrix is not 2x2!");
 
 			double dirX, dirY;

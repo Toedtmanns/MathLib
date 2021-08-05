@@ -12,13 +12,21 @@
 #endif
 
 #define PI 3.14159265
+
+#ifndef MATHLIB_STATIC
 #ifndef EXPORT
 #ifdef MATHLIB_EXPORTS
 #define EXPORT __declspec(dllexport)
 #else
 #define EXPORT __declspec(dllimport)
-#endif
-#endif
+#endif // MATHLIB_EXPORTS
+#endif // EXPORT
+
+#else
+#ifndef EXPORT
+#define EXPORT
+#endif // EXPORT
+#endif // MATHLIB_STATIC
 
 namespace MathLib
 {
@@ -72,8 +80,12 @@ namespace MathLib
 			Line2D(Point2D p1, Point2D p2);
 		};
 
-		EXPORT Point2D PointAdd(Point2D p1, Point2D p2);
-		EXPORT Point2D operator+(Point2D p1, Point2D p2);
+		EXPORT bool operator==(const Point3D &p1, const Point3D &p2);
+		EXPORT bool operator!=(const Point3D &p1, const Point3D &p2);
+		EXPORT Point2D PointAdd(const Point2D &p1, const Point2D &p2);
+		EXPORT Point2D operator+(const Point2D &p1, const Point2D &p2);
+		EXPORT Point3D PointAdd(const Point3D &p1, const Point3D &p2);
+		EXPORT Point3D operator+(const Point3D &p1, const Point3D &p2);
 		EXPORT void PrintProperties(Point2D p);
 		EXPORT void PrintProperties(Line2D l);
 	}
@@ -132,6 +144,7 @@ namespace MathLib
 			int rows, collumns;
 		public:
 
+			MatrixF(int dim);
 			MatrixF(int rows, int collumns);
 			MatrixF(std::vector<RowF> content);
 
@@ -140,6 +153,8 @@ namespace MathLib
 			RowF GetRow(int index);
 			void SetRow(int index, RowF row);
 			void SetNum(int row, int collumn, double value);
+
+			~MatrixF();
 		};
 
 		EXPORT void PrintContent(MatrixI *mat);
@@ -174,8 +189,8 @@ namespace MathLib
 
 		EXPORT MatrixI MatrixF2I(MatrixF *mat);
 		EXPORT MatrixF MatrixI2F(MatrixI *mat);
-		EXPORT bool MatrixIsSquare(MatrixI *mat, int dimension = -1);
-		EXPORT bool MatrixIsSquare(MatrixF *mat, int dimension = -1);
+		EXPORT bool MatrixIsSquare(const MatrixI &mat, int dimension = -1);
+		EXPORT bool MatrixIsSquare(const MatrixF &mat, int dimension = -1);
 
 		// Helper functions
 
@@ -231,6 +246,7 @@ namespace MathLib
 			Primitives::Point2D ApplyVector(Primitives::Point2D p);
 		};
 
+		EXPORT Vector3D GetRelativeVec(const Vector3D &vec1, const Vector3D &vec2);
 		EXPORT Vector2D VectorAdd(Vector2D v1, Vector2D v2);
 		EXPORT Vector2D VectorSub(Vector2D v1, Vector2D v2);
 		EXPORT double VectorGetAngleDifference(Vector2D v1, Vector2D v2);
@@ -269,5 +285,8 @@ namespace MathLib
 		EXPORT double GetDistance(Primitives::Point2D p1, Primitives::Point2D p2);
 		EXPORT double GetDistance(Primitives::Point3D p1, Primitives::Point3D p2);
 		EXPORT int RandInt(int min, int max);
+		EXPORT float RoundFTo(const float &num, const int &decimal);
+		EXPORT Matrices::MatrixF Vec2Mat(const Vectors::Vector3D &vec, const int &front = 0);
+		EXPORT Vectors::Vector3D Mat2Vec(Matrices::MatrixF *mat, const int &front = 0);
 	}
 }

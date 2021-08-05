@@ -30,11 +30,27 @@ namespace MathLib
 				normal = 360 + normal;
 		}
 
-		Point2D PointAdd(Point2D p1, Point2D p2)
+		bool operator==(const Point3D &p1, const Point3D &p2)
+		{
+			return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
+		}
+		bool operator!=(const Point3D &p1, const Point3D &p2)
+		{
+			return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
+		}
+		Point2D PointAdd(const Point2D &p1, const Point2D &p2)
 		{
 			return Point2D(p1.x + p2.x, p1.y + p2.y);
 		}
-		Point2D operator+(Point2D p1, Point2D p2)
+		Point2D operator+(const Point2D &p1, const Point2D &p2)
+		{
+			return PointAdd(p1, p2);
+		}
+		Point3D PointAdd(const Point3D &p1, const Point3D &p2)
+		{
+			return Point3D(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
+		}
+		Point3D operator+(const Point3D &p1, const Point3D &p2)
 		{
 			return PointAdd(p1, p2);
 		}

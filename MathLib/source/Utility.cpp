@@ -138,16 +138,36 @@ namespace MathLib
 		}
 		double GetDistance(Primitives::Point2D p1, Primitives::Point2D p2)
 		{
-			return sqrt(powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2));
+			return sqrtf(powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2));
 		}
 		double GetDistance(Primitives::Point3D p1, Primitives::Point3D p2)
 		{
-			return sqrt(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
+			return sqrtf(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
 		}
 		int RandInt(int min, int max)
 		{
 			int range = max + 1 - min;
 			return rand() % range + min;
+		}
+		float RoundFTo(const float &num, const int &decimal)
+		{
+			return roundf(pow(10, decimal) * num) / pow(10, decimal);
+		}
+		Matrices::MatrixF Vec2Mat(const Vectors::Vector3D &vec, const int &front)
+		{
+			Matrices::MatrixF mat = Matrices::MatrixF(3);
+			mat.SetNum(0, 0, vec.direction.x);
+			mat.SetNum(1, 1, vec.direction.y);
+			mat.SetNum(2, 2, vec.direction.z);
+			return mat;
+		}
+		Vectors::Vector3D Mat2Vec(Matrices::MatrixF *mat, const int &front)
+		{
+			Vectors::Vector3D vec = Vectors::Vector3D();
+			vec.direction.x = mat->GetRow(0).GetAt(0);
+			vec.direction.y = mat->GetRow(1).GetAt(1);
+			vec.direction.z = mat->GetRow(2).GetAt(2);
+			return vec;
 		}
 	}
 }

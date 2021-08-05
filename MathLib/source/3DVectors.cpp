@@ -16,7 +16,7 @@ namespace MathLib
 		}
 		Vector3D Vector3D::Transform(Matrices::MatrixF *mat)
 		{
-			if (!Matrices::MatrixIsSquare(mat, 3))
+			if (!Matrices::MatrixIsSquare(*mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
 
 			double dirX, dirY, dirZ;
@@ -103,6 +103,14 @@ namespace MathLib
 		void PrintProperties(Vector3D v)
 		{
 			printf("X: %.3f, Y: %.3f, Z: %.3f\n", v.direction.x, v.direction.y, v.direction.z);
+		}
+		Vector3D GetRelativeVec(const Vector3D &vec1, const Vector3D &vec2)
+		{
+			Vector3D retVec = Vector3D();
+			retVec.direction.x = vec2.direction.x - vec1.direction.x;
+			retVec.direction.y = vec2.direction.y - vec1.direction.y;
+			retVec.direction.z = vec2.direction.z - (vec1.direction.z - 1);
+			return retVec;
 		}
 	}
 }
