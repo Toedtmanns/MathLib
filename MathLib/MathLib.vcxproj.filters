@@ -35,5 +35,8 @@
     <ClCompile Include="source\Utility.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="source\ComplexNumbers.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -30,6 +30,57 @@
 
 namespace MathLib
 {
+	namespace Complex
+	{
+		struct imaginaryNum
+		{
+			double num;
+
+			imaginaryNum();
+			imaginaryNum(double num);
+
+			template <typename T>
+			imaginaryNum operator*(const T &other)
+			{
+				return imaginaryNum(num * other);
+			}
+			double operator+(const imaginaryNum &other);
+			double operator-(const imaginaryNum &other);
+			double operator*(const imaginaryNum &other);
+			double operator/(const imaginaryNum &other);
+			bool operator==(const imaginaryNum &other);
+			bool operator!=(const imaginaryNum &other);
+			bool operator>=(const imaginaryNum &other);
+			bool operator<=(const imaginaryNum &other);
+			bool operator>(const imaginaryNum &other);
+			bool operator<(const imaginaryNum &other);
+			imaginaryNum& operator++();
+			imaginaryNum& operator--();
+			double operator++(int);
+			double operator--(int);
+		};
+
+		template <typename T>
+		imaginaryNum operator*(const T &num1, const imaginaryNum &num2)
+		{
+			return imaginaryNum(num1 * num2.num);
+		}
+
+		class Quaternion
+		{
+			double real;
+			imaginaryNum i, j, k;
+
+			Quaternion();
+			Quaternion(double real, imaginaryNum i, imaginaryNum j, imaginaryNum k);
+
+			Quaternion operator+(const Quaternion &other);
+			Quaternion operator*(const Quaternion &other);
+		};
+	}
+
+	typedef Complex::imaginaryNum imaginary;
+
 	namespace Primitives
 	{
 		struct EXPORT Point3D
@@ -285,7 +336,10 @@ namespace MathLib
 		EXPORT double GetDistance(Primitives::Point2D p1, Primitives::Point2D p2);
 		EXPORT double GetDistance(Primitives::Point3D p1, Primitives::Point3D p2);
 		EXPORT int RandInt(int min, int max);
-		EXPORT float RoundFTo(const float &num, const int &decimal);
+		EXPORT inline float RoundFTo(const float &num, const int &decimal)
+		{
+			return roundf(pow(10, decimal) * num) / pow(10, decimal);
+		}
 		EXPORT Matrices::MatrixF Vec2Mat(const Vectors::Vector3D &vec, const int &front = 0);
 		EXPORT Vectors::Vector3D Mat2Vec(Matrices::MatrixF *mat, const int &front = 0);
 	}

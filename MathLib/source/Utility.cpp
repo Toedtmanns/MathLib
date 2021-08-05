@@ -149,10 +149,6 @@ namespace MathLib
 			int range = max + 1 - min;
 			return rand() % range + min;
 		}
-		float RoundFTo(const float &num, const int &decimal)
-		{
-			return roundf(pow(10, decimal) * num) / pow(10, decimal);
-		}
 		Matrices::MatrixF Vec2Mat(const Vectors::Vector3D &vec, const int &front)
 		{
 			Matrices::MatrixF mat = Matrices::MatrixF(3);
