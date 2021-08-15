@@ -16,7 +16,7 @@ namespace MathLib
 		}
 		Vector3D Vector3D::Transform(Matrices::MatrixF *mat)
 		{
-			if (!Matrices::MatrixIsSquare(*mat, 3))
+			if (!Matrices::MatrixIsSquare(mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
 
 			double dirX, dirY, dirZ;
@@ -99,6 +99,12 @@ namespace MathLib
 		double Vector3D::GetLen()
 		{
 			return sqrt(powf(sqrtf(powf(direction.x, 2) + powf(direction.y, 2)), 2) + powf(direction.z, 2));
+		}
+		Vector3D Vector3D::SetLen(double len)
+		{
+			double vecLen(GetLen());
+			Vector3D retVec(*this);
+			return retVec.Scale(vecLen * (len / vecLen));
 		}
 		void PrintProperties(Vector3D v)
 		{

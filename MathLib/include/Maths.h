@@ -30,57 +30,6 @@
 
 namespace MathLib
 {
-	namespace Complex
-	{
-		struct imaginaryNum
-		{
-			double num;
-
-			imaginaryNum();
-			imaginaryNum(double num);
-
-			template <typename T>
-			imaginaryNum operator*(const T &other)
-			{
-				return imaginaryNum(num * other);
-			}
-			double operator+(const imaginaryNum &other);
-			double operator-(const imaginaryNum &other);
-			double operator*(const imaginaryNum &other);
-			double operator/(const imaginaryNum &other);
-			bool operator==(const imaginaryNum &other);
-			bool operator!=(const imaginaryNum &other);
-			bool operator>=(const imaginaryNum &other);
-			bool operator<=(const imaginaryNum &other);
-			bool operator>(const imaginaryNum &other);
-			bool operator<(const imaginaryNum &other);
-			imaginaryNum& operator++();
-			imaginaryNum& operator--();
-			double operator++(int);
-			double operator--(int);
-		};
-
-		template <typename T>
-		imaginaryNum operator*(const T &num1, const imaginaryNum &num2)
-		{
-			return imaginaryNum(num1 * num2.num);
-		}
-
-		class Quaternion
-		{
-			double real;
-			imaginaryNum i, j, k;
-
-			Quaternion();
-			Quaternion(double real, imaginaryNum i, imaginaryNum j, imaginaryNum k);
-
-			Quaternion operator+(const Quaternion &other);
-			Quaternion operator*(const Quaternion &other);
-		};
-	}
-
-	typedef Complex::imaginaryNum imaginary;
-
 	namespace Primitives
 	{
 		struct EXPORT Point3D
@@ -138,7 +87,110 @@ namespace MathLib
 		EXPORT Point3D PointAdd(const Point3D &p1, const Point3D &p2);
 		EXPORT Point3D operator+(const Point3D &p1, const Point3D &p2);
 		EXPORT void PrintProperties(Point2D p);
+		EXPORT void PrintProperties(Point3D p);
 		EXPORT void PrintProperties(Line2D l);
+	}
+
+	namespace Complex
+	{
+		class EXPORT imaginaryBase
+		{
+		public:
+			double num;
+
+			imaginaryBase();
+			imaginaryBase(const double &num);
+
+			template <typename T>
+			imaginaryBase operator*(const T &other)
+			{
+				return imaginaryBase(num * other);
+			}
+			imaginaryBase operator+(const imaginaryBase &other);
+			imaginaryBase operator-(const imaginaryBase &other);
+			double operator*(const imaginaryBase &other);
+			double operator/(const imaginaryBase &other);
+			bool operator==(const imaginaryBase &other);
+			bool operator!=(const imaginaryBase &other);
+			bool operator>=(const imaginaryBase &other);
+			bool operator<=(const imaginaryBase &other);
+			bool operator>(const imaginaryBase &other);
+			bool operator<(const imaginaryBase &other);
+			imaginaryBase& operator++();
+			imaginaryBase& operator--();
+			imaginaryBase& operator++(int);
+			imaginaryBase& operator--(int);
+		};
+
+		template <typename T>
+		EXPORT imaginaryBase operator*(const T &num1, const imaginaryBase &num2)
+		{
+			return imaginaryBase(num1 * num2.num);
+		}
+		EXPORT imaginaryBase operator-(const imaginaryBase &num);
+
+		class imagJ;
+		class imagK;
+
+		class EXPORT imagI : public imaginaryBase
+		{
+		public:
+			imagI();
+			imagI(const double &num);
+			imagI(const imaginaryBase &base);
+
+			double operator*(const imagI &other);
+			imagK operator*(const imagJ &jNum);
+			imagJ operator*(const imagK &jNum);
+		};
+		class EXPORT imagJ : public imaginaryBase
+		{
+		public:
+			imagJ();
+			imagJ(const double &num);
+			imagJ(const imaginaryBase &base);
+
+			double operator*(const imagJ &other);
+			imagI operator*(const imagK &jNum);
+			imagK operator*(const imagI &jNum);
+		};
+		class EXPORT imagK : public imaginaryBase
+		{
+		public:
+			imagK();
+			imagK(const double &num);
+			imagK(const imaginaryBase &base);
+
+			double operator*(const imagK &other);
+			imagJ operator*(const imagI &jNum);
+			imagI operator*(const imagJ &jNum);
+		};
+
+		// Quaternions
+
+		class EXPORT Quaternion
+		{
+		public:
+			double real;
+			imagI i;
+			imagJ j;
+			imagK k;
+
+			Quaternion();
+			Quaternion(const double &real, const imagI &i, const imagJ &j, const imagK &k);
+			Quaternion(const Primitives::Point3D &point);
+
+			Quaternion operator+(const Quaternion &other);
+			Quaternion operator*(const Quaternion &other);
+			Quaternion GetInverse();
+			Primitives::Point3D GetPoint();
+			Quaternion RotateQuaternion(const Quaternion &quat);
+			Primitives::Point3D RotatePoint(const Primitives::Point3D &point);
+		};
+
+		EXPORT Quaternion QuaternionRotation(const double &angle, const double &iAxis, const double &jAxis, const double &kAxis);
+		EXPORT Quaternion QuaternionRotation(const double &angle, const Primitives::Point3D &axis);
+		EXPORT void PrintProperties(const Quaternion &quat);
 	}
 
 	namespace Matrices
@@ -238,10 +290,16 @@ namespace MathLib
 		EXPORT MatrixF MatrixAdjugate(MatrixF *mat);
 		EXPORT MatrixF MatrixInverse(MatrixF *mat);
 
+		// Quaternion operations
+
+		EXPORT MatrixF MatrixRotate(MatrixF *mat, const Complex::Quaternion &quat);
+
+		// Conversion and checking functions
+
 		EXPORT MatrixI MatrixF2I(MatrixF *mat);
 		EXPORT MatrixF MatrixI2F(MatrixI *mat);
-		EXPORT bool MatrixIsSquare(const MatrixI &mat, int dimension = -1);
-		EXPORT bool MatrixIsSquare(const MatrixF &mat, int dimension = -1);
+		EXPORT bool MatrixIsSquare(const MatrixI *mat, int dimension = -1);
+		EXPORT bool MatrixIsSquare(const MatrixF *mat, int dimension = -1);
 
 		// Helper functions
 
@@ -272,6 +330,7 @@ namespace MathLib
 			double GetAngle(int axis);
 			double GetAngle(Vector3D *normal);
 			double GetLen();
+			Vector3D SetLen(double len);
 		};
 
 		/// <summary>
@@ -312,6 +371,7 @@ namespace MathLib
 	{
 		EXPORT Point2D Transform(Point2D point, Point2D origin, Matrices::MatrixF *transform);
 		EXPORT Line2D Transform(Line2D line, Point2D origin, Matrices::MatrixF *transform);
+		EXPORT Point3D RotatePoint(Point3D point, const Complex::Quaternion &quat);
 	}
 
 	namespace Utility

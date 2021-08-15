@@ -145,7 +145,7 @@ namespace MathLib
 				matrix[i] = temp;
 			}
 		}
-		MatrixF::MatrixF(int rows = 2, int collumns = 2)
+		MatrixF::MatrixF(int rows, int collumns)
 			: rows(rows), collumns(collumns)
 		{
 			matrix = std::vector<RowF>(rows);
@@ -794,6 +794,35 @@ namespace MathLib
 
 			return resMat;
 		}
+
+		// Quaternion operations
+
+		MatrixF MatrixRotate(MatrixF *mat, const Complex::Quaternion &quat)
+		{
+			if (!MatrixIsSquare(mat, 4))
+				throw std::invalid_argument("Matrix is not 4x4!");
+
+			Complex::Quaternion xQuat(Primitives::Point3D(mat->GetRow(0).GetAt(0), mat->GetRow(1).GetAt(0), mat->GetRow(2).GetAt(0)));
+			Complex::Quaternion yQuat(Primitives::Point3D(mat->GetRow(0).GetAt(1), mat->GetRow(1).GetAt(1), mat->GetRow(2).GetAt(1)));
+			Complex::Quaternion zQuat(Primitives::Point3D(mat->GetRow(0).GetAt(2), mat->GetRow(1).GetAt(2), mat->GetRow(2).GetAt(2)));
+
+			xQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(xQuat);
+			yQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(yQuat);
+			zQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(zQuat);
+
+			RowF row0(std::vector<double>{xQuat.i.num, yQuat.i.num, zQuat.i.num, mat->GetRow(0).GetAt(3)});
+			RowF row1(std::vector<double>{xQuat.j.num, yQuat.j.num, zQuat.j.num, mat->GetRow(1).GetAt(3)});
+			RowF row2(std::vector<double>{xQuat.k.num, yQuat.k.num, zQuat.k.num, mat->GetRow(2).GetAt(3)});
+
+			MatrixF *retMat = new MatrixF(4);
+
+			retMat->SetRow(0, row0);
+			retMat->SetRow(1, row1);
+			retMat->SetRow(2, row2);
+			retMat->SetRow(3, mat->GetRow(3));
+
+			return *retMat;
+		}
 		
 		// Conversion and checking functions
 
@@ -825,9 +854,9 @@ namespace MathLib
 
 			return resMat;
 		}
-		bool MatrixIsSquare(const MatrixI &mat, int dimension)
+		bool MatrixIsSquare(const MatrixI *mat, int dimension)
 		{
-			if (mat.GetRowCount() == mat.GetCollumnCount())
+			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -835,14 +864,14 @@ namespace MathLib
 				}
 				else
 				{
-					return mat.GetRowCount() == dimension;
+					return mat->GetRowCount() == dimension;
 				}
 			}
 			return false;
 		}
-		bool MatrixIsSquare(const MatrixF &mat, int dimension)
+		bool MatrixIsSquare(const MatrixF *mat, int dimension)
 		{
-			if (mat.GetRowCount() == mat.GetCollumnCount())
+			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
 				if (dimension == -1)
 				{
@@ -850,7 +879,7 @@ namespace MathLib
 				}
 				else
 				{
-					return mat.GetRowCount() == dimension;
+					return mat->GetRowCount() == dimension;
 				}
 			}
 			return false;

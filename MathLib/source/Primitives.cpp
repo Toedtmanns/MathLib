@@ -70,9 +70,20 @@ namespace MathLib
 
 			return Line2D(vec1.direction + origin, vec2.direction + origin);
 		}
+		Point3D RotatePoint(const Point3D &point, Complex::Quaternion &quat)
+		{
+			Complex::Quaternion retQuat(point);
+			retQuat = quat * retQuat * quat.GetInverse();
+			return retQuat.GetPoint();
+		}
+
 		void PrintProperties(Point2D p)
 		{
 			printf("X: %f, Y: %f\n", p.x, p.y);
+		}
+		void PrintProperties(Point3D p)
+		{
+			printf("X: %.3f, Y: %.3f, Z: %.3f\n", p.x, p.y, p.z);
 		}
 		void PrintProperties(Line2D l)
 		{
