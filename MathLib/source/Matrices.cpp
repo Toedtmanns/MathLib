@@ -231,7 +231,7 @@ namespace MathLib
 			{
 				for (int mCol = 0; mCol < dim; mCol++)
 				{
-					MatrixI *tempMat = new MatrixI(dim - 1, dim - 1);
+					MatrixI tempMat = MatrixI(dim - 1, dim - 1);
 					int wCol = 0;
 
 					for (int col = 0; col < dim; col++)
@@ -242,15 +242,15 @@ namespace MathLib
 						}
 						for (int row = 0; row < dim - 1; row++)
 						{
-							tempMat->SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
+							tempMat.SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
 						}
 						wCol++;
 					}
 
 					if (mCol % 2 == 0)
-						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
+						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
 					else
-						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
+						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
 				}
 			}
 
@@ -391,7 +391,7 @@ namespace MathLib
 			{
 				for (int mCol = 0; mCol < dim; mCol++)
 				{
-					MatrixI *tempMat = new MatrixI(dim - 1, dim - 1);
+					MatrixI tempMat = MatrixI(dim - 1, dim - 1);
 
 					int wRow = 0;
 
@@ -407,13 +407,13 @@ namespace MathLib
 							if (col == mCol)
 								continue;
 
-							tempMat->SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
+							tempMat.SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
 							wCol++;
 						}
 						wRow++;
 					}
 
-					resMat.SetNum(mRow, mCol, MatrixGetDet(tempMat));
+					resMat.SetNum(mRow, mCol, MatrixGetDet(&tempMat));
 				}
 			}
 
@@ -537,7 +537,7 @@ namespace MathLib
 			{
 				for (int mCol = 0; mCol < dim; mCol++)
 				{
-					MatrixF *tempMat = new MatrixF(dim - 1, dim - 1);
+					MatrixF tempMat = MatrixF(dim - 1, dim - 1);
 					int wCol = 0;
 
 					for (int col = 0; col < dim; col++)
@@ -548,17 +548,15 @@ namespace MathLib
 						}
 						for (int row = 0; row < dim - 1; row++)
 						{
-							tempMat->SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
+							tempMat.SetNum(row, wCol, mat->GetRow(row + 1).GetAt(col));
 						}
 						wCol++;
 					}
 
 					if (mCol % 2 == 0)
-						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
+						num += mat->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
 					else
-						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(tempMat);
-
-					delete tempMat;
+						num -= mat->GetRow(0).GetAt(mCol) * MatrixGetDet(&tempMat);
 				}
 			}
 
@@ -611,7 +609,7 @@ namespace MathLib
 		}
 		MatrixF MatrixDiv(MatrixF *mat, double value)
 		{
-			MatrixF *tempMat = new MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowF tempRow = mat->GetRow(row);
@@ -619,10 +617,10 @@ namespace MathLib
 				{
 					tempRow.SetNum(col, tempRow.GetAt(col) / value);
 				}
-				tempMat->SetRow(row, tempRow);
+				tempMat.SetRow(row, tempRow);
 			}
 
-			return *tempMat;
+			return tempMat;
 		}
 		MatrixF MatrixAdd(MatrixF *mat1, MatrixF *mat2)
 		{
@@ -699,7 +697,7 @@ namespace MathLib
 			{
 				for (int mCol = 0; mCol < dim; mCol++)
 				{
-					MatrixF *tempMat = new MatrixF(dim - 1, dim - 1);
+					MatrixF tempMat = MatrixF(dim - 1, dim - 1);
 
 					int wRow = 0;
 
@@ -715,14 +713,13 @@ namespace MathLib
 							if (col == mCol)
 								continue;
 
-							tempMat->SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
+							tempMat.SetNum(wRow, wCol, mat->GetRow(row).GetAt(col));
 							wCol++;
 						}
 						wRow++;
 					}
 
-					resMat.SetNum(mRow, mCol, MatrixGetDet(tempMat));
-					delete tempMat;
+					resMat.SetNum(mRow, mCol, MatrixGetDet(&tempMat));
 				}
 			}
 
