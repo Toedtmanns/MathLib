@@ -7,187 +7,187 @@ namespace MathLib
 		// RowI definition
 
 		RowI::RowI(int length = 1, int val = 0)
-			: length(length)
+			: m_Length(length)
 		{
-			row = std::vector<int>(length);
-			std::fill(row.begin(), row.end(), val);
+			m_Row = std::vector<int>(length);
+			std::fill(m_Row.begin(), m_Row.end(), val);
 		}
 		RowI::RowI(std::vector<int> row)
-			: length(row.size())
+			: m_Length(row.size())
 		{
-			this->row = row;
+			this->m_Row = row;
 		}
 		int RowI::GetLength() const
 		{
-			return length;
+			return m_Length;
 		}
 		int RowI::GetAt(int index)
 		{
-			return row[index];
+			return m_Row[index];
 		}
 		std::vector<int> RowI::GetRow() const
 		{
 			std::vector<int> ret = std::vector<int>();
-			for (int i = 0; i < length; i++)
+			for (int i = 0; i < m_Length; i++)
 			{
-				ret.push_back(row[i]);
+				ret.push_back(m_Row[i]);
 			}
 
 			return ret;
 		}
-		void RowI::SetRow(std::vector<int> *content)
+		void RowI::SetRow(std::vector<int>* content)
 		{
 			int cpyLen = content->size();
-			if (cpyLen > length)
-				cpyLen = length;
+			if (cpyLen > m_Length)
+				cpyLen = m_Length;
 
 			for (int i = 0; i < cpyLen - 1; i++)
-				row[i] = content->at(i);
+				m_Row[i] = content->at(i);
 		}
 		void RowI::SetNum(int collumn, int value)
 		{
-			row[collumn] = value;
+			m_Row[collumn] = value;
 		}
 
 		// RowF definition
 
 		RowF::RowF(int length = 1, double val = 0)
-			: length(length)
+			: m_Length(length)
 		{
-			row = std::vector<double>(length);
-			std::fill(row.begin(), row.end(), val);
+			m_Row = std::vector<double>(length);
+			std::fill(m_Row.begin(), m_Row.end(), val);
 		}
 		RowF::RowF(std::vector<double> row)
-			: length(row.size())
+			: m_Length(row.size())
 		{
-			this->row = row;
+			this->m_Row = row;
 		}
 		int RowF::GetLength() const
 		{
-			return length;
+			return m_Length;
 		}
 		double RowF::GetAt(int index)
 		{
-			return row[index];
+			return m_Row[index];
 		}
 		std::vector<int> RowF::GetRow() const
 		{
 			std::vector<int> ret = std::vector<int>();
-			for (int i = 0; i < length; i++)
+			for (int i = 0; i < m_Length; i++)
 			{
-				ret.push_back(row[i]);
+				ret.push_back(m_Row[i]);
 			}
 
 			return ret;
 		}
-		void RowF::SetRow(std::vector<double> *content)
+		void RowF::SetRow(std::vector<double>* content)
 		{
 			int cpyLen = content->size();
-			if (cpyLen > length)
-				cpyLen = length;
+			if (cpyLen > m_Length)
+				cpyLen = m_Length;
 
 			for (int i = 0; i < cpyLen - 1; i++)
-				row[i] = content->at(i);
+				m_Row[i] = content->at(i);
 		}
 		void RowF::SetNum(int collumn, double value)
 		{
-			row[collumn] = value;
+			m_Row[collumn] = value;
 		}
 
 		// MatrixI definition
 
 		MatrixI::MatrixI(int rows = 2, int collumns = 2)
-			: rows(rows), collumns(collumns)
+			: m_Rows(rows), m_Collumns(collumns)
 		{
-			matrix = std::vector<RowI>(rows);
+			m_Matrix = std::vector<RowI>(rows);
 			for (int i = 0; i < rows; i++)
 			{
 				RowI temp = RowI(collumns);
-				matrix[i] = temp;
+				m_Matrix[i] = temp;
 			}
 		}
 		MatrixI::MatrixI(std::vector<RowI> content)
-			: rows(content.size()), collumns(content[0].GetLength())
+			: m_Rows(content.size()), m_Collumns(content[0].GetLength())
 		{
-			matrix = content;
+			m_Matrix = content;
 		}
 		int MatrixI::GetRowCount() const
 		{
-			return rows;
+			return m_Rows;
 		}
 		int MatrixI::GetCollumnCount() const
 		{
-			return collumns;
+			return m_Collumns;
 		}
 		RowI MatrixI::GetRow(int index)
 		{
-			return matrix[index];
+			return m_Matrix[index];
 		}
 		void MatrixI::SetRow(int index, RowI row)
 		{
-			matrix[index] = row;
+			m_Matrix[index] = row;
 		}
 		void MatrixI::SetNum(int row, int collumn, int value)
 		{
-			matrix[row].SetNum(collumn, value);
+			m_Matrix[row].SetNum(collumn, value);
 		}
 
 		// MatrixF definition
 
 		MatrixF::MatrixF(int dim)
-			: rows(dim), collumns(dim)
+			: m_Rows(dim), m_Collumns(dim)
 		{
-			matrix = std::vector<RowF>(dim);
+			m_Matrix = std::vector<RowF>(dim);
 			for (int i = 0; i < dim; i++)
 			{
 				RowF temp = RowF(dim);
 				temp.SetNum(i, 1);
-				matrix[i] = temp;
+				m_Matrix[i] = temp;
 			}
 		}
 		MatrixF::MatrixF(int rows, int collumns)
-			: rows(rows), collumns(collumns)
+			: m_Rows(rows), m_Collumns(collumns)
 		{
-			matrix = std::vector<RowF>(rows);
+			m_Matrix = std::vector<RowF>(rows);
 			for (int i = 0; i < rows; i++)
 			{
 				RowF temp = RowF(collumns);
-				matrix[i] = temp;
+				m_Matrix[i] = temp;
 			}
 		}
 		MatrixF::MatrixF(std::vector<RowF> content)
-			: rows(content.size()), collumns(content[0].GetLength())
+			: m_Rows(content.size()), m_Collumns(content[0].GetLength())
 		{
-			matrix = content;
+			m_Matrix = content;
 		}
 		int MatrixF::GetRowCount() const
 		{
-			return rows;
+			return m_Rows;
 		}
 		int MatrixF::GetCollumnCount() const
 		{
-			return collumns;
+			return m_Collumns;
 		}
 		RowF MatrixF::GetRow(int index)
 		{
-			return matrix[index];
+			return m_Matrix[index];
 		}
 		void MatrixF::SetRow(int index, RowF row)
 		{
-			matrix[index] = row;
+			m_Matrix[index] = row;
 		}
 		void MatrixF::SetNum(int row, int collumn, double value)
 		{
-			matrix[row].SetNum(collumn, value);
+			m_Matrix[row].SetNum(collumn, value);
 		}
 		MatrixF::~MatrixF()
 		{
-			matrix.clear();
+			m_Matrix.clear();
 		}
 
 		// General MatrixI functions
 
-		void PrintContent(MatrixI *mat)
+		void PrintContent(MatrixI* mat)
 		{
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
@@ -198,11 +198,11 @@ namespace MathLib
 				printf("\n");
 			}
 		}
-		void PrintProperties(MatrixI *mat)
+		void PrintProperties(MatrixI* mat)
 		{
 			printf("Rows: %i, Collumns: %i\n", mat->GetRowCount(), mat->GetCollumnCount());
 		}
-		int MatrixGetDet(MatrixI *mat)
+		int MatrixGetDet(MatrixI* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -256,9 +256,9 @@ namespace MathLib
 
 			return num;
 		}
-		MatrixI MatrixAdd(MatrixI *mat, int value)
+		MatrixI MatrixAdd(MatrixI* mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixI* tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowI tempRow = mat->GetRow(row);
@@ -271,9 +271,9 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixSub(MatrixI *mat, int value)
+		MatrixI MatrixSub(MatrixI* mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixI* tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowI tempRow = mat->GetRow(row);
@@ -286,9 +286,9 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixMult(MatrixI *mat, int value)
+		MatrixI MatrixMult(MatrixI* mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixI* tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowI tempRow = mat->GetRow(row);
@@ -301,9 +301,9 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixDiv(MatrixI *mat, int value)
+		MatrixI MatrixDiv(MatrixI* mat, int value)
 		{
-			MatrixI *tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
+			MatrixI* tempMat = new MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
 				RowI tempRow = mat->GetRow(row);
@@ -316,7 +316,7 @@ namespace MathLib
 
 			return *tempMat;
 		}
-		MatrixI MatrixAdd(MatrixI *mat1, MatrixI *mat2)
+		MatrixI MatrixAdd(MatrixI* mat1, MatrixI* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
@@ -335,7 +335,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixI MatrixSub(MatrixI *mat1, MatrixI *mat2)
+		MatrixI MatrixSub(MatrixI* mat1, MatrixI* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
@@ -354,7 +354,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixI MatrixMult(MatrixI *mat1, MatrixI *mat2)
+		MatrixI MatrixMult(MatrixI* mat1, MatrixI* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetRowCount())
 				return MatrixI(0, 0);
@@ -378,7 +378,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixI MatrixOfMinors(MatrixI *mat)
+		MatrixI MatrixOfMinors(MatrixI* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -419,7 +419,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixI MatrixOfCofactors(MatrixI *mat)
+		MatrixI MatrixOfCofactors(MatrixI* mat)
 		{
 			int counter = 0;
 			MatrixI resMat = MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
@@ -441,7 +441,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixI MatrixAdjugate(MatrixI *mat)
+		MatrixI MatrixAdjugate(MatrixI* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -459,7 +459,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixF MatrixInverse(MatrixI *mat)
+		MatrixF MatrixInverse(MatrixI* mat)
 		{
 			int determinant = MatrixGetDet(mat);
 
@@ -474,14 +474,14 @@ namespace MathLib
 				resMat.SetNum(1, 0, -1 * (double)mat->GetRow(1).GetAt(0));
 				resMat.SetNum(1, 1, mat->GetRow(0).GetAt(0));
 
-				MatrixF *pRMat = &resMat;
+				MatrixF* pRMat = &resMat;
 				resMat = MatrixMult(pRMat, 1 / MatrixGetDet(mat));
 				pRMat = nullptr;
 			}
 			else
 			{
-				MatrixI *pTMat = &tempMat;
-				MatrixF *pRMat = &resMat;
+				MatrixI* pTMat = &tempMat;
+				MatrixF* pRMat = &resMat;
 				tempMat = MatrixOfMinors(mat);
 				tempMat = MatrixOfCofactors(pTMat);
 				tempMat = MatrixAdjugate(pTMat);
@@ -494,7 +494,7 @@ namespace MathLib
 
 		// General MatrixF functions
 
-		void PrintContent(MatrixF *mat)
+		void PrintContent(MatrixF* mat)
 		{
 			for (int row = 0; row < mat->GetRowCount(); row++)
 			{
@@ -505,11 +505,11 @@ namespace MathLib
 				printf("\n");
 			}
 		}
-		void PrintProperties(MatrixF *mat)
+		void PrintProperties(MatrixF* mat)
 		{
 			printf("Rows: %i, Collumns: %i\n", mat->GetRowCount(), mat->GetCollumnCount());
 		}
-		double MatrixGetDet(MatrixF *mat)
+		double MatrixGetDet(MatrixF* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -562,7 +562,7 @@ namespace MathLib
 
 			return num;
 		}
-		MatrixF MatrixAdd(MatrixF *mat, double value)
+		MatrixF MatrixAdd(MatrixF* mat, double value)
 		{
 			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
@@ -577,7 +577,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixSub(MatrixF *mat, double value)
+		MatrixF MatrixSub(MatrixF* mat, double value)
 		{
 			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
@@ -592,7 +592,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixMult(MatrixF *mat, double value)
+		MatrixF MatrixMult(MatrixF* mat, double value)
 		{
 			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
@@ -607,7 +607,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixDiv(MatrixF *mat, double value)
+		MatrixF MatrixDiv(MatrixF* mat, double value)
 		{
 			MatrixF tempMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 			for (int row = 0; row < mat->GetRowCount(); row++)
@@ -622,7 +622,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixAdd(MatrixF *mat1, MatrixF *mat2)
+		MatrixF MatrixAdd(MatrixF* mat1, MatrixF* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
@@ -641,7 +641,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixSub(MatrixF *mat1, MatrixF *mat2)
+		MatrixF MatrixSub(MatrixF* mat1, MatrixF* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetCollumnCount() || mat1->GetRowCount() != mat2->GetRowCount())
 			{
@@ -660,7 +660,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixMult(MatrixF *mat1, MatrixF *mat2)
+		MatrixF MatrixMult(MatrixF* mat1, MatrixF* mat2)
 		{
 			if (mat1->GetCollumnCount() != mat2->GetRowCount())
 				return MatrixF(0, 0);
@@ -684,7 +684,7 @@ namespace MathLib
 
 			return tempMat;
 		}
-		MatrixF MatrixOfMinors(MatrixF *mat)
+		MatrixF MatrixOfMinors(MatrixF* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -725,7 +725,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixF MatrixOfCofactors(MatrixF *mat)
+		MatrixF MatrixOfCofactors(MatrixF* mat)
 		{
 			int counter = 0;
 			MatrixF resMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
@@ -747,7 +747,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixF MatrixAdjugate(MatrixF *mat)
+		MatrixF MatrixAdjugate(MatrixF* mat)
 		{
 			if (mat->GetRowCount() != mat->GetCollumnCount())
 				throw std::invalid_argument("Matrix isn't square!");
@@ -765,7 +765,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixF MatrixInverse(MatrixF *mat)
+		MatrixF MatrixInverse(MatrixF* mat)
 		{
 			double determinant = MatrixGetDet(mat);
 
@@ -794,14 +794,14 @@ namespace MathLib
 
 		// Quaternion operations
 
-		MatrixF MatrixRotate(MatrixF *mat, const Complex::Quaternion &quat)
+		MatrixF MatrixRotate(MatrixF* mat, const Complex::Quaternion& quat)
 		{
 			if (!MatrixIsSquare(mat, 4))
 				throw std::invalid_argument("Matrix is not 4x4!");
 
-			Complex::Quaternion xQuat(Primitives::Point3D(mat->GetRow(0).GetAt(0), mat->GetRow(1).GetAt(0), mat->GetRow(2).GetAt(0)));
-			Complex::Quaternion yQuat(Primitives::Point3D(mat->GetRow(0).GetAt(1), mat->GetRow(1).GetAt(1), mat->GetRow(2).GetAt(1)));
-			Complex::Quaternion zQuat(Primitives::Point3D(mat->GetRow(0).GetAt(2), mat->GetRow(1).GetAt(2), mat->GetRow(2).GetAt(2)));
+			Complex::Quaternion xQuat(Primitives::Float3(mat->GetRow(0).GetAt(0), mat->GetRow(1).GetAt(0), mat->GetRow(2).GetAt(0)));
+			Complex::Quaternion yQuat(Primitives::Float3(mat->GetRow(0).GetAt(1), mat->GetRow(1).GetAt(1), mat->GetRow(2).GetAt(1)));
+			Complex::Quaternion zQuat(Primitives::Float3(mat->GetRow(0).GetAt(2), mat->GetRow(1).GetAt(2), mat->GetRow(2).GetAt(2)));
 
 			xQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(xQuat);
 			yQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(yQuat);
@@ -811,7 +811,7 @@ namespace MathLib
 			RowF row1(std::vector<double>{xQuat.j.num, yQuat.j.num, zQuat.j.num, mat->GetRow(1).GetAt(3)});
 			RowF row2(std::vector<double>{xQuat.k.num, yQuat.k.num, zQuat.k.num, mat->GetRow(2).GetAt(3)});
 
-			MatrixF *retMat = new MatrixF(4);
+			MatrixF* retMat = new MatrixF(4);
 
 			retMat->SetRow(0, row0);
 			retMat->SetRow(1, row1);
@@ -820,10 +820,10 @@ namespace MathLib
 
 			return *retMat;
 		}
-		
+
 		// Conversion and checking functions
 
-		MatrixI MatrixF2I(MatrixF *mat)
+		MatrixI MatrixF2I(MatrixF* mat)
 		{
 			MatrixI resMat = MatrixI(mat->GetRowCount(), mat->GetCollumnCount());
 
@@ -837,7 +837,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		MatrixF MatrixI2F(MatrixI *mat)
+		MatrixF MatrixI2F(MatrixI* mat)
 		{
 			MatrixF resMat = MatrixF(mat->GetRowCount(), mat->GetCollumnCount());
 
@@ -851,7 +851,7 @@ namespace MathLib
 
 			return resMat;
 		}
-		bool MatrixIsSquare(const MatrixI *mat, int dimension)
+		bool MatrixIsSquare(const MatrixI* mat, int dimension)
 		{
 			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
@@ -866,7 +866,7 @@ namespace MathLib
 			}
 			return false;
 		}
-		bool MatrixIsSquare(const MatrixF *mat, int dimension)
+		bool MatrixIsSquare(const MatrixF* mat, int dimension)
 		{
 			if (mat->GetRowCount() == mat->GetCollumnCount())
 			{
@@ -884,27 +884,27 @@ namespace MathLib
 
 		// Helper functions
 
-		MatrixI *MatrixI2x2(int r1c1, int r1c2, int r2c1, int r2c2)
+		MatrixI* MatrixI2x2(int r1c1, int r1c2, int r2c1, int r2c2)
 		{
 			return new MatrixI(std::vector<RowI>{RowI(std::vector<int>{r1c1, r1c2}), RowI(std::vector<int>{r2c1, r2c2})});
 		}
-		MatrixI *TransformI2x2(Primitives::Point2D c1, Primitives::Point2D c2)
+		MatrixI* TransformI2x2(Primitives::Float2 c1, Primitives::Float2 c2)
 		{
 			return new MatrixI(std::vector<RowI>{RowI(std::vector<int>{(int)c1.x, (int)c2.x}), RowI(std::vector<int>{(int)c1.y, (int)c2.y})});
 		}
-		MatrixI *TransformI2x2()
+		MatrixI* TransformI2x2()
 		{
 			return new MatrixI(std::vector<RowI>{RowI(std::vector<int>{1, 0}), RowI(std::vector<int>{0, 1})});
 		}
-		MatrixF *MatrixF2x2(double r1c1, double r1c2, double r2c1, double r2c2)
+		MatrixF* MatrixF2x2(double r1c1, double r1c2, double r2c1, double r2c2)
 		{
 			return new MatrixF(std::vector<RowF>{RowF(std::vector<double>{r1c1, r1c2}), RowF(std::vector<double>{r2c1, r2c2})});
 		}
-		MatrixF *TransformF2x2()
+		MatrixF* TransformF2x2()
 		{
 			return new MatrixF(std::vector<RowF>{RowF(std::vector<double>{1, 0}), RowF(std::vector<double>{0, 1})});
 		}
-		MatrixF *TransformF2x2(Primitives::Point2D c1, Primitives::Point2D c2)
+		MatrixF* TransformF2x2(Primitives::Float2 c1, Primitives::Float2 c2)
 		{
 			return new MatrixF(std::vector<RowF>{RowF(std::vector<double>{c1.x, c2.x}), RowF(std::vector<double>{c1.y, c2.y})});
 		}

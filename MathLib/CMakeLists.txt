@@ -11,5 +11,4 @@ add_library(MathLib SHARED
         ./source/Utility.cpp)
 set_target_properties(MathLib PROPERTIES PUBLIC_HEADER ./include/Maths.h)
 
-option(MATHLIB_EXPORTS "Compile a dynamic library" ON)
-configure_file(./include/Maths.h ./include/Maths.h)
+#add_compile_definition(MATHLIB_STATIC)

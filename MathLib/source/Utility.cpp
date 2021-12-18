@@ -32,7 +32,7 @@ namespace MathLib
 			double m2 = GetSlope(l2);
 			double b1 = l1.p1.y - l1.p1.x * m1;
 			double b2 = l2.p2.y - l2.p2.x * m2;
-			Intersect intersect = {false, false, Primitives::Point2D()};
+			Intersect intersect = {false, false, Primitives::Float2()};
 
 			intersect.pos.x = (b2 - b1) / (m1 - m2) * 100 / 100;
 			intersect.pos.y = (m1 * intersect.pos.x + b1) * 100 / 100;
@@ -45,7 +45,7 @@ namespace MathLib
 
 				if (isinf(m1) && l1.p1.x <= fmax(l2.p1.x, l2.p2.x) && l1.p1.x >= fmin(l2.p1.x, l2.p2.x))
 				{
-					Primitives::Point2D possInt = Primitives::Point2D(l1.p1.x, m2 * l1.p1.x + b2);
+					Primitives::Float2 possInt = Primitives::Float2(l1.p1.x, m2 * l1.p1.x + b2);
 					if (CheckIntersect(l1, possInt).isIntersecting)
 					{
 						intersect.pos = possInt;
@@ -55,7 +55,7 @@ namespace MathLib
 				}
 				else if (isinf(m2) && l2.p1.x <= fmax(l1.p1.x, l1.p2.x) && l1.p1.x >= fmin(l1.p1.x, l1.p2.x))
 				{
-					Primitives::Point2D possInt = Primitives::Point2D(l2.p1.x, m1 * l2.p1.x + b1);
+					Primitives::Float2 possInt = Primitives::Float2(l2.p1.x, m1 * l2.p1.x + b1);
 					if (CheckIntersect(l2, possInt).isIntersecting)
 					{
 						intersect.pos = possInt;
@@ -83,11 +83,11 @@ namespace MathLib
 
 			return intersect;
 		}
-		Intersect CheckIntersect(Primitives::Line2D l, Primitives::Point2D p)
+		Intersect CheckIntersect(Primitives::Line2D l, Primitives::Float2 p)
 		{
 			double m = GetSlope(l);
 			double b = l.p1.y - l.p1.x * m;
-			Intersect intersect = {false, false, Primitives::Point2D()};
+			Intersect intersect = {false, false, Primitives::Float2()};
 
 			if (m * p.x + b == p.y)
 			{
@@ -115,7 +115,7 @@ namespace MathLib
 		{
 			printf("X: %.3f, Y: %.3f, Intersecting: %d, Collinear: %d\n", i.pos.x, i.pos.y, i.isIntersecting, i.isCollinear);
 		}
-		Primitives::Line2D Vector2Line(Vectors::Vector2D vector, Primitives::Point2D pos)
+		Primitives::Line2D Vector2Line(Vectors::Vector2D vector, Primitives::Float2 pos)
 		{
 			Primitives::Line2D line = Primitives::Line2D();
 			line.p1 = pos;
@@ -127,20 +127,20 @@ namespace MathLib
 		Vectors::Vector2D Line2Vector(Primitives::Line2D line)
 		{
 			Vectors::Vector2D vector = Vectors::Vector2D();
-			vector.direction = Primitives::Point2D(line.p2.x - line.p1.x, line.p2.y - line.p1.y);
+			vector.direction = Primitives::Float2(line.p2.x - line.p1.x, line.p2.y - line.p1.y);
 			return vector;
 		}
-		Vectors::Vector2D Line2Vector(Primitives::Point2D p1, Primitives::Point2D p2)
+		Vectors::Vector2D Line2Vector(Primitives::Float2 p1, Primitives::Float2 p2)
 		{
 			Vectors::Vector2D vector = Vectors::Vector2D();
-			vector.direction = Primitives::Point2D(p2.x - p1.x, p2.y - p1.y);
+			vector.direction = Primitives::Float2(p2.x - p1.x, p2.y - p1.y);
 			return vector;
 		}
-		double GetDistance(Primitives::Point2D p1, Primitives::Point2D p2)
+		double GetDistance(Primitives::Float2 p1, Primitives::Float2 p2)
 		{
 			return sqrtf(powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2));
 		}
-		double GetDistance(Primitives::Point3D p1, Primitives::Point3D p2)
+		double GetDistance(Primitives::Float3 p1, Primitives::Float3 p2)
 		{
 			return sqrtf(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
 		}
@@ -149,7 +149,7 @@ namespace MathLib
 			int range = max + 1 - min;
 			return rand() % range + min;
 		}
-		Matrices::MatrixF Vec2Mat(const Vectors::Vector3D &vec, const int &front)
+		Matrices::MatrixF Vec2Mat(const Vectors::Vector3D& vec, const int& front)
 		{
 			Matrices::MatrixF mat = Matrices::MatrixF(3);
 			mat.SetNum(0, 0, vec.direction.x);
@@ -157,7 +157,7 @@ namespace MathLib
 			mat.SetNum(2, 2, vec.direction.z);
 			return mat;
 		}
-		Vectors::Vector3D Mat2Vec(Matrices::MatrixF *mat, const int &front)
+		Vectors::Vector3D Mat2Vec(Matrices::MatrixF* mat, const int& front)
 		{
 			Vectors::Vector3D vec = Vectors::Vector3D();
 			vec.direction.x = mat->GetRow(0).GetAt(0);

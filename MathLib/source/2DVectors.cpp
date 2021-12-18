@@ -8,7 +8,7 @@ namespace MathLib
 		{
 
 		}
-		Vector2D::Vector2D(Primitives::Point2D dir) : direction(dir)
+		Vector2D::Vector2D(Primitives::Float2 dir) : direction(dir)
 		{
 
 		}
@@ -17,7 +17,7 @@ namespace MathLib
 			direction.x += sin(angle * PI / 180) * length;
 			direction.y += cos(angle * PI / 180) * length;
 		}
-		Vector2D Vector2D::Transform(Matrices::MatrixF *transformation)
+		Vector2D Vector2D::Transform(Matrices::MatrixF* transformation)
 		{
 			if (!Matrices::MatrixIsSquare(transformation, 2))
 				throw std::invalid_argument("Matrix is not 2x2!");
@@ -27,31 +27,31 @@ namespace MathLib
 			dirX = direction.x * transformation->GetRow(0).GetAt(0) + direction.y * transformation->GetRow(1).GetAt(0);
 			dirY = direction.x * transformation->GetRow(0).GetAt(1) + direction.y * transformation->GetRow(1).GetAt(1);
 
-			return Vector2D(Primitives::Point2D(dirX, dirY));
+			return Vector2D(Primitives::Float2(dirX, dirY));
 		}
 		Vector2D Vector2D::Scale(double s)
 		{
-			return Vector2D(Primitives::Point2D(direction.x * s, direction.y * s));
+			return Vector2D(Primitives::Float2(direction.x * s, direction.y * s));
 		}
 		Vector2D Vector2D::Scale(double sX, double sY)
 		{
-			return Vector2D(Primitives::Point2D(direction.x * sX, direction.y * sY));
+			return Vector2D(Primitives::Float2(direction.x * sX, direction.y * sY));
 		}
 		Vector2D Vector2D::Rotate(double angle)
 		{
 			if (fmod(angle, 180) == 0)
-				return Vector2D(Primitives::Point2D(-direction.x, -direction.y));
+				return Vector2D(Primitives::Float2(-direction.x, -direction.y));
 
 			angle = -angle;
-			Primitives::Point2D p1 = Primitives::Point2D(
+			Primitives::Float2 p1 = Primitives::Float2(
 				sinf(Utility::Deg2Rad(angle + 90.0)),
 				cosf(Utility::Deg2Rad(angle + 90.0))
 			);
-			Primitives::Point2D p2 = Primitives::Point2D(
+			Primitives::Float2 p2 = Primitives::Float2(
 				sinf(Utility::Deg2Rad(angle)),
 				cosf(Utility::Deg2Rad(angle))
 			);
-			Matrices::MatrixF *transform = Matrices::TransformF2x2(p1, p2);
+			Matrices::MatrixF* transform = Matrices::TransformF2x2(p1, p2);
 			return Transform(transform);
 		}
 		double Vector2D::GetAngle()
@@ -75,7 +75,7 @@ namespace MathLib
 		{
 			return sqrtf(powf(direction.x, 2) + powf(direction.y, 2));
 		}
-		Primitives::Point2D Vector2D::ApplyVector(Primitives::Point2D p)
+		Primitives::Float2 Vector2D::ApplyVector(Primitives::Float2 p)
 		{
 			p.x += direction.x;
 			p.y += direction.y;
@@ -111,15 +111,15 @@ namespace MathLib
 		}
 		Vector3D VectorCrossProduct(Vector2D v1, Vector2D v2)
 		{
-			Matrices::MatrixF *vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
+			Matrices::MatrixF* vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
 			double zLength = Matrices::MatrixGetDet(vectors);
-			Vector3D cProduct = Vector3D(Primitives::Point3D(0, 0, zLength));
+			Vector3D cProduct = Vector3D(Primitives::Float3(0, 0, zLength));
 
 			return cProduct;
 		}
 		double VectorGetDeterminant(Vector2D v1, Vector2D v2)
 		{
-			Matrices::MatrixF *vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
+			Matrices::MatrixF* vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
 			return Matrices::MatrixGetDet(vectors);
 		}
 		void PrintProperties(Vector2D v)
