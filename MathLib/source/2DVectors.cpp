@@ -54,24 +54,17 @@ namespace MathLib
 			Matrices::MatrixF* transform = Matrices::TransformF2x2(p1, p2);
 			return Transform(transform);
 		}
-		double Vector2D::GetAngle()
+		double Vector2D::GetAngle() const
 		{
-			bool neg = false;
-			if (direction.x < 0)
-			{
-				neg = true;
-				direction.x *= -1;
-			}
-
 			double hyp = this->GetLen();
 			double angle = Utility::Rad2Deg(acosf(direction.y / hyp));
 
-			if (neg)
+			if (direction.x < 0)
 				angle = 360 - angle;
 
 			return angle;
 		}
-		double Vector2D::GetLen()
+		double Vector2D::GetLen() const
 		{
 			return sqrtf(powf(direction.x, 2) + powf(direction.y, 2));
 		}

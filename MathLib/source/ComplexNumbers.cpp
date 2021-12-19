@@ -221,11 +221,11 @@ namespace MathLib
 
 			return Quaternion(retReal, retI, retJ, retK);
 		}
-		Quaternion Quaternion::GetInverse()
+		Quaternion Quaternion::GetInverse() const
 		{
 			return Quaternion(real, -i, -j, -k);
 		}
-		Primitives::Float3 Quaternion::GetPoint()
+		Primitives::Float3 Quaternion::GetPoint() const
 		{
 			return Primitives::Float3(i.num, j.num, k.num);
 		}

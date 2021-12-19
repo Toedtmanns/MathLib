@@ -67,7 +67,7 @@ namespace MathLib
 		{
 
 		}*/
-		double Vector3D::GetAngle(int axis)
+		double Vector3D::GetAngle(int axis) const
 		{
 			Vector2D calcVec = Vector2D();
 			double angle;
@@ -96,7 +96,7 @@ namespace MathLib
 		{
 
 		}*/
-		double Vector3D::GetLen()
+		double Vector3D::GetLen() const
 		{
 			return sqrt(powf(sqrtf(powf(direction.x, 2) + powf(direction.y, 2)), 2) + powf(direction.z, 2));
 		}
