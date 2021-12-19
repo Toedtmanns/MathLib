@@ -11,4 +11,4 @@ add_library(MathLib SHARED
         ./source/Utility.cpp)
 set_target_properties(MathLib PROPERTIES PUBLIC_HEADER ./include/Maths.h)
 
-#add_compile_definition(MATHLIB_STATIC)
+#add_compile_definitions(MATHLIB_STATIC)

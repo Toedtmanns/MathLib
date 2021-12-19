@@ -17,24 +17,6 @@ namespace MathLib
 		{
 			this->m_Row = row;
 		}
-		int RowI::GetLength() const
-		{
-			return m_Length;
-		}
-		int RowI::GetAt(int index)
-		{
-			return m_Row[index];
-		}
-		std::vector<int> RowI::GetRow() const
-		{
-			std::vector<int> ret = std::vector<int>();
-			for (int i = 0; i < m_Length; i++)
-			{
-				ret.push_back(m_Row[i]);
-			}
-
-			return ret;
-		}
 		void RowI::SetRow(std::vector<int>* content)
 		{
 			int cpyLen = content->size();
@@ -47,6 +29,24 @@ namespace MathLib
 		void RowI::SetNum(int collumn, int value)
 		{
 			m_Row[collumn] = value;
+		}
+		int RowI::GetLength() const
+		{
+			return m_Length;
+		}
+		int RowI::GetAt(int index) const
+		{
+			return m_Row[index];
+		}
+		std::vector<int> RowI::GetRow() const
+		{
+			std::vector<int> ret = std::vector<int>();
+			for (int i = 0; i < m_Length; i++)
+			{
+				ret.push_back(m_Row[i]);
+			}
+
+			return ret;
 		}
 
 		// RowF definition
@@ -62,24 +62,6 @@ namespace MathLib
 		{
 			this->m_Row = row;
 		}
-		int RowF::GetLength() const
-		{
-			return m_Length;
-		}
-		double RowF::GetAt(int index)
-		{
-			return m_Row[index];
-		}
-		std::vector<int> RowF::GetRow() const
-		{
-			std::vector<int> ret = std::vector<int>();
-			for (int i = 0; i < m_Length; i++)
-			{
-				ret.push_back(m_Row[i]);
-			}
-
-			return ret;
-		}
 		void RowF::SetRow(std::vector<double>* content)
 		{
 			int cpyLen = content->size();
@@ -92,6 +74,24 @@ namespace MathLib
 		void RowF::SetNum(int collumn, double value)
 		{
 			m_Row[collumn] = value;
+		}
+		int RowF::GetLength() const
+		{
+			return m_Length;
+		}
+		double RowF::GetAt(int index) const
+		{
+			return m_Row[index];
+		}
+		std::vector<int> RowF::GetRow() const
+		{
+			std::vector<int> ret = std::vector<int>();
+			for (int i = 0; i < m_Length; i++)
+			{
+				ret.push_back(m_Row[i]);
+			}
+
+			return ret;
 		}
 
 		// MatrixI definition
@@ -111,6 +111,14 @@ namespace MathLib
 		{
 			m_Matrix = content;
 		}
+		void MatrixI::SetRow(int index, RowI row)
+		{
+			m_Matrix[index] = row;
+		}
+		void MatrixI::SetNum(int row, int collumn, int value)
+		{
+			m_Matrix[row].SetNum(collumn, value);
+		}
 		int MatrixI::GetRowCount() const
 		{
 			return m_Rows;
@@ -119,17 +127,13 @@ namespace MathLib
 		{
 			return m_Collumns;
 		}
-		RowI MatrixI::GetRow(int index)
+		RowI MatrixI::GetRow(int index) const
 		{
 			return m_Matrix[index];
 		}
-		void MatrixI::SetRow(int index, RowI row)
+		MatrixI::~MatrixI()
 		{
-			m_Matrix[index] = row;
-		}
-		void MatrixI::SetNum(int row, int collumn, int value)
-		{
-			m_Matrix[row].SetNum(collumn, value);
+			m_Matrix.clear();
 		}
 
 		// MatrixF definition
@@ -160,6 +164,14 @@ namespace MathLib
 		{
 			m_Matrix = content;
 		}
+		void MatrixF::SetRow(int index, RowF row)
+		{
+			m_Matrix[index] = row;
+		}
+		void MatrixF::SetNum(int row, int collumn, double value)
+		{
+			m_Matrix[row].SetNum(collumn, value);
+		}
 		int MatrixF::GetRowCount() const
 		{
 			return m_Rows;
@@ -168,17 +180,9 @@ namespace MathLib
 		{
 			return m_Collumns;
 		}
-		RowF MatrixF::GetRow(int index)
+		RowF MatrixF::GetRow(int index) const
 		{
 			return m_Matrix[index];
-		}
-		void MatrixF::SetRow(int index, RowF row)
-		{
-			m_Matrix[index] = row;
-		}
-		void MatrixF::SetNum(int row, int collumn, double value)
-		{
-			m_Matrix[row].SetNum(collumn, value);
 		}
 		MatrixF::~MatrixF()
 		{

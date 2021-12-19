@@ -323,10 +323,11 @@ namespace MathLib
 
 			Quaternion operator+(const Quaternion& other);
 			Quaternion operator*(const Quaternion& other);
-			Quaternion GetInverse();
-			Primitives::Float3 GetPoint();
 			Quaternion RotateQuaternion(const Quaternion& quat);
 			Primitives::Float3 RotatePoint(const Primitives::Float3& point);
+
+			Quaternion GetInverse() const;
+			Primitives::Float3 GetPoint() const;
 		};
 
 		EXPORT Quaternion QuaternionRotation(const double& angle, const double& iAxis, const double& jAxis, const double& kAxis);
@@ -345,11 +346,12 @@ namespace MathLib
 			RowI(int length, int val);
 			RowI(std::vector<int> row);
 
-			int GetLength() const;
-			int GetAt(int index);
-			std::vector<int> GetRow() const;
 			void SetRow(std::vector<int>* row);
 			void SetNum(int collumn, int value);
+
+			int GetLength() const;
+			int GetAt(int index) const;
+			std::vector<int> GetRow() const;
 		};
 		class EXPORT RowF
 		{
@@ -360,11 +362,12 @@ namespace MathLib
 			RowF(int length, double val);
 			RowF(std::vector<double> row);
 
-			int GetLength() const;
-			double GetAt(int index);
-			std::vector<int> GetRow() const;
 			void SetRow(std::vector<double>* row);
 			void SetNum(int collumn, double value);
+
+			int GetLength() const;
+			double GetAt(int index) const;
+			std::vector<int> GetRow() const;
 		};
 
 		class EXPORT MatrixI
@@ -376,11 +379,14 @@ namespace MathLib
 			MatrixI(int rows, int collumns);
 			MatrixI(std::vector<RowI> content);
 
-			int GetRowCount() const;
-			int GetCollumnCount() const;
-			RowI GetRow(int index);
 			void SetRow(int index, RowI row);
 			void SetNum(int row, int collumn, int value);
+
+			int GetRowCount() const;
+			int GetCollumnCount() const;
+			RowI GetRow(int index) const;
+
+			~MatrixI();
 		};
 		class EXPORT MatrixF
 		{
@@ -392,11 +398,12 @@ namespace MathLib
 			MatrixF(int rows, int collumns);
 			MatrixF(std::vector<RowF> content);
 
-			int GetRowCount() const;
-			int GetCollumnCount() const;
-			RowF GetRow(int index);
 			void SetRow(int index, RowF row);
 			void SetNum(int row, int collumn, double value);
+
+			int GetRowCount() const;
+			int GetCollumnCount() const;
+			RowF GetRow(int index) const;
 
 			~MatrixF();
 		};
@@ -467,11 +474,11 @@ namespace MathLib
 			Vector3D Scale(double sX, double sY, double sZ);
 			Vector3D Rotate(double angle, int axis);
 			Vector3D Rotate(double angle, Vector3D* normal);
-
-			double GetAngle(int axis);
-			double GetAngle(Vector3D* normal);
-			double GetLen();
 			Vector3D SetLen(double len);
+
+			double GetAngle(int axis) const;
+			double GetAngle(Vector3D* normal) const;
+			double GetLen() const;
 		};
 
 		/// <summary>
@@ -491,8 +498,8 @@ namespace MathLib
 			Vector2D Scale(double sX, double sY);
 			Vector2D Rotate(double angle);
 
-			double GetAngle();
-			double GetLen();
+			double GetAngle() const;
+			double GetLen() const;
 
 			Primitives::Float2 ApplyVector(Primitives::Float2 p);
 		};
