@@ -669,11 +669,11 @@ namespace MathLib
 			if (mat1->GetCollumnCount() != mat2->GetRowCount())
 				return MatrixF(0, 0);
 
-			MatrixF tempMat = MatrixF(mat1->GetRowCount(), mat2->GetCollumnCount());
+			MatrixF tempMat = MatrixF(mat2->GetCollumnCount(), mat1->GetRowCount());
 
 			for (int row = 0; row < mat1->GetRowCount(); row++)
 			{
-				for (int col = 0; col < mat1->GetRowCount(); col++)
+				for (int col = 0; col < mat1->GetCollumnCount(); col++)
 				{
 					double num = 0;
 
@@ -682,7 +682,7 @@ namespace MathLib
 						num = num + mat1->GetRow(row).GetAt(calcCol) * mat2->GetRow(calcCol).GetAt(col);
 					}
 
-					tempMat.SetNum(row, col, num);
+					tempMat.SetNum(col, row, num);
 				}
 			}
 
