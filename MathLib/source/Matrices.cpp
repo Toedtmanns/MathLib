@@ -618,7 +618,7 @@ namespace MathLib
 			{
 				tempMat = MatrixOfMinors(mat);
 				tempMat = MatrixOfCofactors(tempMat);
-				tempMat = MatrixAdjugate(tempMat);
+				tempMat = MatrixTranspose(tempMat);
 				resMat = MatrixI2F(tempMat);
 				resMat = resMat * (1 / determinant);
 			}
@@ -802,7 +802,7 @@ namespace MathLib
 			{
 				resMat = MatrixOfMinors(mat);
 				resMat = MatrixOfCofactors(resMat);
-				resMat = MatrixAdjugate(resMat);
+				resMat = MatrixTranspose(resMat);
 				resMat = resMat * (1 / determinant);
 			}
 
