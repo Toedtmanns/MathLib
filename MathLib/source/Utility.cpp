@@ -1,4 +1,6 @@
 #include "../include/Maths.h"
+#include <stdio.h>
+#include <cmath>
 
 namespace MathLib
 {
@@ -157,12 +159,12 @@ namespace MathLib
 			mat.SetNum(2, 2, vec.direction.z);
 			return mat;
 		}
-		Vectors::Vector3D Mat2Vec(Matrices::MatrixF* mat, const int& front)
+		Vectors::Vector3D Mat2Vec(const Matrices::MatrixF& mat, const int& front)
 		{
 			Vectors::Vector3D vec = Vectors::Vector3D();
-			vec.direction.x = mat->GetRow(0).GetAt(0);
-			vec.direction.y = mat->GetRow(1).GetAt(1);
-			vec.direction.z = mat->GetRow(2).GetAt(2);
+			vec.direction.x = mat.GetNum(0, 0);
+			vec.direction.y = mat.GetNum(1, 1);
+			vec.direction.z = mat.GetNum(2, 2);
 			return vec;
 		}
 	}

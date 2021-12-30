@@ -1,4 +1,6 @@
 #include "../include/Maths.h"
+#include <stdexcept>
+#include <cmath>
 
 namespace MathLib
 {
@@ -14,16 +16,16 @@ namespace MathLib
 		{
 
 		}
-		Vector3D Vector3D::Transform(Matrices::MatrixF* mat)
+		Vector3D Vector3D::Transform(const Matrices::MatrixF& mat)
 		{
 			if (!Matrices::MatrixIsSquare(mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
 
 			double dirX, dirY, dirZ;
 
-			dirX = direction.x * mat->GetRow(0).GetAt(0) + direction.y * mat->GetRow(1).GetAt(0) + direction.z * mat->GetRow(2).GetAt(0);
-			dirY = direction.x * mat->GetRow(0).GetAt(1) + direction.y * mat->GetRow(1).GetAt(1) + direction.z * mat->GetRow(2).GetAt(1);
-			dirZ = direction.x * mat->GetRow(0).GetAt(2) + direction.y * mat->GetRow(1).GetAt(2) + direction.z * mat->GetRow(2).GetAt(2);
+			dirX = direction.x * mat.GetNum(0, 0) + direction.y * mat.GetNum(0, 1) + direction.z * mat.GetNum(0, 2);
+			dirY = direction.x * mat.GetNum(1, 0) + direction.y * mat.GetNum(1, 1) + direction.z * mat.GetNum(1, 2);
+			dirZ = direction.x * mat.GetNum(1, 0) + direction.y * mat.GetNum(2, 1) + direction.z * mat.GetNum(2, 2);
 
 			return Vector3D(Primitives::Float3(dirX, dirY, dirZ));
 		}

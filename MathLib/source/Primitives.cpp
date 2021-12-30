@@ -1,4 +1,5 @@
 #include "../include/Maths.h"
+#include <stdio.h>
 
 namespace MathLib
 {
@@ -128,14 +129,14 @@ namespace MathLib
 			return Int4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
 		}
 
-		Float2 Transform(Float2 point, Float2 origin, Matrices::MatrixF* transform)
+		Float2 Transform(Float2 point, Float2 origin, const Matrices::MatrixF& transform)
 		{
 			Vectors::Vector2D vec = Utility::Line2Vector(origin, point);
 			vec = vec.Transform(transform);
 
 			return origin + vec.direction;
 		}
-		Line2D Transform(Line2D line, Float2 origin, Matrices::MatrixF* transform)
+		Line2D Transform(Line2D line, Float2 origin, const Matrices::MatrixF& transform)
 		{
 			Vectors::Vector2D vec1 = Utility::Line2Vector(origin, line.p1);
 			Vectors::Vector2D vec2 = Utility::Line2Vector(origin, line.p2);

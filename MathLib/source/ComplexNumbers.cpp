@@ -1,4 +1,5 @@
 #include "../include/Maths.h"
+#include <stdio.h>
 
 namespace MathLib
 {
@@ -16,46 +17,46 @@ namespace MathLib
 		{
 
 		}
-		imaginaryBase imaginaryBase::operator+(const imaginaryBase& other)
+		imaginaryBase imaginaryBase::operator+(const imaginaryBase& other) const
 		{
 			return num + other.num;
 		}
-		imaginaryBase imaginaryBase::operator-(const imaginaryBase& other)
+		imaginaryBase imaginaryBase::operator-(const imaginaryBase& other) const
 		{
 			return num - other.num;
 		}
-		double imaginaryBase::operator*(const imaginaryBase& other)
+		double imaginaryBase::operator*(const imaginaryBase& other) const
 		{
 			if (num == other.num)
 				return -1;
 			else
 				return num * other.num;
 		}
-		double imaginaryBase::operator/(const imaginaryBase& other)
+		double imaginaryBase::operator/(const imaginaryBase& other) const
 		{
 			return num / other.num;
 		}
-		bool imaginaryBase::operator==(const imaginaryBase& other)
+		bool imaginaryBase::operator==(const imaginaryBase& other) const
 		{
 			return num == other.num;
 		}
-		bool imaginaryBase::operator!=(const imaginaryBase& other)
+		bool imaginaryBase::operator!=(const imaginaryBase& other) const
 		{
 			return num != other.num;
 		}
-		bool imaginaryBase::operator>=(const imaginaryBase& other)
+		bool imaginaryBase::operator>=(const imaginaryBase& other) const
 		{
 			return num >= other.num;
 		}
-		bool imaginaryBase::operator<=(const imaginaryBase& other)
+		bool imaginaryBase::operator<=(const imaginaryBase& other) const
 		{
 			return num <= other.num;
 		}
-		bool imaginaryBase::operator>(const imaginaryBase& other)
+		bool imaginaryBase::operator>(const imaginaryBase& other) const
 		{
 			return num > other.num;
 		}
-		bool imaginaryBase::operator<(const imaginaryBase& other)
+		bool imaginaryBase::operator<(const imaginaryBase& other) const
 		{
 			return num < other.num;
 		}
@@ -102,7 +103,7 @@ namespace MathLib
 		{
 
 		}
-		double imagI::operator*(const imagI& other)
+		double imagI::operator*(const imagI& other) const
 		{
 			if (num != other.num)
 				return num * other.num;
@@ -111,11 +112,11 @@ namespace MathLib
 			else
 				return -1;
 		}
-		imagK imagI::operator*(const imagJ& other)
+		imagK imagI::operator*(const imagJ& other) const
 		{
 			return imagK(num * other.num);
 		}
-		imagJ imagI::operator*(const imagK& other)
+		imagJ imagI::operator*(const imagK& other) const
 		{
 			return imagJ(-num * other.num);
 		}
@@ -135,7 +136,7 @@ namespace MathLib
 		{
 
 		}
-		double imagJ::operator*(const imagJ& other)
+		double imagJ::operator*(const imagJ& other) const
 		{
 			if (num != other.num)
 				return num * other.num;
@@ -144,11 +145,11 @@ namespace MathLib
 			else
 				return -1;
 		}
-		imagI imagJ::operator*(const imagK& other)
+		imagI imagJ::operator*(const imagK& other) const
 		{
 			return imagI(num * other.num);
 		}
-		imagK imagJ::operator*(const imagI& other)
+		imagK imagJ::operator*(const imagI& other) const
 		{
 			return imagK(-num * other.num);
 		}
@@ -168,7 +169,7 @@ namespace MathLib
 		{
 
 		}
-		double imagK::operator*(const imagK& other)
+		double imagK::operator*(const imagK& other) const
 		{
 			if (num != other.num)
 				return num * other.num;
@@ -177,11 +178,11 @@ namespace MathLib
 			else
 				return -1;
 		}
-		imagJ imagK::operator*(const imagI& other)
+		imagJ imagK::operator*(const imagI& other) const
 		{
 			return imagJ(num * other.num);
 		}
-		imagI imagK::operator*(const imagJ& other)
+		imagI imagK::operator*(const imagJ& other) const
 		{
 			return imagI(-num * other.num);
 		}
@@ -203,11 +204,11 @@ namespace MathLib
 		{
 
 		}
-		Quaternion Quaternion::operator+(const Quaternion& other)
+		Quaternion Quaternion::operator+(const Quaternion& other) const
 		{
 			return Quaternion(real + other.real, i + other.i, j + other.j, k + other.k);
 		}
-		Quaternion Quaternion::operator*(const Quaternion& other)
+		Quaternion Quaternion::operator*(const Quaternion& other) const
 		{
 			double retReal;
 			imagI retI;
@@ -229,11 +230,11 @@ namespace MathLib
 		{
 			return Primitives::Float3(i.num, j.num, k.num);
 		}
-		Quaternion Quaternion::RotateQuaternion(const Quaternion& quat)
+		Quaternion Quaternion::RotateQuaternion(const Quaternion& quat) const
 		{
 			return Quaternion(*this * quat * this->GetInverse());
 		}
-		Primitives::Float3 Quaternion::RotatePoint(const Primitives::Float3& point)
+		Primitives::Float3 Quaternion::RotatePoint(const Primitives::Float3& point) const
 		{
 			Quaternion pQuat(point);
 			return Quaternion(*this * pQuat * this->GetInverse()).GetPoint();

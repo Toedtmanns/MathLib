@@ -1,11 +1,7 @@
 #pragma once
 #define MATHLIB
 
-#include <math.h>
-#include <stdio.h>
-#include <vector>
-#include <stdexcept>
-#include <stdlib.h>
+#include <cmath>
 
 #ifndef ARRAY_SIZE 
 #define ARRAY_SIZE(x) (sizeof((x)) / sizeof((x)[0])
@@ -247,16 +243,16 @@ namespace MathLib
 			{
 				return imaginaryBase(num * other);
 			}
-			imaginaryBase operator+(const imaginaryBase& other);
-			imaginaryBase operator-(const imaginaryBase& other);
-			double operator*(const imaginaryBase& other);
-			double operator/(const imaginaryBase& other);
-			bool operator==(const imaginaryBase& other);
-			bool operator!=(const imaginaryBase& other);
-			bool operator>=(const imaginaryBase& other);
-			bool operator<=(const imaginaryBase& other);
-			bool operator>(const imaginaryBase& other);
-			bool operator<(const imaginaryBase& other);
+			imaginaryBase operator+(const imaginaryBase& other) const;
+			imaginaryBase operator-(const imaginaryBase& other) const;
+			double operator*(const imaginaryBase& other) const;
+			double operator/(const imaginaryBase& other) const;
+			bool operator==(const imaginaryBase& other) const;
+			bool operator!=(const imaginaryBase& other) const;
+			bool operator>=(const imaginaryBase& other) const;
+			bool operator<=(const imaginaryBase& other) const;
+			bool operator>(const imaginaryBase& other) const;
+			bool operator<(const imaginaryBase& other) const;
 			imaginaryBase& operator++();
 			imaginaryBase& operator--();
 			imaginaryBase& operator++(int);
@@ -264,7 +260,7 @@ namespace MathLib
 		};
 
 		template <typename T>
-		EXPORT imaginaryBase operator*(const T& num1, const imaginaryBase& num2)
+		imaginaryBase operator*(const T& num1, const imaginaryBase& num2)
 		{
 			return imaginaryBase(num1 * num2.num);
 		}
@@ -280,9 +276,9 @@ namespace MathLib
 			imagI(const double& num);
 			imagI(const imaginaryBase& base);
 
-			double operator*(const imagI& other);
-			imagK operator*(const imagJ& jNum);
-			imagJ operator*(const imagK& jNum);
+			double operator*(const imagI& other) const;
+			imagK operator*(const imagJ& jNum) const;
+			imagJ operator*(const imagK& jNum) const;
 		};
 		class EXPORT imagJ : public imaginaryBase
 		{
@@ -291,9 +287,9 @@ namespace MathLib
 			imagJ(const double& num);
 			imagJ(const imaginaryBase& base);
 
-			double operator*(const imagJ& other);
-			imagI operator*(const imagK& jNum);
-			imagK operator*(const imagI& jNum);
+			double operator*(const imagJ& other) const;
+			imagI operator*(const imagK& jNum) const;
+			imagK operator*(const imagI& jNum) const;
 		};
 		class EXPORT imagK : public imaginaryBase
 		{
@@ -302,9 +298,9 @@ namespace MathLib
 			imagK(const double& num);
 			imagK(const imaginaryBase& base);
 
-			double operator*(const imagK& other);
-			imagJ operator*(const imagI& jNum);
-			imagI operator*(const imagJ& jNum);
+			double operator*(const imagK& other) const;
+			imagJ operator*(const imagI& jNum) const;
+			imagI operator*(const imagJ& jNum) const;
 		};
 
 		// Quaternions
@@ -321,10 +317,10 @@ namespace MathLib
 			Quaternion(const double& real, const imagI& i, const imagJ& j, const imagK& k);
 			Quaternion(const Primitives::Float3& point);
 
-			Quaternion operator+(const Quaternion& other);
-			Quaternion operator*(const Quaternion& other);
-			Quaternion RotateQuaternion(const Quaternion& quat);
-			Primitives::Float3 RotatePoint(const Primitives::Float3& point);
+			Quaternion operator+(const Quaternion& other) const;
+			Quaternion operator*(const Quaternion& other) const;
+			Quaternion RotateQuaternion(const Quaternion& quat) const;
+			Primitives::Float3 RotatePoint(const Primitives::Float3& point) const;
 
 			Quaternion GetInverse() const;
 			Primitives::Float3 GetPoint() const;
@@ -337,126 +333,104 @@ namespace MathLib
 
 	namespace Matrices
 	{
-		class EXPORT RowI
-		{
-			std::vector<int> m_Row;
-			int m_Length;
-		public:
-
-			RowI(int length, int val);
-			RowI(std::vector<int> row);
-
-			void SetRow(std::vector<int>* row);
-			void SetNum(int collumn, int value);
-
-			int GetLength() const;
-			int GetAt(int index) const;
-			std::vector<int> GetRow() const;
-		};
-		class EXPORT RowF
-		{
-			std::vector<double> m_Row;
-			int m_Length;
-		public:
-
-			RowF(int length, double val);
-			RowF(std::vector<double> row);
-
-			void SetRow(std::vector<double>* row);
-			void SetNum(int collumn, double value);
-
-			int GetLength() const;
-			double GetAt(int index) const;
-			std::vector<int> GetRow() const;
-		};
-
 		class EXPORT MatrixI
 		{
-			std::vector<RowI> m_Matrix;
-			int m_Rows, m_Collumns;
+			int** m_Matrix;
+			unsigned int m_Rows, m_Columns;
+
 		public:
+			MatrixI(const MatrixI& other);
+			MatrixI(const unsigned int& dim);
+			MatrixI(const unsigned int& columns, const unsigned int& rows);
+			MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray);
 
-			MatrixI(int rows, int collumns);
-			MatrixI(std::vector<RowI> content);
+			void SetNum(const unsigned int& column, const unsigned int& row, const int& value);
+			void SetColumn(const unsigned int& column, const int* const content);
+			void SetMatrix(const int** const matrix);
 
-			void SetRow(int index, RowI row);
-			void SetNum(int row, int collumn, int value);
+			const int& GetNum(const unsigned int& column, const unsigned int& row) const;
+			int* GetColumn(const unsigned int& column) const;
+			int** GetMatrix() const;
+			const unsigned int& GetRowCount() const;
+			const unsigned int& GetColumnCount() const;
 
-			int GetRowCount() const;
-			int GetCollumnCount() const;
-			RowI GetRow(int index) const;
+			void operator=(const MatrixI& other);
+			MatrixI operator+(const int& value) const;
+			MatrixI operator-(const int& value) const;
+			MatrixI operator*(const int& value) const;
+			MatrixI operator/(const int& value) const;
+			MatrixI operator+(const MatrixI& other) const;
+			MatrixI operator-(const MatrixI& other) const;
+			MatrixI operator*(const MatrixI& other) const;
 
 			~MatrixI();
 		};
 		class EXPORT MatrixF
 		{
-			std::vector<RowF> m_Matrix;
-			int m_Rows, m_Collumns;
+			double** m_Matrix;
+			int m_Rows, m_Columns;
+
 		public:
+			MatrixF(const MatrixF& other);
+			MatrixF(const unsigned int& dim);
+			MatrixF(const unsigned int& columns, const unsigned int& rows);
+			MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray);
 
-			MatrixF(int dim);
-			MatrixF(int rows, int collumns);
-			MatrixF(std::vector<RowF> content);
+			void SetNum(const unsigned int& column, const unsigned int& row, const double& value);
+			void SetColumn(const unsigned int& column, const double* const content);
+			void SetMatrix(const double** const matrix);
 
-			void SetRow(int index, RowF row);
-			void SetNum(int row, int collumn, double value);
+			const double& GetNum(const unsigned int& column, const unsigned int& row) const;
+			double* GetColumn(const unsigned int& column) const;
+			double** GetMatrix() const;
+			const unsigned int& GetRowCount() const;
+			const unsigned int& GetColumnCount() const;
 
-			int GetRowCount() const;
-			int GetCollumnCount() const;
-			RowF GetRow(int index) const;
+			void operator=(const MatrixF& other);
+			MatrixF operator+(const double& value) const;
+			MatrixF operator-(const double& value) const;
+			MatrixF operator*(const double& value) const;
+			MatrixF operator/(const double& value) const;
+			MatrixF operator+(const MatrixF& other) const;
+			MatrixF operator-(const MatrixF& other) const;
+			MatrixF operator*(const MatrixF& other) const;
 
 			~MatrixF();
 		};
 
-		EXPORT void PrintContent(MatrixI* mat);
-		EXPORT void PrintProperties(MatrixI* mat);
-		EXPORT int MatrixGetDet(MatrixI* mat);
-		EXPORT MatrixI MatrixAdd(MatrixI* mat, int value);
-		EXPORT MatrixI MatrixSub(MatrixI* mat, int value);
-		EXPORT MatrixI MatrixMult(MatrixI* mat, int value);
-		EXPORT MatrixI MatrixDiv(MatrixI* mat, int value);
-		EXPORT MatrixI MatrixAdd(MatrixI* mat1, MatrixI* mat2);
-		EXPORT MatrixI MatrixSub(MatrixI* mat1, MatrixI* mat2);
-		EXPORT MatrixI MatrixMult(MatrixI* mat1, MatrixI* mat2);
-		EXPORT MatrixI MatrixOfMinors(MatrixI* mat);
-		EXPORT MatrixI MatrixOfCofactors(MatrixI* mat);
-		EXPORT MatrixI MatrixAdjugate(MatrixI* mat);
-		EXPORT MatrixF MatrixInverse(MatrixI* mat);
+		EXPORT void PrintContent(const MatrixI& mat);
+		EXPORT void PrintProperties(const MatrixI& mat);
+		EXPORT int MatrixGetDet(const MatrixI& mat);
+		EXPORT MatrixI MatrixOfMinors(const MatrixI& mat);
+		EXPORT MatrixI MatrixOfCofactors(const MatrixI& mat);
+		EXPORT MatrixI MatrixTranspose(const MatrixI& mat);
+		EXPORT MatrixI MatrixAdjugate(const MatrixI& mat);
+		EXPORT MatrixF MatrixInverse(const MatrixI& mat);
 
-		EXPORT void PrintContent(MatrixF* mat);
-		EXPORT void PrintProperties(MatrixF* mat);
-		EXPORT double MatrixGetDet(MatrixF* mat);
-		EXPORT MatrixF MatrixAdd(MatrixF* mat, double value);
-		EXPORT MatrixF MatrixSub(MatrixF* mat, double value);
-		EXPORT MatrixF MatrixMult(MatrixF* mat, double value);
-		EXPORT MatrixF MatrixDiv(MatrixF* mat, double value);
-		EXPORT MatrixF MatrixAdd(MatrixF* mat1, MatrixF* mat2);
-		EXPORT MatrixF MatrixSub(MatrixF* mat1, MatrixF* mat2);
-		EXPORT MatrixF MatrixMult(MatrixF* mat1, MatrixF* mat2);
-		EXPORT MatrixF MatrixOfMinors(MatrixF* mat);
-		EXPORT MatrixF MatrixOfCofactors(MatrixF* mat);
-		EXPORT MatrixF MatrixAdjugate(MatrixF* mat);
-		EXPORT MatrixF MatrixInverse(MatrixF* mat);
+		EXPORT void PrintContent(const MatrixF& mat);
+		EXPORT void PrintProperties(const MatrixF& mat);
+		EXPORT double MatrixGetDet(const MatrixF& mat);
+		EXPORT MatrixF MatrixOfMinors(const MatrixF& mat);
+		EXPORT MatrixF MatrixOfCofactors(const MatrixF& mat);
+		EXPORT MatrixF MatrixTranspose(const MatrixF& mat);
+		EXPORT MatrixF MatrixAdjugate(const MatrixF& mat);
+		EXPORT MatrixF MatrixInverse(const MatrixF& mat);
 
 		// Quaternion operations
 
-		EXPORT MatrixF MatrixRotate(MatrixF* mat, const Complex::Quaternion& quat);
+		EXPORT MatrixF MatrixRotate(const MatrixF& mat, const Complex::Quaternion& quat);
 
 		// Conversion and checking functions
 
-		EXPORT MatrixI MatrixF2I(MatrixF* mat);
-		EXPORT MatrixF MatrixI2F(MatrixI* mat);
-		EXPORT bool MatrixIsSquare(const MatrixI* mat, int dimension = -1);
-		EXPORT bool MatrixIsSquare(const MatrixF* mat, int dimension = -1);
+		EXPORT MatrixI MatrixF2I(const MatrixF& mat);
+		EXPORT MatrixF MatrixI2F(const MatrixI& mat);
+		EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
+		EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
 
 		// Helper functions
 
-		EXPORT MatrixI* MatrixI2x2(int r1c1, int r1c2, int r2c1, int r2c2);
-		EXPORT MatrixI* TransformI2x2();
-		EXPORT MatrixI* TransformI2x2(Primitives::Float2 c1, Primitives::Float2 c2);
-		EXPORT MatrixF* MatrixF2x2(double r1c1, double r1c2, double r2c1, double r2c2);
-		EXPORT MatrixF* TransformF2x2();
-		EXPORT MatrixF* TransformF2x2(Primitives::Float2 c1, Primitives::Float2 c2);
+		EXPORT MatrixI TransformI2x2(const Primitives::Int2& p1, const Primitives::Int2& p2);
+		EXPORT MatrixF TransformF2x2(const Primitives::Float2& p1, const Primitives::Float2& p2);
 	}
 
 	namespace Vectors
@@ -469,7 +443,7 @@ namespace MathLib
 			Vector3D();
 			Vector3D(Primitives::Float3 dir);
 
-			Vector3D Transform(Matrices::MatrixF* mat);
+			Vector3D Transform(const Matrices::MatrixF& mat);
 			Vector3D Scale(double s);
 			Vector3D Scale(double sX, double sY, double sZ);
 			Vector3D Rotate(double angle, int axis);
@@ -493,7 +467,7 @@ namespace MathLib
 			Vector2D(Primitives::Float2 dir);
 			Vector2D(double angle, double length);
 
-			Vector2D Transform(Matrices::MatrixF* mat);
+			Vector2D Transform(const Matrices::MatrixF& mat);
 			Vector2D Scale(double s);
 			Vector2D Scale(double sX, double sY);
 			Vector2D Rotate(double angle);
@@ -549,6 +523,6 @@ namespace MathLib
 			return roundf(pow(10, decimal) * num) / pow(10, decimal);
 		}
 		EXPORT Matrices::MatrixF Vec2Mat(const Vectors::Vector3D& vec, const int& front = 0);
-		EXPORT Vectors::Vector3D Mat2Vec(Matrices::MatrixF* mat, const int& front = 0);
+		EXPORT Vectors::Vector3D Mat2Vec(const Matrices::MatrixF& mat, const int& front = 0);
 	}
 }
