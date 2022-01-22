@@ -144,8 +144,8 @@
     <ClInclude Include="include\Maths.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\2DVectors.cpp" />
-    <ClCompile Include="source\3DVectors.cpp" />
+    <ClCompile Include="source\Geometry.cpp" />
+    <ClCompile Include="source\Vectors.cpp" />
     <ClCompile Include="source\ComplexNumbers.cpp" />
     <ClCompile Include="source\Matrices.cpp" />
     <ClCompile Include="source\Primitives.cpp" />

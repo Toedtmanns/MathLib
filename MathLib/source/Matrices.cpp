@@ -7,6 +7,11 @@ namespace MathLib
 	{
 		// MatrixI definition
 
+		MatrixI::MatrixI(MatrixI&& other) noexcept
+			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(other.m_Matrix)
+		{
+
+		}
 		MatrixI::MatrixI(const MatrixI& other)
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(new int* [other.m_Columns])
 		{
@@ -19,27 +24,27 @@ namespace MathLib
 		MatrixI::MatrixI(const unsigned int& dim)
 			: m_Rows(dim), m_Columns(dim), m_Matrix(new int*[dim])
 		{
-			for (unsigned int col = 0; col < dim; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new int[dim]{0};
+				m_Matrix[col] = new int[m_Rows]{0};
 				m_Matrix[col][col] = 1;
 			}
 		}
 		MatrixI::MatrixI(const unsigned int& columns, const unsigned int& rows)
 			: m_Rows(rows), m_Columns(columns), m_Matrix(new int*[columns])
 		{
-			for (unsigned int col = 0; col < columns; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new int[rows]{0};
+				m_Matrix[col] = new int[m_Rows]{0};
 			}
 		}
 		MatrixI::MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray)
 			: m_Rows(rows), m_Columns(columns), m_Matrix(new int*[columns])
 		{
-			for (unsigned int col = 0; col < columns; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new int[rows];
-				memcpy(m_Matrix[col], columnArray[col], rows * sizeof(int));
+				m_Matrix[col] = new int[m_Rows];
+				memcpy(m_Matrix[col], columnArray[col], m_Rows * sizeof(int));
 			}
 		}
 		void MatrixI::SetNum(const unsigned int& column, const unsigned int& row, const int& value)
@@ -87,19 +92,26 @@ namespace MathLib
 		{
 			return m_Columns;
 		}
+		void MatrixI::operator=(MatrixI&& other) noexcept
+		{
+			for (unsigned int col = 0; col < m_Columns; col++)
+				delete[] m_Matrix[col];
+			delete[] m_Matrix;
+
+			m_Columns = other.m_Columns;
+			m_Rows = other.m_Rows;
+			m_Matrix = other.m_Matrix;
+		}
 		void MatrixI::operator=(const MatrixI& other)
 		{
-			unsigned int colCopyCount = m_Columns;
-			unsigned int rowCopyCount = m_Rows;
+			m_Columns = other.m_Columns;
+			m_Rows = other.m_Rows;
 
-			if (m_Columns > other.m_Columns)
-				colCopyCount = other.m_Columns;
-			if (m_Rows > other.m_Rows)
-				rowCopyCount = other.m_Rows;
-
-			for (unsigned int col = 0; col < colCopyCount; col++)
+			for (unsigned int col = 0; col < other.m_Columns; col++)
 			{
-				memcpy(m_Matrix[col], other.m_Matrix[col], rowCopyCount * sizeof(double));
+				delete[] m_Matrix[col];
+				m_Matrix[col] = new int[m_Rows];
+				memcpy(m_Matrix[col], other.m_Matrix[col], other.m_Rows * sizeof(int));
 			}
 		}
 		MatrixI MatrixI::operator+(const int& value) const
@@ -214,6 +226,11 @@ namespace MathLib
 
 			return tempMat;
 		}
+		int* MatrixI::operator[](const unsigned int& column)
+		{
+			if (column < m_Columns)
+				return m_Matrix[column];
+		}
 		MatrixI::~MatrixI()
 		{
 			for (unsigned int col = 0; col < m_Columns; col++)
@@ -225,6 +242,11 @@ namespace MathLib
 
 		// MatrixF definition
 
+		MatrixF::MatrixF(MatrixF&& other) noexcept
+			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(other.m_Matrix)
+		{
+
+		}
 		MatrixF::MatrixF(const MatrixF& other)
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(new double* [other.m_Columns])
 		{
@@ -237,27 +259,27 @@ namespace MathLib
 		MatrixF::MatrixF(const unsigned int& dim)
 			: m_Rows(dim), m_Columns(dim), m_Matrix(new double* [dim])
 		{
-			for (unsigned int col = 0; col < dim; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new double[dim] { 0 };
+				m_Matrix[col] = new double[m_Rows] { 0 };
 				m_Matrix[col][col] = 1;
 			}
 		}
 		MatrixF::MatrixF(const unsigned int& columns, const unsigned int& rows)
 			: m_Rows(rows), m_Columns(columns), m_Matrix(new double* [columns])
 		{
-			for (unsigned int col = 0; col < columns; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new double[rows] { 0 };
+				m_Matrix[col] = new double[m_Rows] { 0 };
 			}
 		}
 		MatrixF::MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray)
 			: m_Rows(rows), m_Columns(columns), m_Matrix(new double* [columns])
 		{
-			for (unsigned int col = 0; col < columns; col++)
+			for (unsigned int col = 0; col < m_Columns; col++)
 			{
-				m_Matrix[col] = new double[rows];
-				memcpy(m_Matrix[col], columnArray[col], rows * sizeof(double));
+				m_Matrix[col] = new double[m_Rows];
+				memcpy(m_Matrix[col], columnArray[col], m_Rows * sizeof(double));
 			}
 		}
 		void MatrixF::SetNum(const unsigned int& column, const unsigned int& row, const double& value)
@@ -305,19 +327,25 @@ namespace MathLib
 		{
 			return m_Columns;
 		}
+		void MatrixF::operator=(MatrixF&& other) noexcept
+		{
+			for (unsigned int col = 0; col < m_Columns; col++)
+				delete[] m_Matrix[col];
+			delete[] m_Matrix;
+
+			m_Columns = other.m_Columns;
+			m_Rows = other.m_Rows;
+			m_Matrix = other.m_Matrix;
+		}
 		void MatrixF::operator=(const MatrixF& other)
 		{
-			unsigned int colCopyCount = m_Columns;
-			unsigned int rowCopyCount = m_Rows;
+			m_Columns = other.m_Columns;
+			m_Rows = other.m_Rows;
 
-			if (m_Columns > other.m_Columns)
-				colCopyCount = other.m_Columns;
-			if (m_Rows > other.m_Rows)
-				rowCopyCount = other.m_Rows;
-
-			for (unsigned int col = 0; col < colCopyCount; col++)
+			for (unsigned int col = 0; col < other.m_Columns; col++)
 			{
-				memcpy(m_Matrix[col], other.m_Matrix[col], rowCopyCount * sizeof(double));
+				delete[] m_Matrix[col];
+				memcpy(m_Matrix[col], other.m_Matrix[col], other.m_Rows * sizeof(double));
 			}
 		}
 		MatrixF MatrixF::operator+(const double& value) const
@@ -431,6 +459,11 @@ namespace MathLib
 			}
 
 			return tempMat;
+		}
+		double* MatrixF::operator[](const unsigned int& column)
+		{
+			if (column < m_Columns)
+				return m_Matrix[column];
 		}
 		MatrixF::~MatrixF()
 		{
@@ -901,6 +934,36 @@ namespace MathLib
 
 		// Helper functions
 
+		MatrixI Point2Matrix(const Primitives::Int2& point)
+		{
+			MatrixI retMat = MatrixI(2, 1);
+			retMat.SetNum(0, 0, point.x);
+			retMat.SetNum(1, 0, point.y);
+			return retMat;
+		}
+		MatrixF Point2Matrix(const Primitives::Float2& point)
+		{
+			MatrixF retMat = MatrixF(2, 1);
+			retMat.SetNum(0, 0, point.x);
+			retMat.SetNum(1, 0, point.y);
+			return retMat;
+		}
+		MatrixI Point2Matrix(const Primitives::Int3& point)
+		{
+			MatrixI retMat = MatrixI(3, 1);
+			retMat.SetNum(0, 0, point.x);
+			retMat.SetNum(1, 0, point.y);
+			retMat.SetNum(2, 0, point.z);
+			return retMat;
+		}
+		MatrixF Point2Matrix(const Primitives::Float3& point)
+		{
+			MatrixF retMat = MatrixF(3, 1);
+			retMat.SetNum(0, 0, point.x);
+			retMat.SetNum(1, 0, point.y);
+			retMat.SetNum(2, 0, point.z);
+			return retMat;
+		}
 		MatrixI TransformI2x2(const Primitives::Int2& p1, const Primitives::Int2& p2)
 		{
 			MatrixI retMat = MatrixI(2);

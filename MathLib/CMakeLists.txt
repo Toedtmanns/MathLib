@@ -11,7 +11,8 @@ if(COMPILE_STATIC)
             ./source/ComplexNumbers.cpp
             ./source/Matrices.cpp
             ./source/Primitives.cpp
-            ./source/Utility.cpp)
+            ./source/Utility.cpp
+            ./sourve/Geometry.cpp)
     
     add_compile_definitions(MATHLIB_STATIC)
 else()
@@ -21,7 +22,8 @@ else()
             ./source/ComplexNumbers.cpp
             ./source/Matrices.cpp
             ./source/Primitives.cpp
-            ./source/Utility.cpp)
+            ./source/Utility.cpp
+            ./sourve/Geometry.cpp)
             
     add_compile_definitions(MATHLIB_EXPORTS)
 endif()

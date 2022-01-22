@@ -1,6 +1,7 @@
 #include "../include/Maths.h"
 #include <stdio.h>
 #include <cmath>
+#include <cstring>
 
 namespace MathLib
 {
@@ -14,108 +15,25 @@ namespace MathLib
 		{
 			return rad * 180 / PI;
 		}
-		double GetSlope(Primitives::Line2D line)
+		double MinFromArray(const double* const arr, const unsigned int& length)
 		{
-			return (line.p2.y - line.p1.y) / (line.p2.x - line.p1.x);
-		}
-		bool IsParallel(Primitives::Line2D l1, Primitives::Line2D l2)
-		{
-			double slopeL1 = GetSlope(l1);
-			double slopeL2 = GetSlope(l2);
-
-			if (slopeL1 == slopeL2 || isinf(slopeL1) && isinf(slopeL2))
-				return true;
-			else
-				return false;
-		}
-		Intersect CheckIntersect(Primitives::Line2D l1, Primitives::Line2D l2)
-		{
-			double m1 = GetSlope(l1);
-			double m2 = GetSlope(l2);
-			double b1 = l1.p1.y - l1.p1.x * m1;
-			double b2 = l2.p2.y - l2.p2.x * m2;
-			Intersect intersect = {false, false, Primitives::Float2()};
-
-			intersect.pos.x = (b2 - b1) / (m1 - m2) * 100 / 100;
-			intersect.pos.y = (m1 * intersect.pos.x + b1) * 100 / 100;
-
-			if (isnan(intersect.pos.x))
+			double min = arr[0];
+			for (unsigned int i = 1; i < length; i++)
 			{
-				intersect.isCollinear = true;
-
-				// Check intersect if one line goes straight up or down and find the intersect
-
-				if (isinf(m1) && l1.p1.x <= fmax(l2.p1.x, l2.p2.x) && l1.p1.x >= fmin(l2.p1.x, l2.p2.x))
-				{
-					Primitives::Float2 possInt = Primitives::Float2(l1.p1.x, m2 * l1.p1.x + b2);
-					if (CheckIntersect(l1, possInt).isIntersecting)
-					{
-						intersect.pos = possInt;
-						intersect.isIntersecting = true;
-						intersect.isCollinear = false;
-					}
-				}
-				else if (isinf(m2) && l2.p1.x <= fmax(l1.p1.x, l1.p2.x) && l1.p1.x >= fmin(l1.p1.x, l1.p2.x))
-				{
-					Primitives::Float2 possInt = Primitives::Float2(l2.p1.x, m1 * l2.p1.x + b1);
-					if (CheckIntersect(l2, possInt).isIntersecting)
-					{
-						intersect.pos = possInt;
-						intersect.isIntersecting = true;
-						intersect.isCollinear = false;
-					}
-				}
-
-				// Check intersect if both lines go straight up or down
-
-				else if (CheckIntersect(l1, l2.p1).isIntersecting)
-					intersect.isIntersecting = true;
-				else if (CheckIntersect(l1, l2.p2).isIntersecting)
-					intersect.isIntersecting = true;
-				else if (CheckIntersect(l2, l1.p1).isIntersecting)
-					intersect.isIntersecting = true;
-				else if (CheckIntersect(l2, l1.p2).isIntersecting)
-					intersect.isIntersecting = true;
+				if (arr[i] < min)
+					min = arr[i];
 			}
-			else if (isfinite(intersect.pos.x))
-			{
-				if ((intersect.pos.x >= fmin(l1.p1.x, l1.p2.x) && intersect.pos.x <= fmax(l1.p1.x, l1.p2.x)) && (intersect.pos.x >= fmin(l2.p1.x, l2.p2.x) && intersect.pos.x <= fmax(l2.p1.x, l2.p2.x)))
-					intersect.isIntersecting = true;
-			}
-
-			return intersect;
+			return min;
 		}
-		Intersect CheckIntersect(Primitives::Line2D l, Primitives::Float2 p)
+		double MaxFromArray(const double* const arr, const unsigned int& length)
 		{
-			double m = GetSlope(l);
-			double b = l.p1.y - l.p1.x * m;
-			Intersect intersect = {false, false, Primitives::Float2()};
-
-			if (m * p.x + b == p.y)
+			double max = arr[0];
+			for (unsigned int i = 1; i < length; i++)
 			{
-				intersect.isCollinear = true;
-				if (l.p1.x <= p.x && p.x <= l.p2.x)
-				{
-					intersect.isIntersecting = true;
-					intersect.pos.x = p.x;
-					intersect.pos.y = m * p.x + b;
-				}
+				if (arr[i] > max)
+					max = arr[i];
 			}
-			else if (isinf(m) && p.x == l.p1.x)
-			{
-				intersect.isCollinear = true;
-				if (p.y >= fmin(l.p1.y, l.p2.y) && p.y <= fmax(l.p1.y, l.p2.y))
-				{
-					intersect.isIntersecting = true;
-					intersect.pos = {p.x, p.y};
-				}
-			}
-
-			return intersect;
-		}
-		void PrintProperties(Intersect i)
-		{
-			printf("X: %.3f, Y: %.3f, Intersecting: %d, Collinear: %d\n", i.pos.x, i.pos.y, i.isIntersecting, i.isCollinear);
+			return max;
 		}
 		Primitives::Line2D Vector2Line(Vectors::Vector2D vector, Primitives::Float2 pos)
 		{
@@ -138,14 +56,6 @@ namespace MathLib
 			vector.direction = Primitives::Float2(p2.x - p1.x, p2.y - p1.y);
 			return vector;
 		}
-		double GetDistance(Primitives::Float2 p1, Primitives::Float2 p2)
-		{
-			return sqrtf(powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2));
-		}
-		double GetDistance(Primitives::Float3 p1, Primitives::Float3 p2)
-		{
-			return sqrtf(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
-		}
 		int RandInt(int min, int max)
 		{
 			int range = max + 1 - min;
@@ -166,6 +76,19 @@ namespace MathLib
 			vec.direction.y = mat.GetNum(1, 1);
 			vec.direction.z = mat.GetNum(2, 2);
 			return vec;
+		}
+
+		bool SetArraySize(void** array, const unsigned int& currLength, const unsigned int& newLength)
+		{
+			unsigned int newSize = newLength * sizeof(array[0]);
+
+			void* newArray = realloc(*array, newSize);
+			if (newArray)
+			{
+				*array = newArray;
+				return true;
+			}
+			return false;
 		}
 	}
 }
