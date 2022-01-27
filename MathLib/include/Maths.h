@@ -667,6 +667,8 @@ namespace MathLib
 		{
 		public:
 			Rectangle2D();
+			Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4);
+			Rectangle2D(const Primitives::Float2* const pointArr);
 			Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale);
 
 			bool CollidesWith(const Rectangle2D& other) const;

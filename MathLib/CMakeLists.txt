@@ -6,24 +6,22 @@ option(COMPILE_STATIC "Compile MathLib to a static library" ON)
 
 if(COMPILE_STATIC)
     add_library(MathLib STATIC
-            ./source/2DVectors.cpp
-            ./source/3DVectors.cpp
+            ./source/Vectors.cpp
             ./source/ComplexNumbers.cpp
             ./source/Matrices.cpp
             ./source/Primitives.cpp
             ./source/Utility.cpp
-            ./sourve/Geometry.cpp)
+            ./source/Geometry.cpp)
     
     add_compile_definitions(MATHLIB_STATIC)
 else()
     add_library(MathLib SHARED
-            ./source/2DVectors.cpp
-            ./source/3DVectors.cpp
+            ./source/Vectors.cpp
             ./source/ComplexNumbers.cpp
             ./source/Matrices.cpp
             ./source/Primitives.cpp
             ./source/Utility.cpp
-            ./sourve/Geometry.cpp)
+            ./source/Geometry.cpp)
             
     add_compile_definitions(MATHLIB_EXPORTS)
 endif()

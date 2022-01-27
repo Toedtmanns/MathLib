@@ -295,6 +295,19 @@ namespace MathLib
 			m_PointArr[2] = Primitives::Float2(-1, -1);
 			m_PointArr[3] = Primitives::Float2(-1, 1);
 		}
+		Rectangle2D::Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4)
+			: Polygon2D(4)
+		{
+			m_PointArr[0] = p1;
+			m_PointArr[1] = p2;
+			m_PointArr[2] = p3;
+			m_PointArr[3] = p4;
+		}
+		Rectangle2D::Rectangle2D(const Primitives::Float2* const pointArr)
+			: Polygon2D(pointArr, 4)
+		{
+
+		}
 		Rectangle2D::Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale)
 			: Polygon2D(4)
 		{

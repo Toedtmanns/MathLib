@@ -10,7 +10,7 @@ namespace MathLib
 		MatrixI::MatrixI(MatrixI&& other) noexcept
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(other.m_Matrix)
 		{
-
+			other.m_Matrix = nullptr;
 		}
 		MatrixI::MatrixI(const MatrixI& other)
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(new int* [other.m_Columns])
@@ -101,6 +101,7 @@ namespace MathLib
 			m_Columns = other.m_Columns;
 			m_Rows = other.m_Rows;
 			m_Matrix = other.m_Matrix;
+			other.m_Matrix = nullptr;
 		}
 		void MatrixI::operator=(const MatrixI& other)
 		{
@@ -233,6 +234,8 @@ namespace MathLib
 		}
 		MatrixI::~MatrixI()
 		{
+			if (m_Matrix == nullptr)
+				return;
 			for (unsigned int col = 0; col < m_Columns; col++)
 			{
 				delete[] m_Matrix[col];
@@ -245,7 +248,7 @@ namespace MathLib
 		MatrixF::MatrixF(MatrixF&& other) noexcept
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(other.m_Matrix)
 		{
-
+			other.m_Matrix = nullptr;
 		}
 		MatrixF::MatrixF(const MatrixF& other)
 			: m_Rows(other.m_Rows), m_Columns(other.m_Columns), m_Matrix(new double* [other.m_Columns])
@@ -336,6 +339,7 @@ namespace MathLib
 			m_Columns = other.m_Columns;
 			m_Rows = other.m_Rows;
 			m_Matrix = other.m_Matrix;
+			other.m_Matrix = nullptr;
 		}
 		void MatrixF::operator=(const MatrixF& other)
 		{
@@ -467,6 +471,8 @@ namespace MathLib
 		}
 		MatrixF::~MatrixF()
 		{
+			if (m_Matrix == nullptr)
+				return;
 			for (unsigned int col = 0; col < m_Columns; col++)
 			{
 				delete[] m_Matrix[col];
