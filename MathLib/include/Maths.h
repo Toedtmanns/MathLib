@@ -24,6 +24,10 @@ namespace MathLib
 {
 	namespace Primitives
 	{
+		union Int4;
+		union Int3;
+		union Int2;
+
 		union EXPORT Float4
 		{
 		protected:
@@ -47,7 +51,11 @@ namespace MathLib
 
 			Float4();
 			Float4(const double& x, const double& y, const double& z, const double& w);
+			Float4(const Int4& other);
+
+			void operator=(const Int4& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Float3
@@ -71,8 +79,11 @@ namespace MathLib
 
 			Float3();
 			Float3(const double& x, const double& y, const double& z);
+			Float3(const Int3& other);
 
+			void operator=(const Int3& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Float2
@@ -89,8 +100,11 @@ namespace MathLib
 
 			Float2();
 			Float2(const double& x, const double& y);
+			Float2(const Int2& other);
 
+			void operator=(const Int2& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int4
@@ -116,8 +130,11 @@ namespace MathLib
 
 			Int4();
 			Int4(const int& x, const int& y, const int& z, const int& w);
+			Int4(const Float4& other);
 
+			void operator=(const Float4& other);
 			int& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int3
@@ -141,8 +158,11 @@ namespace MathLib
 
 			Int3();
 			Int3(const int& x, const int& y, const int& z);
+			Int3(const Float3& other);
 
+			void operator=(const Float3& other);
 			int& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int2
@@ -159,8 +179,11 @@ namespace MathLib
 
 			Int2();
 			Int2(const int& x, const int& y);
+			Int2(const Float2& other);
 
+			void operator=(const Float2& other);
 			int& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		EXPORT bool operator==(const Float2& f1, const Float2& f2);

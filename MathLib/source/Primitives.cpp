@@ -16,7 +16,23 @@ namespace MathLib
 		{
 
 		}
+		Float4::Float4(const Int4& other)
+			: x(other.x), y(other.y), z(other.z), w(other.w)
+		{
+
+		}
+		void Float4::operator=(const Int4& other)
+		{
+			x = other.x;
+			y = other.y;
+			z = other.z;
+			w = other.w;
+		}
 		double& Float4::operator[](const unsigned int& index)
+		{
+			return content[index];
+		}
+		const double& Float4::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -31,11 +47,24 @@ namespace MathLib
 		{
 
 		}
+		Float3::Float3(const Int3& other)
+			: x(other.x), y(other.y), z(other.z)
+		{
+
+		}
+		void Float3::operator=(const Int3& other)
+		{
+			x = other.x;
+			y = other.y;
+			z = other.z;
+		}
 		double& Float3::operator[](const unsigned int& index)
 		{
-			
 			return content[index];
-			
+		}
+		const double& Float3::operator[](const unsigned int& index) const
+		{
+			return content[index];
 		}
 
 		Float2::Float2()
@@ -48,7 +77,21 @@ namespace MathLib
 		{
 
 		}
+		Float2::Float2(const Int2& other)
+			: x(other.x), y(other.y)
+		{
+
+		}
+		void Float2::operator=(const Int2& other)
+		{
+			x = other.x;
+			y = other.y;
+		}
 		double& Float2::operator[](const unsigned int& index)
+		{
+			return content[index];
+		}
+		const double& Float2::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -63,7 +106,23 @@ namespace MathLib
 		{
 
 		}
+		Int4::Int4(const Float4& other)
+			: x(round(other.x)), y(round(other.y)), z(round(other.z)), w(round(other.w))
+		{
+
+		}
+		void Int4::operator=(const Float4& other)
+		{
+			x = round(other.x);
+			y = round(other.y);
+			z = round(other.z);
+			w = round(other.w);
+		}
 		int& Int4::operator[](const unsigned int& index)
+		{
+			return content[index];
+		}
+		const double& Int4::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -78,11 +137,26 @@ namespace MathLib
 		{
 
 		}
+		Int3::Int3(const Float3& other)
+			: x(round(other.x)), y(round(other.y)), z(round(other.z))
+		{
+
+		}
+		void Int3::operator=(const Float3& other)
+		{
+			x = round(other.x);
+			y = round(other.y);
+			z = round(other.z);
+		}
 		int& Int3::operator[](const unsigned int& index)
 		{
 			
 			return content[index];
 			
+		}
+		const double& Int3::operator[](const unsigned int& index) const
+		{
+			return content[index];
 		}
 
 		Int2::Int2()
@@ -95,7 +169,21 @@ namespace MathLib
 		{
 
 		}
+		Int2::Int2(const Float2& other)
+			: x(round(other.x)), y(round(other.y))
+		{
+
+		}
+		void Int2::operator=(const Float2& other)
+		{
+			x = round(other.x);
+			y = round(other.y);
+		}
 		int& Int2::operator[](const unsigned int& index)
+		{
+			return content[index];
+		}
+		const double& Int2::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
