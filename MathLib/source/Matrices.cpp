@@ -229,8 +229,11 @@ namespace MathLib
 		}
 		int* MatrixI::operator[](const unsigned int& column)
 		{
-			if (column < m_Columns)
-				return m_Matrix[column];
+			return m_Matrix[column];
+		}
+		const int* MatrixI::operator[](const unsigned int& column) const
+		{
+			return m_Matrix[column];
 		}
 		MatrixI::~MatrixI()
 		{
@@ -466,8 +469,11 @@ namespace MathLib
 		}
 		double* MatrixF::operator[](const unsigned int& column)
 		{
-			if (column < m_Columns)
-				return m_Matrix[column];
+			return m_Matrix[column];
+		}
+		const double* MatrixF::operator[](const unsigned int& column) const
+		{
+			return m_Matrix[column];
 		}
 		MatrixF::~MatrixF()
 		{
@@ -887,7 +893,7 @@ namespace MathLib
 			{
 				for (unsigned int col = 0; col < resMat.GetColumnCount(); col++)
 				{
-					resMat.SetNum(row, col, mat.GetNum(col, row));
+					resMat.SetNum(row, col, (int) round(mat.GetNum(col, row)));
 				}
 			}
 

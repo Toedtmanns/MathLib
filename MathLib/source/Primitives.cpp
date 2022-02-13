@@ -17,9 +17,11 @@ namespace MathLib
 
 		}
 		Float4::Float4(const Int4& other)
-			: x(other.x), y(other.y), z(other.z), w(other.w)
 		{
-
+			x = other.x;
+			y = other.y;
+			z = other.z;
+			w = other.w;
 		}
 		void Float4::operator=(const Int4& other)
 		{
@@ -48,9 +50,10 @@ namespace MathLib
 
 		}
 		Float3::Float3(const Int3& other)
-			: x(other.x), y(other.y), z(other.z)
 		{
-
+			x = other.x;
+			y = other.y;
+			z = other.z;
 		}
 		void Float3::operator=(const Int3& other)
 		{
@@ -60,7 +63,9 @@ namespace MathLib
 		}
 		double& Float3::operator[](const unsigned int& index)
 		{
+			
 			return content[index];
+			
 		}
 		const double& Float3::operator[](const unsigned int& index) const
 		{
@@ -78,9 +83,9 @@ namespace MathLib
 
 		}
 		Float2::Float2(const Int2& other)
-			: x(other.x), y(other.y)
 		{
-
+			x = other.x;
+			y = other.y;
 		}
 		void Float2::operator=(const Int2& other)
 		{
@@ -107,22 +112,24 @@ namespace MathLib
 
 		}
 		Int4::Int4(const Float4& other)
-			: x(round(other.x)), y(round(other.y)), z(round(other.z)), w(round(other.w))
 		{
-
+			x = (int) round(other.x);
+			y = (int) round(other.y);
+			z = (int) round(other.z);
+			w = (int) round(other.w);
 		}
 		void Int4::operator=(const Float4& other)
 		{
-			x = round(other.x);
-			y = round(other.y);
-			z = round(other.z);
-			w = round(other.w);
+			x = (int) round(other.x);
+			y = (int) round(other.y);
+			z = (int) round(other.z);
+			w = (int) round(other.w);
 		}
 		int& Int4::operator[](const unsigned int& index)
 		{
 			return content[index];
 		}
-		const double& Int4::operator[](const unsigned int& index) const
+		const int& Int4::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -138,15 +145,16 @@ namespace MathLib
 
 		}
 		Int3::Int3(const Float3& other)
-			: x(round(other.x)), y(round(other.y)), z(round(other.z))
 		{
-
+			x = (int) round(other.x);
+			y = (int) round(other.y);
+			z = (int) round(other.z);
 		}
 		void Int3::operator=(const Float3& other)
 		{
-			x = round(other.x);
-			y = round(other.y);
-			z = round(other.z);
+			x = (int) round(other.x);
+			y = (int) round(other.y);
+			z = (int) round(other.z);
 		}
 		int& Int3::operator[](const unsigned int& index)
 		{
@@ -154,7 +162,7 @@ namespace MathLib
 			return content[index];
 			
 		}
-		const double& Int3::operator[](const unsigned int& index) const
+		const int& Int3::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -170,20 +178,20 @@ namespace MathLib
 
 		}
 		Int2::Int2(const Float2& other)
-			: x(round(other.x)), y(round(other.y))
 		{
-
+			x = (int) round(other.x);
+			y = (int) round(other.y);
 		}
 		void Int2::operator=(const Float2& other)
 		{
-			x = round(other.x);
-			y = round(other.y);
+			x = (int) round(other.x);
+			y = (int) round(other.y);
 		}
 		int& Int2::operator[](const unsigned int& index)
 		{
 			return content[index];
 		}
-		const double& Int2::operator[](const unsigned int& index) const
+		const int& Int2::operator[](const unsigned int& index) const
 		{
 			return content[index];
 		}
@@ -236,102 +244,126 @@ namespace MathLib
 		{
 			return Float4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
 		}
-		Float2 operator+=(const Float2& f1, const Float2& f2)
+		void operator+=(Float2& f1, const Float2& f2)
 		{
-			return Float2(f1.x + f2.x, f1.y + f2.y);
+			f1 = Float2(f1.x + f2.x, f1.y + f2.y);
 		}
-		Float3 operator+=(const Float3& f1, const Float3& f2)
+		void operator+=(Float3& f1, const Float3& f2)
 		{
-			return Float3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
+			f1 = Float3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
 		}
-		Float4 operator+=(const Float4& f1, const Float4& f2)
+		void operator+=(Float4& f1, const Float4& f2)
 		{
-			return Float4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
+			f1 = Float4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
 		}
-		Float2 operator-=(const Float2& f1, const Float2& f2)
+		void operator-=(Float2& f1, const Float2& f2)
 		{
-			return Float2(f1.x - f2.x, f1.y - f2.y);
+			f1 = Float2(f1.x - f2.x, f1.y - f2.y);
 		}
-		Float3 operator-=(const Float3& f1, const Float3& f2)
+		void operator-=(Float3& f1, const Float3& f2)
 		{
-			return Float3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
+			f1 = Float3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
 		}
-		Float4 operator-=(const Float4& f1, const Float4& f2)
+		void operator-=(Float4& f1, const Float4& f2)
 		{
-			return Float4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
+			f1 = Float4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
+		}
+		Float2 operator*(const Float2& f1, const Float2& f2)
+		{
+			return Float2(f1.x * f2.x, f1.y + f2.y);
+		}
+		Float3 operator*(const Float3& f1, const Float3& f2)
+		{
+			return Float3(f1.x * f2.x, f1.y + f2.y, f1.z * f2.z);
+		}
+		Float4 operator*(const Float4& f1, const Float4& f2)
+		{
+			return Float4(f1.x * f2.x, f1.y + f2.y, f1.z * f2.z, f1.w * f2.w);
 		}
 
-		bool operator==(const Int2& f1, const Int2& f2)
+		bool operator==(const Int2& i1, const Int2& i2)
 		{
-			return f1.x == f2.x && f1.y == f2.y;
+			return i1.x == i2.x && i1.y == i2.y;
 		}
-		bool operator!=(const Int2& f1, const Int2& f2)
+		bool operator!=(const Int2& i1, const Int2& i2)
 		{
-			return f1.x != f2.x || f1.y != f2.y;
+			return i1.x != i2.x || i1.y != i2.y;
 		}
-		bool operator==(const Int3& f1, const Int3& f2)
+		bool operator==(const Int3& i1, const Int3& i2)
 		{
-			return f1.x == f2.x && f1.y == f2.y && f1.z == f2.z;
+			return i1.x == i2.x && i1.y == i2.y && i1.z == i2.z;
 		}
-		bool operator!=(const Int3& f1, const Int3& f2)
+		bool operator!=(const Int3& i1, const Int3& i2)
 		{
-			return f1.x != f2.x || f1.y != f2.y || f1.z != f2.z;
+			return i1.x != i2.x || i1.y != i2.y || i1.z != i2.z;
 		}
-		bool operator==(const Int4& f1, const Int4& f2)
+		bool operator==(const Int4& i1, const Int4& i2)
 		{
-			return f1.x == f2.x && f1.y == f2.y && f1.z == f2.z && f1.w == f2.w;
+			return i1.x == i2.x && i1.y == i2.y && i1.z == i2.z && i1.w == i2.w;
 		}
-		bool operator!=(const Int4& f1, const Int4& f2)
+		bool operator!=(const Int4& i1, const Int4& i2)
 		{
-			return f1.x != f2.x || f1.y != f2.y || f1.z != f2.z || f1.w != f2.w;
+			return i1.x != i2.x || i1.y != i2.y || i1.z != i2.z || i1.w != i2.w;
 		}
-		Int2 operator+(const Int2& f1, const Int2& f2)
+		Int2 operator+(const Int2& i1, const Int2& i2)
 		{
-			return Int2(f1.x + f2.x, f1.y + f2.y);
+			return Int2(i1.x + i2.x, i1.y + i2.y);
 		}
-		Int3 operator+(const Int3& f1, const Int3& f2)
+		Int3 operator+(const Int3& i1, const Int3& i2)
 		{
-			return Int3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
+			return Int3(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z);
 		}
-		Int4 operator+(const Int4& f1, const Int4& f2)
+		Int4 operator+(const Int4& i1, const Int4& i2)
 		{
-			return Int4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
+			return Int4(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z, i1.w + i2.w);
 		}
-		Int2 operator-(const Int2& f1, const Int2& f2)
+		Int2 operator-(const Int2& i1, const Int2& i2)
 		{
-			return Int2(f1.x - f2.x, f1.y - f2.y);
+			return Int2(i1.x - i2.x, i1.y - i2.y);
 		}
-		Int3 operator-(const Int3& f1, const Int3& f2)
+		Int3 operator-(const Int3& i1, const Int3& i2)
 		{
-			return Int3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
+			return Int3(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z);
 		}
-		Int4 operator-(const Int4& f1, const Int4& f2)
+		Int4 operator-(const Int4& i1, const Int4& i2)
 		{
-			return Int4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
+			return Int4(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z, i1.w - i2.w);
 		}
-		Int2 operator+=(const Int2& f1, const Int2& f2)
+		void operator+=(Int2& i1, const Int2& i2)
 		{
-			return Int2(f1.x + f2.x, f1.y + f2.y);
+			i1 = Int2(i1.x + i2.x, i1.y + i2.y);
 		}
-		Int3 operator+=(const Int3& f1, const Int3& f2)
+		void operator+=(Int3& i1, const Int3& i2)
 		{
-			return Int3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
+			i1 = Int3(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z);
 		}
-		Int4 operator+=(const Int4& f1, const Int4& f2)
+		void operator+=(Int4& i1, const Int4& i2)
 		{
-			return Int4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
+			i1 = Int4(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z, i1.w + i2.w);
 		}
-		Int2 operator-=(const Int2& f1, const Int2& f2)
+		void operator-=(Int2& i1, const Int2& i2)
 		{
-			return Int2(f1.x - f2.x, f1.y - f2.y);
+			i1 = Int2(i1.x - i2.x, i1.y - i2.y);
 		}
-		Int3 operator-=(const Int3& f1, const Int3& f2)
+		void operator-=(Int3& i1, const Int3& i2)
 		{
-			return Int3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
+			i1 = Int3(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z);
 		}
-		Int4 operator-=(const Int4& f1, const Int4& f2)
+		void operator-=(Int4& i1, const Int4& i2)
 		{
-			return Int4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
+			i1 = Int4(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z, i1.w - i2.w);
+		}
+		Int2 operator*(const Int2& i1, const Int2& i2)
+		{
+			return Int2(i1.x * i2.x, i1.y + i2.y);
+		}
+		Int3 operator*(const Int3& i1, const Int3& i2)
+		{
+			return Int3(i1.x * i2.x, i1.y + i2.y, i1.z * i2.z);
+		}
+		Int4 operator*(const Int4& i1, const Int4& i2)
+		{
+			return Int4(i1.x * i2.x, i1.y + i2.y, i1.z * i2.z, i1.w * i2.w);
 		}
 
 		Float2 Transform(Float2 point, Float2 origin, const Matrices::MatrixF& transform)
@@ -419,15 +451,15 @@ namespace MathLib
 
 		double GetLength(const Line2D& line)
 		{
-			return sqrtf(powf(line.p2.x - line.p1.x, 2) * powf(line.p2.y - line.p1.y, 2));
+			return sqrt(pow(line.p2.x - line.p1.x, 2) * pow(line.p2.y - line.p1.y, 2));
 		}
 		double GetDistance(const Float2& p1, const Float2& p2)
 		{
-			return sqrtf(powf(p2.x - p1.x, 2) + powf(p2.y - p1.y, 2));
+			return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 		}
 		double GetDistance(const Float3& p1, const Float3& p2)
 		{
-			return sqrtf(powf(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + powf(p2.z - p1.z, 2));
+			return sqrt(pow(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + pow(p2.z - p1.z, 2));
 		}
 
 		double GetSlope(const Line2D& line)

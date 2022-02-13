@@ -146,7 +146,7 @@ namespace MathLib
 		}
 		void Polygon2D::Scale(const double& scale)
 		{
-			for (Primitives::Float2 corner : *this)
+			for (Primitives::Float2& corner : *this)
 			{
 				corner.x = corner.x * scale;
 				corner.y = corner.y * scale;
@@ -154,7 +154,7 @@ namespace MathLib
 		}
 		void Polygon2D::Scale(const double& scaleX, const double& scaleY)
 		{
-			for (Primitives::Float2 corner : *this)
+			for (Primitives::Float2& corner : *this)
 			{
 				corner.x = corner.x * scaleX;
 				corner.y = corner.y * scaleY;
@@ -389,6 +389,17 @@ namespace MathLib
 			return retCollision;
 		}
 
+		bool Contains(const Rectangle2D& rect, const double& rotation, const Primitives::Float2& point)
+		{
+			Rectangle2D calcRect = rect;
+			calcRect.Rotate(-rotation);
+
+			double xArr[2] = {rect.m_PointArr[0].x, rect.m_PointArr[2].x};
+			double yArr[2] = {rect.m_PointArr[0].y, rect.m_PointArr[2].y};
+
+			return point.x < Utility::MaxFromArray(xArr, 2) && point.x > Utility::MinFromArray(xArr, 2) && 
+				point.y < Utility::MaxFromArray(yArr, 2) && point.y > Utility::MinFromArray(yArr, 2);
+		}
 		double* ProjectTo1D(const Polygon2D& polygon, const Vectors::Vector2D& viewDir)
 		{
 			double* retArr = new double[polygon.m_Corners];

@@ -45,6 +45,11 @@ namespace MathLib
 			direction.x *= scaleX;
 			direction.y *= scaleY;
 		}
+		void Vector2D::SetScale(const double& scale)
+		{
+			double factor = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
+			direction = direction * (1.0 / factor);
+		}
 		void Vector2D::Rotate(double angle)
 		{
 			Matrices::MatrixF rotMat = Matrices::MatrixF(2);
@@ -57,7 +62,7 @@ namespace MathLib
 		}
 		Vector2D Vector2D::operator+(const Vector2D& other) const
 		{
-			return Vector2D({direction.x + other.direction.x, direction.y + other.direction.y});
+			return Vector2D(Primitives::Float2(direction.x + other.direction.x, direction.y + other.direction.y));
 		}
 		Vector2D Vector2D::operator-(const Vector2D& other) const
 		{
@@ -79,7 +84,7 @@ namespace MathLib
 		}
 		double Vector2D::GetLen() const
 		{
-			return sqrtf(pow(direction.x, 2) + pow(direction.y, 2));
+			return sqrt(pow(direction.x, 2) + pow(direction.y, 2));
 		}
 		Matrices::MatrixF Vector2D::GetRowVector() const
 		{
@@ -225,7 +230,7 @@ namespace MathLib
 		}*/
 		double Vector3D::GetLen() const
 		{
-			return sqrt(powf(sqrtf(powf(direction.x, 2) + powf(direction.y, 2)), 2) + powf(direction.z, 2));
+			return sqrt(pow(sqrt(pow(direction.x, 2) + pow(direction.y, 2)), 2) + pow(direction.z, 2));
 		}
 		Matrices::MatrixF Vector3D::GetRowVector() const
 		{
