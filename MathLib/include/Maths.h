@@ -195,6 +195,9 @@ namespace MathLib
 		EXPORT Float2 operator*(const Float2& f1, const Float2& f2);
 		EXPORT Float3 operator*(const Float3& f1, const Float3& f2);
 		EXPORT Float4 operator*(const Float4& f1, const Float4& f2);
+		EXPORT Float2 operator*(const Float2& f1, const double& f2);
+		EXPORT Float3 operator*(const Float3& f1, const double& f2);
+		EXPORT Float4 operator*(const Float4& f1, const double& f2);
 
 		EXPORT bool operator==(const Int2& i1, const Int2& i2);
 		EXPORT bool operator!=(const Int2& i1, const Int2& i2);
@@ -217,6 +220,9 @@ namespace MathLib
 		EXPORT Int2 operator*(const Int2& f1, const Int2& f2);
 		EXPORT Int3 operator*(const Int3& f1, const Int3& f2);
 		EXPORT Int4 operator*(const Int4& f1, const Int4& f2);
+		EXPORT Int2 operator*(const Int2& f1, const int& f2);
+		EXPORT Int3 operator*(const Int3& f1, const int& f2);
+		EXPORT Int4 operator*(const Int4& f1, const int& f2);
 
 		EXPORT void PrintProperties(const Float2& p);
 		EXPORT void PrintProperties(const Float3& p);

@@ -270,15 +270,27 @@ namespace MathLib
 		}
 		Float2 operator*(const Float2& f1, const Float2& f2)
 		{
-			return Float2(f1.x * f2.x, f1.y + f2.y);
+			return Float2(f1.x * f2.x, f1.y * f2.y);
 		}
 		Float3 operator*(const Float3& f1, const Float3& f2)
 		{
-			return Float3(f1.x * f2.x, f1.y + f2.y, f1.z * f2.z);
+			return Float3(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z);
 		}
 		Float4 operator*(const Float4& f1, const Float4& f2)
 		{
-			return Float4(f1.x * f2.x, f1.y + f2.y, f1.z * f2.z, f1.w * f2.w);
+			return Float4(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z, f1.w * f2.w);
+		}
+		Float2 operator*(const Float2& f1, const double& f2)
+		{
+			return Float2(f1.x * f2, f1.y * f2);
+		}
+		Float3 operator*(const Float3& f1, const double& f2)
+		{
+			return Float3(f1.x * f2, f1.y * f2, f1.z * f2);
+		}
+		Float4 operator*(const Float4& f1, const double& f2)
+		{
+			return Float4(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
 		}
 
 		bool operator==(const Int2& i1, const Int2& i2)
@@ -355,15 +367,27 @@ namespace MathLib
 		}
 		Int2 operator*(const Int2& i1, const Int2& i2)
 		{
-			return Int2(i1.x * i2.x, i1.y + i2.y);
+			return Int2(i1.x * i2.x, i1.y * i2.y);
 		}
 		Int3 operator*(const Int3& i1, const Int3& i2)
 		{
-			return Int3(i1.x * i2.x, i1.y + i2.y, i1.z * i2.z);
+			return Int3(i1.x * i2.x, i1.y * i2.y, i1.z * i2.z);
 		}
 		Int4 operator*(const Int4& i1, const Int4& i2)
 		{
-			return Int4(i1.x * i2.x, i1.y + i2.y, i1.z * i2.z, i1.w * i2.w);
+			return Int4(i1.x * i2.x, i1.y * i2.y, i1.z * i2.z, i1.w * i2.w);
+		}
+		Int2 operator*(const Int2& i1, const int& i2)
+		{
+			return Int2(i1.x * i2, i1.y * i2);
+		}
+		Int3 operator*(const Int3& i1, const int& i2)
+		{
+			return Int3(i1.x * i2, i1.y * i2, i1.z * i2);
+		}
+		Int4 operator*(const Int4& i1, const int& i2)
+		{
+			return Int4(i1.x * i2, i1.y * i2, i1.z * i2, i1.w * i2);
 		}
 
 		Float2 Transform(Float2 point, Float2 origin, const Matrices::MatrixF& transform)

@@ -311,13 +311,14 @@ namespace MathLib
 		Rectangle2D::Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale)
 			: Polygon2D(4)
 		{
-			m_PointArr[0] = Primitives::Float2(1 + position.x, 1 + position.y);
-			m_PointArr[1] = Primitives::Float2(1 + position.x, -1 + position.y);
-			m_PointArr[2] = Primitives::Float2(-1 + position.x, -1 + position.y);
-			m_PointArr[3] = Primitives::Float2(-1 + position.x, 1 + position.y);
+			m_PointArr[0] = Primitives::Float2(1, 1);
+			m_PointArr[1] = Primitives::Float2(1, -1);
+			m_PointArr[2] = Primitives::Float2(-1, -1);
+			m_PointArr[3] = Primitives::Float2(-1, 1);
 
 			Rotate(rotation);
 			Scale(scale.x, scale.y);
+			Translate(position);
 		}
 		bool Rectangle2D::CollidesWith(const Rectangle2D& other) const
 		{
