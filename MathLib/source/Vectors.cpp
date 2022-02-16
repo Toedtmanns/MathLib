@@ -20,8 +20,8 @@ namespace MathLib
 		Vector2D::Vector2D(const double& angle, const double& length)
 			: direction({0, 0})
 		{
-			direction.x += cos(angle * PI / 180) * length;
-			direction.y += sin(angle * PI / 180) * length;
+			direction.x = sin(angle * PI / 180) * length;
+			direction.y = cos(angle * PI / 180) * length;
 		}
 		Vector2D::Vector2D(const Primitives::Line2D& line)
 			: direction({line.p2.x - line.p1.x, line.p2.y - line.p1.y})
@@ -75,9 +75,9 @@ namespace MathLib
 		double Vector2D::GetAngle() const
 		{
 			double hyp = this->GetLen();
-			double angle = Utility::Rad2Deg(acos(direction.x / hyp));
+			double angle = fmod(180 + Utility::Rad2Deg(asin(direction.y / hyp)), 180);
 
-			if (direction.y > 0)
+			if (direction.x < 0)
 				angle = -angle;
 
 			return angle;
