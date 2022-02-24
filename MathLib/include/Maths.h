@@ -22,8 +22,10 @@
 
 namespace MathLib
 {
+	// Generally useful functions
+
 	template<typename T>
-	T max(T t1, T t2)
+	T Max(T t1, T t2)
 	{
 		if (t1 > t2)
 			return t1;
@@ -31,7 +33,7 @@ namespace MathLib
 	}
 
 	template<typename T>
-	T min(T t1, T t2)
+	T Min(T t1, T t2)
 	{
 		if (t1 < t2)
 			return t1;
@@ -283,6 +285,10 @@ namespace MathLib
 		EXPORT void PrintProperties(const Line2D& l);
 		EXPORT void PrintProperties(const Intersect& i);
 	}
+
+	double Lerp(const double& start, const double& end, const double& t);
+	Primitives::Float2 Lerp(const Primitives::Float2& start, const Primitives::Float2& end, const double& t);
+	Primitives::Float2 Lerp(const Primitives::Line2D& line, const double& t);
 
 	namespace Complex
 	{
@@ -698,8 +704,13 @@ namespace MathLib
 		{
 		public:
 			Triangle2D();
+			Triangle2D(Triangle2D&& other) noexcept;
+			Triangle2D(const Triangle2D& other);
 			Triangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3);
 			Triangle2D(const Primitives::Float2* const pointArr);
+
+			void operator=(Triangle2D&& other) noexcept;
+			void operator=(const Triangle2D& other);
 
 			bool CollidesWith(const Triangle2D& other) const;
 			GeoCollision GetCollision(const Triangle2D& other) const;
@@ -709,9 +720,14 @@ namespace MathLib
 		{
 		public:
 			Rectangle2D();
+			Rectangle2D(Rectangle2D&& other) noexcept;
+			Rectangle2D(const Rectangle2D& other);
 			Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4);
 			Rectangle2D(const Primitives::Float2* const pointArr);
 			Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale);
+
+			void operator=(Rectangle2D&& other) noexcept;
+			void operator=(const Rectangle2D& other);
 
 			bool CollidesWith(const Rectangle2D& other) const;
 			GeoCollision GetCollision(const Rectangle2D& other) const;
