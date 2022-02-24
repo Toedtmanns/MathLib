@@ -75,7 +75,7 @@ namespace MathLib
 		double Vector2D::GetAngle() const
 		{
 			double hyp = this->GetLen();
-			double angle = fmod(180 + Utility::Rad2Deg(asin(direction.y / hyp)), 180);
+			double angle = fmod(180.001 + Utility::Rad2Deg(acos(direction.y / hyp)), 180.001);
 
 			if (direction.x < 0)
 				angle = -angle;
