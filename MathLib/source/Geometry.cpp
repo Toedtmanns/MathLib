@@ -344,8 +344,8 @@ namespace MathLib
 			m_PointArr[2] = Primitives::Float2(-1, -1);
 			m_PointArr[3] = Primitives::Float2(-1, 1);
 
-			Rotate(rotation);
 			Scale(scale.x, scale.y);
+			Rotate(rotation);
 			Translate(position);
 		}
 		void Rectangle2D::operator=(Rectangle2D&& other) noexcept
@@ -430,12 +430,15 @@ namespace MathLib
 		{
 			Rectangle2D calcRect = rect;
 			calcRect.Rotate(-rotation);
+			Vectors::Vector2D pointVec = {Primitives::Line2D(rect.GetCenter(), point)};
+			pointVec.Rotate(-rotation);
+			Primitives::Float2 transPoint = pointVec.TransformPoint(calcRect.GetCenter());
 
-			double xArr[2] = {rect.m_PointArr[0].x, rect.m_PointArr[2].x};
-			double yArr[2] = {rect.m_PointArr[0].y, rect.m_PointArr[2].y};
+			double xArr[2] = {calcRect.m_PointArr[0].x, calcRect.m_PointArr[2].x};
+			double yArr[2] = {calcRect.m_PointArr[0].y, calcRect.m_PointArr[2].y};
 
-			return point.x < Utility::MaxFromArray(xArr, 2) && point.x > Utility::MinFromArray(xArr, 2) && 
-				point.y < Utility::MaxFromArray(yArr, 2) && point.y > Utility::MinFromArray(yArr, 2);
+			return transPoint.x < Utility::MaxFromArray(xArr, 2) && transPoint.x > Utility::MinFromArray(xArr, 2) &&
+				transPoint.y < Utility::MaxFromArray(yArr, 2) && transPoint.y > Utility::MinFromArray(yArr, 2);
 		}
 		double* ProjectTo1D(const Polygon2D& polygon, const Vectors::Vector2D& viewDir)
 		{
