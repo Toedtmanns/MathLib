@@ -42,7 +42,7 @@ namespace MathLib
 			isColliding = true;
 			if (m_IntersectCount + 1 >= m_IntersectArrLength)
 			{
-				if (Utility::SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2));
+				if (Utility::SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2))
 					m_IntersectArrLength += 2;
 			}
 			m_IntersectArray[m_IntersectCount] = Primitives::Intersect(intersect);
@@ -110,7 +110,7 @@ namespace MathLib
 		Polygon2D::Polygon2D(const Polygon2D& other)
 			: m_PointArr(new Primitives::Float2[other.m_Corners]), m_Corners(other.m_Corners)
 		{
-			memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(double));
+			memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
 		}
 		Polygon2D::Polygon2D(const unsigned int& corners)
 			: m_Corners(corners), m_PointArr(new Primitives::Float2[corners])
@@ -146,7 +146,7 @@ namespace MathLib
 		}
 		void Polygon2D::Scale(const double& scale)
 		{
-			for (Primitives::Float2 corner : *this)
+			for (Primitives::Float2& corner : *this)
 			{
 				corner.x = corner.x * scale;
 				corner.y = corner.y * scale;
@@ -154,7 +154,7 @@ namespace MathLib
 		}
 		void Polygon2D::Scale(const double& scaleX, const double& scaleY)
 		{
-			for (Primitives::Float2 corner : *this)
+			for (Primitives::Float2& corner : *this)
 			{
 				corner.x = corner.x * scaleX;
 				corner.y = corner.y * scaleY;
@@ -178,13 +178,13 @@ namespace MathLib
 		void Polygon2D::operator=(const Polygon2D& other)
 		{
 			if (m_Corners == other.m_Corners)
-				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(double));
+				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
 			else
 			{
 				delete[] m_PointArr;
 				m_Corners = other.m_Corners;
 				m_PointArr = new Primitives::Float2[m_Corners];
-				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(double));
+				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
 			}
 		}
 		Polygon2D::Iterator Polygon2D::begin()
@@ -205,6 +205,16 @@ namespace MathLib
 		{
 
 		}
+		Triangle2D::Triangle2D(Triangle2D&& other) noexcept
+			: Polygon2D(std::move(other))
+		{
+
+		}
+		Triangle2D::Triangle2D(const Triangle2D& other)
+			: Polygon2D(other)
+		{
+
+		}
 		Triangle2D::Triangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3)
 			: Polygon2D(3)
 		{
@@ -216,6 +226,14 @@ namespace MathLib
 			: Polygon2D(pointArr, 3)
 		{
 			
+		}
+		void Triangle2D::operator=(Triangle2D&& other) noexcept
+		{
+			Polygon2D::operator=(std::move(other));
+		}
+		void Triangle2D::operator=(const Triangle2D& other)
+		{
+			Polygon2D::operator=(other);
 		}
 		bool Triangle2D::CollidesWith(const Triangle2D& other) const
 		{
@@ -295,6 +313,16 @@ namespace MathLib
 			m_PointArr[2] = Primitives::Float2(-1, -1);
 			m_PointArr[3] = Primitives::Float2(-1, 1);
 		}
+		Rectangle2D::Rectangle2D(Rectangle2D&& other) noexcept
+			: Polygon2D(std::move(other))
+		{
+
+		}
+		Rectangle2D::Rectangle2D(const Rectangle2D& other)
+			: Polygon2D(other)
+		{
+
+		}
 		Rectangle2D::Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4)
 			: Polygon2D(4)
 		{
@@ -311,13 +339,22 @@ namespace MathLib
 		Rectangle2D::Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale)
 			: Polygon2D(4)
 		{
-			m_PointArr[0] = Primitives::Float2(1 + position.x, 1 + position.y);
-			m_PointArr[1] = Primitives::Float2(1 + position.x, -1 + position.y);
-			m_PointArr[2] = Primitives::Float2(-1 + position.x, -1 + position.y);
-			m_PointArr[3] = Primitives::Float2(-1 + position.x, 1 + position.y);
+			m_PointArr[0] = Primitives::Float2(1, 1);
+			m_PointArr[1] = Primitives::Float2(1, -1);
+			m_PointArr[2] = Primitives::Float2(-1, -1);
+			m_PointArr[3] = Primitives::Float2(-1, 1);
 
-			Rotate(rotation);
 			Scale(scale.x, scale.y);
+			Rotate(rotation);
+			Translate(position);
+		}
+		void Rectangle2D::operator=(Rectangle2D&& other) noexcept
+		{
+			Polygon2D::operator=(std::move(other));
+		}
+		void Rectangle2D::operator=(const Rectangle2D& other)
+		{
+			Polygon2D::operator=(other);
 		}
 		bool Rectangle2D::CollidesWith(const Rectangle2D& other) const
 		{
@@ -389,6 +426,20 @@ namespace MathLib
 			return retCollision;
 		}
 
+		bool Contains(const Rectangle2D& rect, const double& rotation, const Primitives::Float2& point)
+		{
+			Rectangle2D calcRect = rect;
+			calcRect.Rotate(-rotation);
+			Vectors::Vector2D pointVec = {Primitives::Line2D(rect.GetCenter(), point)};
+			pointVec.Rotate(-rotation);
+			Primitives::Float2 transPoint = pointVec.TransformPoint(calcRect.GetCenter());
+
+			double xArr[2] = {calcRect.m_PointArr[0].x, calcRect.m_PointArr[2].x};
+			double yArr[2] = {calcRect.m_PointArr[0].y, calcRect.m_PointArr[2].y};
+
+			return transPoint.x < Utility::MaxFromArray(xArr, 2) && transPoint.x > Utility::MinFromArray(xArr, 2) &&
+				transPoint.y < Utility::MaxFromArray(yArr, 2) && transPoint.y > Utility::MinFromArray(yArr, 2);
+		}
 		double* ProjectTo1D(const Polygon2D& polygon, const Vectors::Vector2D& viewDir)
 		{
 			double* retArr = new double[polygon.m_Corners];

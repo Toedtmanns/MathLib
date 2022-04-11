@@ -260,7 +260,7 @@ namespace MathLib
 		}
 		void PrintProperties(const Quaternion& quat)
 		{
-			printf("Real: %.3f, i: %.3f, j: %.3f, k: %.3f\n", quat.real, quat.i, quat.j, quat.k);
+			printf("Real: %.3f, i: %.3f, j: %.3f, k: %.3f\n", quat.real, quat.i.num, quat.j.num, quat.k.num);
 		}
 	}
 }

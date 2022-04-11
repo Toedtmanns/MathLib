@@ -5,6 +5,25 @@
 
 namespace MathLib
 {
+	double Lerp(const double& start, const double& end, const double& t)
+	{
+		return start + t * (end - start);
+	}
+	Primitives::Float2 Lerp(const Primitives::Float2& start, const Primitives::Float2& end, const double& t)
+	{
+		return {
+			start.x + t * (end.x - start.x),
+			start.y + t * (end.y - start.y)
+		};
+	}
+	Primitives::Float2 Lerp(const Primitives::Line2D& line, const double& t)
+	{
+		return {
+			line.p1.x + t * (line.p2.x - line.p1.x),
+			line.p1.y + t * (line.p2.y - line.p1.y)
+		};
+	}
+
 	namespace Utility
 	{
 		double Deg2Rad(double deg)

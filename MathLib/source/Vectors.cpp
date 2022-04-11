@@ -20,8 +20,8 @@ namespace MathLib
 		Vector2D::Vector2D(const double& angle, const double& length)
 			: direction({0, 0})
 		{
-			direction.x += cos(angle * PI / 180) * length;
-			direction.y += sin(angle * PI / 180) * length;
+			direction.x = sin(angle * PI / 180) * length;
+			direction.y = cos(angle * PI / 180) * length;
 		}
 		Vector2D::Vector2D(const Primitives::Line2D& line)
 			: direction({line.p2.x - line.p1.x, line.p2.y - line.p1.y})
@@ -45,6 +45,11 @@ namespace MathLib
 			direction.x *= scaleX;
 			direction.y *= scaleY;
 		}
+		void Vector2D::SetScale(const double& scale)
+		{
+			double factor = sqrt(pow(direction.x, 2) + pow(direction.y, 2));
+			direction = direction * (1.0 / factor);
+		}
 		void Vector2D::Rotate(double angle)
 		{
 			Matrices::MatrixF rotMat = Matrices::MatrixF(2);
@@ -57,7 +62,7 @@ namespace MathLib
 		}
 		Vector2D Vector2D::operator+(const Vector2D& other) const
 		{
-			return Vector2D({direction.x + other.direction.x, direction.y + other.direction.y});
+			return Vector2D(Primitives::Float2(direction.x + other.direction.x, direction.y + other.direction.y));
 		}
 		Vector2D Vector2D::operator-(const Vector2D& other) const
 		{
@@ -70,16 +75,16 @@ namespace MathLib
 		double Vector2D::GetAngle() const
 		{
 			double hyp = this->GetLen();
-			double angle = Utility::Rad2Deg(acos(direction.x / hyp));
+			double angle = fmod(180.001 + Utility::Rad2Deg(acos(direction.y / hyp)), 180.001);
 
-			if (direction.y > 0)
+			if (direction.x < 0)
 				angle = -angle;
 
 			return angle;
 		}
 		double Vector2D::GetLen() const
 		{
-			return sqrtf(pow(direction.x, 2) + pow(direction.y, 2));
+			return sqrt(pow(direction.x, 2) + pow(direction.y, 2));
 		}
 		Matrices::MatrixF Vector2D::GetRowVector() const
 		{
@@ -117,7 +122,7 @@ namespace MathLib
 		{
 
 		}
-		Vector3D Vector3D::Transform(const Matrices::MatrixF& mat)
+		void Vector3D::Transform(const Matrices::MatrixF& mat)
 		{
 			if (!Matrices::MatrixIsSquare(mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
@@ -132,13 +137,17 @@ namespace MathLib
 			direction.y = dirY;
 			direction.z = dirZ;
 		}
-		Vector3D Vector3D::Scale(const double& s)
+		void Vector3D::Scale(const double& s)
 		{
-			return Vector3D(Primitives::Float3(direction.x * s, direction.y * s, direction.z * s));
+			direction.x *= s;
+			direction.y *= s;
+			direction.z *= s;
 		}
-		Vector3D Vector3D::Scale(const double& sX, const double& sY, const double& sZ)
+		void Vector3D::Scale(const double& sX, const double& sY, const double& sZ)
 		{
-			return Vector3D(Primitives::Float3(direction.x * sX, direction.y * sY, direction.z * sZ));
+			direction.x *= sX;
+			direction.y *= sY;
+			direction.z *= sZ;
 		}
 		void Vector3D::Rotate(const double& angle, const unsigned int& axis)
 		{
@@ -167,12 +176,11 @@ namespace MathLib
 		{
 
 		}*/
-		Vector3D Vector3D::SetLen(const double& len)
+		void Vector3D::SetLen(const double& len)
 		{
-			double vecLen(GetLen());
-			Vector3D retVec(*this);
+			double vecLen = GetLen();
 
-			return retVec.Scale(vecLen * (len / vecLen));
+			Scale(vecLen * (len / vecLen));
 		}
 		Vector3D Vector3D::operator+(const Vector3D& other) const
 		{
@@ -225,7 +233,7 @@ namespace MathLib
 		}*/
 		double Vector3D::GetLen() const
 		{
-			return sqrt(powf(sqrtf(powf(direction.x, 2) + powf(direction.y, 2)), 2) + powf(direction.z, 2));
+			return sqrt(pow(sqrt(pow(direction.x, 2) + pow(direction.y, 2)), 2) + pow(direction.z, 2));
 		}
 		Matrices::MatrixF Vector3D::GetRowVector() const
 		{

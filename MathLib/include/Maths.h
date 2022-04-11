@@ -22,13 +22,32 @@
 
 namespace MathLib
 {
+	// Generally useful functions
+
+	template<typename T>
+	T Max(T t1, T t2)
+	{
+		if (t1 > t2)
+			return t1;
+		return t2;
+	}
+
+	template<typename T>
+	T Min(T t1, T t2)
+	{
+		if (t1 < t2)
+			return t1;
+		return t2;
+	}
+
 	namespace Primitives
 	{
+		union Int4;
+		union Int3;
+		union Int2;
+
 		union EXPORT Float4
 		{
-		protected:
-			double content[4];
-
 		public:
 			struct
 			{
@@ -44,17 +63,19 @@ namespace MathLib
 				double b;
 				double a;
 			};
+			double content[4];
 
 			Float4();
 			Float4(const double& x, const double& y, const double& z, const double& w);
+			Float4(const Int4& other);
+
+			void operator=(const Int4& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Float3
 		{
-		protected:
-			double content[3];
-
 		public:
 			struct
 			{
@@ -68,36 +89,38 @@ namespace MathLib
 				double g;
 				double b;
 			};
+			double content[3];
 
 			Float3();
 			Float3(const double& x, const double& y, const double& z);
+			Float3(const Int3& other);
 
+			void operator=(const Int3& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Float2
 		{
-		protected:
-			double content[2];
-
 		public:
 			struct
 			{
 				double x;
 				double y;
 			};
+			double content[2];
 
 			Float2();
 			Float2(const double& x, const double& y);
+			Float2(const Int2& other);
 
+			void operator=(const Int2& other);
 			double& operator[](const unsigned int& index);
+			const double& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int4
 		{
-		protected:
-			int content[4];
-
 		public:
 			struct
 			{
@@ -113,18 +136,19 @@ namespace MathLib
 				int b;
 				int a;
 			};
+			int content[4];
 
 			Int4();
 			Int4(const int& x, const int& y, const int& z, const int& w);
+			Int4(const Float4& other);
 
+			void operator=(const Float4& other);
 			int& operator[](const unsigned int& index);
+			const int& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int3
 		{
-		protected:
-			int content[3];
-
 		public:
 			struct
 			{
@@ -138,29 +162,34 @@ namespace MathLib
 				int g;
 				int b;
 			};
+			int content[3];
 
 			Int3();
 			Int3(const int& x, const int& y, const int& z);
+			Int3(const Float3& other);
 
+			void operator=(const Float3& other);
 			int& operator[](const unsigned int& index);
+			const int& operator[](const unsigned int& index) const;
 		};
 
 		union EXPORT Int2
 		{
-		protected:
-			int content[2];
-
 		public:
 			struct
 			{
 				int x;
 				int y;
 			};
+			int content[2];
 
 			Int2();
 			Int2(const int& x, const int& y);
+			Int2(const Float2& other);
 
+			void operator=(const Float2& other);
 			int& operator[](const unsigned int& index);
+			const int& operator[](const unsigned int& index) const;
 		};
 
 		EXPORT bool operator==(const Float2& f1, const Float2& f2);
@@ -175,12 +204,18 @@ namespace MathLib
 		EXPORT Float2 operator-(const Float2& f1, const Float2& f2);
 		EXPORT Float3 operator-(const Float3& f1, const Float3& f2);
 		EXPORT Float4 operator-(const Float4& f1, const Float4& f2);
-		EXPORT Float2 operator+=(const Float2& f1, const Float2& f2);
-		EXPORT Float3 operator+=(const Float3& f1, const Float3& f2);
-		EXPORT Float4 operator+=(const Float4& f1, const Float4& f2);
-		EXPORT Float2 operator-=(const Float2& f1, const Float2& f2);
-		EXPORT Float3 operator-=(const Float3& f1, const Float3& f2);
-		EXPORT Float4 operator-=(const Float4& f1, const Float4& f2);
+		EXPORT void operator+=(Float2& f1, const Float2& f2);
+		EXPORT void operator+=(Float3& f1, const Float3& f2);
+		EXPORT void operator+=(Float4& f1, const Float4& f2);
+		EXPORT void operator-=(Float2& f1, const Float2& f2);
+		EXPORT void operator-=(Float3& f1, const Float3& f2);
+		EXPORT void operator-=(Float4& f1, const Float4& f2);
+		EXPORT Float2 operator*(const Float2& f1, const Float2& f2);
+		EXPORT Float3 operator*(const Float3& f1, const Float3& f2);
+		EXPORT Float4 operator*(const Float4& f1, const Float4& f2);
+		EXPORT Float2 operator*(const Float2& f1, const double& f2);
+		EXPORT Float3 operator*(const Float3& f1, const double& f2);
+		EXPORT Float4 operator*(const Float4& f1, const double& f2);
 
 		EXPORT bool operator==(const Int2& i1, const Int2& i2);
 		EXPORT bool operator!=(const Int2& i1, const Int2& i2);
@@ -194,12 +229,18 @@ namespace MathLib
 		EXPORT Int2 operator-(const Int2& i1, const Int2& i2);
 		EXPORT Int3 operator-(const Int3& i1, const Int3& i2);
 		EXPORT Int4 operator-(const Int4& i1, const Int4& i2);
-		EXPORT Int2 operator+=(const Int2& i1, const Int2& i2);
-		EXPORT Int3 operator+=(const Int3& i1, const Int3& i2);
-		EXPORT Int4 operator+=(const Int4& i1, const Int4& i2);
-		EXPORT Int2 operator-=(const Int2& i1, const Int2& i2);
-		EXPORT Int3 operator-=(const Int3& i1, const Int3& i2);
-		EXPORT Int4 operator-=(const Int4& i1, const Int4& i2);
+		EXPORT void operator+=(Int2& i1, const Int2& i2);
+		EXPORT void operator+=(Int3& i1, const Int3& i2);
+		EXPORT void operator+=(Int4& i1, const Int4& i2);
+		EXPORT void operator-=(Int2& i1, const Int2& i2);
+		EXPORT void operator-=(Int3& i1, const Int3& i2);
+		EXPORT void operator-=(Int4& i1, const Int4& i2);
+		EXPORT Int2 operator*(const Int2& f1, const Int2& f2);
+		EXPORT Int3 operator*(const Int3& f1, const Int3& f2);
+		EXPORT Int4 operator*(const Int4& f1, const Int4& f2);
+		EXPORT Int2 operator*(const Int2& f1, const int& f2);
+		EXPORT Int3 operator*(const Int3& f1, const int& f2);
+		EXPORT Int4 operator*(const Int4& f1, const int& f2);
 
 		EXPORT void PrintProperties(const Float2& p);
 		EXPORT void PrintProperties(const Float3& p);
@@ -210,7 +251,7 @@ namespace MathLib
 		{
 			Float2 p1;
 			Float2 p2;
-			float normal;
+			double normal;
 
 			Line2D();
 			Line2D(const double& x1, const double& y1, const double& x2, const double& y2);
@@ -244,6 +285,10 @@ namespace MathLib
 		EXPORT void PrintProperties(const Line2D& l);
 		EXPORT void PrintProperties(const Intersect& i);
 	}
+
+	double Lerp(const double& start, const double& end, const double& t);
+	Primitives::Float2 Lerp(const Primitives::Float2& start, const Primitives::Float2& end, const double& t);
+	Primitives::Float2 Lerp(const Primitives::Line2D& line, const double& t);
 
 	namespace Complex
 	{
@@ -382,13 +427,14 @@ namespace MathLib
 			MatrixI operator-(const MatrixI& other) const;
 			MatrixI operator*(const MatrixI& other) const;
 			int* operator[](const unsigned int& column);
+			const int* operator[](const unsigned int& column) const;
 
 			~MatrixI();
 		};
 		class EXPORT MatrixF
 		{
 			double** m_Matrix;
-			int m_Rows, m_Columns;
+			unsigned int m_Rows, m_Columns;
 
 		public:
 			MatrixF(MatrixF&& other) noexcept;
@@ -417,6 +463,7 @@ namespace MathLib
 			MatrixF operator-(const MatrixF& other) const;
 			MatrixF operator*(const MatrixF& other) const;
 			double* operator[](const unsigned int& column);
+			const double* operator[](const unsigned int& column) const;
 
 			~MatrixF();
 		};
@@ -475,6 +522,7 @@ namespace MathLib
 			void Transform(const Matrices::MatrixF& transformMat);
 			void Scale(const double& scale);
 			void Scale(const double& scaleX, const double& scaleY);
+			void SetScale(const double& scale);
 			void Rotate(double angle);
 
 			Vector2D operator+(const Vector2D& other) const;
@@ -497,11 +545,11 @@ namespace MathLib
 			Vector3D();
 			Vector3D(const Primitives::Float3& dir);
 
-			Vector3D Transform(const Matrices::MatrixF& mat);
-			Vector3D Scale(const double& scale);
-			Vector3D Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
+			void Transform(const Matrices::MatrixF& mat);
+			void Scale(const double& scale);
+			void Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
 			void Rotate(const double& angle, const unsigned int& axis);
-			Vector3D SetLen(const double& len);
+			void SetLen(const double& len);
 
 			Vector3D operator+(const Vector3D& other) const;
 			Vector3D operator-(const Vector3D& other) const;
@@ -656,8 +704,13 @@ namespace MathLib
 		{
 		public:
 			Triangle2D();
+			Triangle2D(Triangle2D&& other) noexcept;
+			Triangle2D(const Triangle2D& other);
 			Triangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3);
 			Triangle2D(const Primitives::Float2* const pointArr);
+
+			void operator=(Triangle2D&& other) noexcept;
+			void operator=(const Triangle2D& other);
 
 			bool CollidesWith(const Triangle2D& other) const;
 			GeoCollision GetCollision(const Triangle2D& other) const;
@@ -667,14 +720,20 @@ namespace MathLib
 		{
 		public:
 			Rectangle2D();
+			Rectangle2D(Rectangle2D&& other) noexcept;
+			Rectangle2D(const Rectangle2D& other);
 			Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4);
 			Rectangle2D(const Primitives::Float2* const pointArr);
 			Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale);
+
+			void operator=(Rectangle2D&& other) noexcept;
+			void operator=(const Rectangle2D& other);
 
 			bool CollidesWith(const Rectangle2D& other) const;
 			GeoCollision GetCollision(const Rectangle2D& other) const;
 		};
 
+		EXPORT bool Contains(const Rectangle2D& rect, const double& rotation, const Primitives::Float2& point);
 		EXPORT double* ProjectTo1D(const Polygon2D& polygon, const Vectors::Vector2D& viewDir);
 		EXPORT double* ProjectTo1D(const Primitives::Float2* pointArr, const unsigned int& pointCount, const Vectors::Vector2D& viewDir);
 	}
@@ -689,9 +748,9 @@ namespace MathLib
 		EXPORT Vectors::Vector2D Line2Vector(Primitives::Line2D line);
 		EXPORT Vectors::Vector2D Line2Vector(Primitives::Float2 p1, Primitives::Float2 p2);
 		EXPORT int RandInt(int min, int max);
-		EXPORT inline float RoundFTo(const float& num, const int& decimal)
+		EXPORT inline double RoundFTo(const double& num, const int& decimal)
 		{
-			return roundf(pow(10, decimal) * num) / pow(10, decimal);
+			return round(pow(10, decimal) * num) / pow(10, decimal);
 		}
 		EXPORT Matrices::MatrixF Vec2Mat(const Vectors::Vector3D& vec, const int& front = 0);
 		EXPORT Vectors::Vector3D Mat2Vec(const Matrices::MatrixF& mat, const int& front = 0);
