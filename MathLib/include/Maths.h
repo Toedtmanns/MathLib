@@ -545,11 +545,11 @@ namespace MathLib
 			Vector3D();
 			Vector3D(const Primitives::Float3& dir);
 
-			Vector3D Transform(const Matrices::MatrixF& mat);
-			Vector3D Scale(const double& scale);
-			Vector3D Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
+			void Transform(const Matrices::MatrixF& mat);
+			void Scale(const double& scale);
+			void Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
 			void Rotate(const double& angle, const unsigned int& axis);
-			Vector3D SetLen(const double& len);
+			void SetLen(const double& len);
 
 			Vector3D operator+(const Vector3D& other) const;
 			Vector3D operator-(const Vector3D& other) const;

@@ -42,7 +42,7 @@ namespace MathLib
 			isColliding = true;
 			if (m_IntersectCount + 1 >= m_IntersectArrLength)
 			{
-				if (Utility::SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2));
+				if (Utility::SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2))
 					m_IntersectArrLength += 2;
 			}
 			m_IntersectArray[m_IntersectCount] = Primitives::Intersect(intersect);

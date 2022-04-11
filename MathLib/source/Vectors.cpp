@@ -122,7 +122,7 @@ namespace MathLib
 		{
 
 		}
-		Vector3D Vector3D::Transform(const Matrices::MatrixF& mat)
+		void Vector3D::Transform(const Matrices::MatrixF& mat)
 		{
 			if (!Matrices::MatrixIsSquare(mat, 3))
 				throw std::invalid_argument("Matrix is not 3x3!");
@@ -137,13 +137,17 @@ namespace MathLib
 			direction.y = dirY;
 			direction.z = dirZ;
 		}
-		Vector3D Vector3D::Scale(const double& s)
+		void Vector3D::Scale(const double& s)
 		{
-			return Vector3D(Primitives::Float3(direction.x * s, direction.y * s, direction.z * s));
+			direction.x *= s;
+			direction.y *= s;
+			direction.z *= s;
 		}
-		Vector3D Vector3D::Scale(const double& sX, const double& sY, const double& sZ)
+		void Vector3D::Scale(const double& sX, const double& sY, const double& sZ)
 		{
-			return Vector3D(Primitives::Float3(direction.x * sX, direction.y * sY, direction.z * sZ));
+			direction.x *= sX;
+			direction.y *= sY;
+			direction.z *= sZ;
 		}
 		void Vector3D::Rotate(const double& angle, const unsigned int& axis)
 		{
@@ -172,12 +176,11 @@ namespace MathLib
 		{
 
 		}*/
-		Vector3D Vector3D::SetLen(const double& len)
+		void Vector3D::SetLen(const double& len)
 		{
-			double vecLen(GetLen());
-			Vector3D retVec(*this);
+			double vecLen = GetLen();
 
-			return retVec.Scale(vecLen * (len / vecLen));
+			Scale(vecLen * (len / vecLen));
 		}
 		Vector3D Vector3D::operator+(const Vector3D& other) const
 		{
