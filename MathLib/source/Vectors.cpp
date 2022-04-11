@@ -12,7 +12,7 @@ namespace MathLib
 		{
 
 		}
-		Vector2D::Vector2D(const Primitives::Float2& dir)
+		Vector2D::Vector2D(const Float2& dir)
 			: direction(dir)
 		{
 
@@ -23,7 +23,7 @@ namespace MathLib
 			direction.x = sin(angle * PI / 180) * length;
 			direction.y = cos(angle * PI / 180) * length;
 		}
-		Vector2D::Vector2D(const Primitives::Line2D& line)
+		Vector2D::Vector2D(const Line2D& line)
 			: direction({line.p2.x - line.p1.x, line.p2.y - line.p1.y})
 		{
 			
@@ -62,7 +62,7 @@ namespace MathLib
 		}
 		Vector2D Vector2D::operator+(const Vector2D& other) const
 		{
-			return Vector2D(Primitives::Float2(direction.x + other.direction.x, direction.y + other.direction.y));
+			return Vector2D(Float2(direction.x + other.direction.x, direction.y + other.direction.y));
 		}
 		Vector2D Vector2D::operator-(const Vector2D& other) const
 		{
@@ -102,7 +102,7 @@ namespace MathLib
 
 			return retMat;
 		}
-		Primitives::Float2 Vector2D::TransformPoint(Primitives::Float2 point) const
+		Float2 Vector2D::TransformPoint(Float2 point) const
 		{
 			point.x += direction.x;
 			point.y += direction.y;
@@ -117,7 +117,7 @@ namespace MathLib
 		{
 
 		}
-		Vector3D::Vector3D(const Primitives::Float3& dir)
+		Vector3D::Vector3D(const Float3& dir)
 			: direction(dir)
 		{
 
@@ -156,19 +156,19 @@ namespace MathLib
 			switch (axis % 3)
 			{
 			case 0:
-				calcVec.direction = Primitives::Float2(direction.y, direction.z);
+				calcVec.direction = Float2(direction.y, direction.z);
 				calcVec.Rotate(angle);
-				direction = Primitives::Float3(direction.x, calcVec.direction.x, calcVec.direction.y);
+				direction = Float3(direction.x, calcVec.direction.x, calcVec.direction.y);
 				break;
 			case 1:
-				calcVec.direction = Primitives::Float2(direction.x, direction.z);
+				calcVec.direction = Float2(direction.x, direction.z);
 				calcVec.Rotate(angle);
-				direction = Primitives::Float3(calcVec.direction.x, direction.y, calcVec.direction.y);
+				direction = Float3(calcVec.direction.x, direction.y, calcVec.direction.y);
 				break;
 			case 2:
-				calcVec.direction = Primitives::Float2(direction.x, direction.y);
+				calcVec.direction = Float2(direction.x, direction.y);
 				calcVec.Rotate(angle);
-				direction = Primitives::Float3(calcVec.direction.x, calcVec.direction.y, direction.z);
+				direction = Float3(calcVec.direction.x, calcVec.direction.y, direction.z);
 				break;
 			}
 		}
@@ -210,15 +210,15 @@ namespace MathLib
 			switch (axis)
 			{
 			case 0:
-				calcVec.direction = Primitives::Float2(direction.y, direction.z);
+				calcVec.direction = Float2(direction.y, direction.z);
 				angle = calcVec.GetAngle();
 				break;
 			case 1:
-				calcVec.direction = Primitives::Float2(direction.x, direction.z);
+				calcVec.direction = Float2(direction.x, direction.z);
 				angle = calcVec.GetAngle();
 				break;
 			case 2:
-				calcVec.direction = Primitives::Float2(direction.x, direction.y);
+				calcVec.direction = Float2(direction.x, direction.y);
 				angle = calcVec.GetAngle();
 				break;
 			default:
@@ -253,7 +253,7 @@ namespace MathLib
 
 			return retMat;
 		}
-		Primitives::Float3 Vector3D::TransformPoint(Primitives::Float3 point)
+		Float3 Vector3D::TransformPoint(Float3 point)
 		{
 			point.x += direction.x;
 			point.y += direction.y;
@@ -290,7 +290,7 @@ namespace MathLib
 		{
 			Matrices::MatrixF vectors = Matrices::TransformF2x2(v1.direction, v2.direction);
 			double zLength = Matrices::MatrixGetDet(vectors);
-			Vector3D cProduct = Vector3D(Primitives::Float3(0, 0, zLength));
+			Vector3D cProduct = Vector3D(Float3(0, 0, zLength));
 
 			return cProduct;
 		}

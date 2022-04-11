@@ -7,7 +7,7 @@ namespace MathLib
 	namespace Geometry
 	{
 		GeoCollision::GeoCollision()
-			: isColliding(false), m_IntersectArray(new Primitives::Intersect[2]), m_IntersectCount(0), m_IntersectArrLength(2)
+			: isColliding(false), m_IntersectArray(new Intersect[2]), m_IntersectCount(0), m_IntersectArrLength(2)
 		{
 
 		}
@@ -17,11 +17,11 @@ namespace MathLib
 			other.m_IntersectArray = nullptr;
 		}
 		GeoCollision::GeoCollision(const GeoCollision& other)
-			: isColliding(other.isColliding), m_IntersectCount(other.m_IntersectCount), m_IntersectArrLength(other.m_IntersectArrLength), m_IntersectArray(new Primitives::Intersect[other.m_IntersectArrLength])
+			: isColliding(other.isColliding), m_IntersectCount(other.m_IntersectCount), m_IntersectArrLength(other.m_IntersectArrLength), m_IntersectArray(new Intersect[other.m_IntersectArrLength])
 		{
-			memcpy(m_IntersectArray, other.m_IntersectArray, m_IntersectArrLength * sizeof(Primitives::Intersect));
+			memcpy(m_IntersectArray, other.m_IntersectArray, m_IntersectArrLength * sizeof(Intersect));
 		}
-		GeoCollision::GeoCollision(const Primitives::Intersect* intersectArr, const unsigned int& intersectArrLength)
+		GeoCollision::GeoCollision(const Intersect* intersectArr, const unsigned int& intersectArrLength)
 			: m_IntersectCount(intersectArrLength), m_IntersectArrLength(intersectArrLength)
 		{
 			if (intersectArrLength == 0 || intersectArr == nullptr)
@@ -33,11 +33,11 @@ namespace MathLib
 			else
 			{
 				isColliding = true;
-				m_IntersectArray = new Primitives::Intersect[intersectArrLength];
-				memcpy(m_IntersectArray, intersectArr, intersectArrLength * sizeof(Primitives::Intersect));
+				m_IntersectArray = new Intersect[intersectArrLength];
+				memcpy(m_IntersectArray, intersectArr, intersectArrLength * sizeof(Intersect));
 			}
 		}
-		void GeoCollision::AddIntersect(const Primitives::Intersect& intersect)
+		void GeoCollision::AddIntersect(const Intersect& intersect)
 		{
 			isColliding = true;
 			if (m_IntersectCount + 1 >= m_IntersectArrLength)
@@ -45,7 +45,7 @@ namespace MathLib
 				if (Utility::SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2))
 					m_IntersectArrLength += 2;
 			}
-			m_IntersectArray[m_IntersectCount] = Primitives::Intersect(intersect);
+			m_IntersectArray[m_IntersectCount] = Intersect(intersect);
 			m_IntersectCount++;
 		}
 		unsigned int GeoCollision::GetIntersectCount() const
@@ -68,13 +68,13 @@ namespace MathLib
 			{
 				if (m_IntersectArray != nullptr)
 					delete[] m_IntersectArray;
-				m_IntersectArray = new Primitives::Intersect[other.m_IntersectCount];
+				m_IntersectArray = new Intersect[other.m_IntersectCount];
 			}
-			memcpy(m_IntersectArray, other.m_IntersectArray, other.m_IntersectCount * sizeof(Primitives::Intersect));
+			memcpy(m_IntersectArray, other.m_IntersectArray, other.m_IntersectCount * sizeof(Intersect));
 			m_IntersectCount = other.m_IntersectCount;
 			isColliding = other.isColliding;
 		}
-		Primitives::Intersect& GeoCollision::operator[](const unsigned int& index)
+		Intersect& GeoCollision::operator[](const unsigned int& index)
 		{
 			if (index < m_IntersectCount)
 				return m_IntersectArray[index];
@@ -96,11 +96,11 @@ namespace MathLib
 		}
 
 		Polygon2D::Polygon2D()
-			: m_PointArr(new Primitives::Float2[3]), m_Corners(3)
+			: m_PointArr(new Float2[3]), m_Corners(3)
 		{
-			m_PointArr[0] = Primitives::Float2(0, 1);
-			m_PointArr[1] = Primitives::Float2(1, -1);
-			m_PointArr[2] = Primitives::Float2(-1, -1);
+			m_PointArr[0] = Float2(0, 1);
+			m_PointArr[1] = Float2(1, -1);
+			m_PointArr[2] = Float2(-1, -1);
 		}
 		Polygon2D::Polygon2D(Polygon2D&& other) noexcept
 		{
@@ -108,21 +108,21 @@ namespace MathLib
 			m_PointArr = other.m_PointArr;
 		}
 		Polygon2D::Polygon2D(const Polygon2D& other)
-			: m_PointArr(new Primitives::Float2[other.m_Corners]), m_Corners(other.m_Corners)
+			: m_PointArr(new Float2[other.m_Corners]), m_Corners(other.m_Corners)
 		{
-			memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
+			memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Float2));
 		}
 		Polygon2D::Polygon2D(const unsigned int& corners)
-			: m_Corners(corners), m_PointArr(new Primitives::Float2[corners])
+			: m_Corners(corners), m_PointArr(new Float2[corners])
 		{
 
 		}
-		Polygon2D::Polygon2D(const Primitives::Float2* const pointArr, const unsigned int& corners)
-			: m_PointArr(new Primitives::Float2[corners]), m_Corners(corners)
+		Polygon2D::Polygon2D(const Float2* const pointArr, const unsigned int& corners)
+			: m_PointArr(new Float2[corners]), m_Corners(corners)
 		{
 			memcpy(m_PointArr, pointArr, corners * sizeof(double));
 		}
-		void Polygon2D::Translate(const Primitives::Float2& translation)
+		void Polygon2D::Translate(const Float2& translation)
 		{
 			for (unsigned int c = 0; c < m_Corners; c++)
 				m_PointArr[c] += translation;
@@ -130,7 +130,7 @@ namespace MathLib
 		void Polygon2D::Translate(const double& translateX, const double& translateY)
 		{
 			for (unsigned int c = 0; c < m_Corners; c++)
-				m_PointArr[c] += Primitives::Float2(translateX, translateY);
+				m_PointArr[c] += Float2(translateX, translateY);
 		}
 		void Polygon2D::Rotate(const double& angle)
 		{
@@ -140,13 +140,13 @@ namespace MathLib
 			rotMat[1][0] = sin(Utility::Deg2Rad(angle));
 			rotMat[1][1] = cos(Utility::Deg2Rad(angle));
 
-			Primitives::Float2 center = GetCenter();
+			Float2 center = GetCenter();
 			for (unsigned int c = 0; c < m_Corners; c++)
 				m_PointArr[c] = (m_PointArr[c] - center) * rotMat + center;
 		}
 		void Polygon2D::Scale(const double& scale)
 		{
-			for (Primitives::Float2& corner : *this)
+			for (Float2& corner : *this)
 			{
 				corner.x = corner.x * scale;
 				corner.y = corner.y * scale;
@@ -154,15 +154,15 @@ namespace MathLib
 		}
 		void Polygon2D::Scale(const double& scaleX, const double& scaleY)
 		{
-			for (Primitives::Float2& corner : *this)
+			for (Float2& corner : *this)
 			{
 				corner.x = corner.x * scaleX;
 				corner.y = corner.y * scaleY;
 			}
 		}
-		Primitives::Float2 Polygon2D::GetCenter() const
+		Float2 Polygon2D::GetCenter() const
 		{
-			Primitives::Float2 center = Primitives::Float2();
+			Float2 center = Float2();
 			for (unsigned int c = 0; c < m_Corners; c++)
 				center = center + m_PointArr[c];
 			center.x = center.x / m_Corners;
@@ -178,13 +178,13 @@ namespace MathLib
 		void Polygon2D::operator=(const Polygon2D& other)
 		{
 			if (m_Corners == other.m_Corners)
-				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
+				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Float2));
 			else
 			{
 				delete[] m_PointArr;
 				m_Corners = other.m_Corners;
-				m_PointArr = new Primitives::Float2[m_Corners];
-				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Primitives::Float2));
+				m_PointArr = new Float2[m_Corners];
+				memcpy(m_PointArr, other.m_PointArr, m_Corners * sizeof(Float2));
 			}
 		}
 		Polygon2D::Iterator Polygon2D::begin()
@@ -215,14 +215,14 @@ namespace MathLib
 		{
 
 		}
-		Triangle2D::Triangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3)
+		Triangle2D::Triangle2D(const Float2& p1, const Float2& p2, const Float2& p3)
 			: Polygon2D(3)
 		{
 			m_PointArr[0] = p1;
 			m_PointArr[1] = p2;
 			m_PointArr[2] = p3;
 		}
-		Triangle2D::Triangle2D(const Primitives::Float2* const pointArr)
+		Triangle2D::Triangle2D(const Float2* const pointArr)
 			: Polygon2D(pointArr, 3)
 		{
 			
@@ -283,19 +283,19 @@ namespace MathLib
 			{
 				for (unsigned int side = 0; side < m_Corners; side++)
 				{
-					Primitives::Line2D line = Primitives::Line2D(
+					Line2D line = Line2D(
 						m_PointArr[side],
 						m_PointArr[(side + 1) % 3]
 					);
 
 					for (unsigned int oSide = 0; oSide < other.m_Corners; oSide++)
 					{
-						Primitives::Line2D oLine = Primitives::Line2D(
+						Line2D oLine = Line2D(
 							other.m_PointArr[oSide],
 							other.m_PointArr[(oSide + 1) % 3]
 						);
 
-						Primitives::Intersect intersect = Primitives::GetIntersect(line, oLine);
+						Intersect intersect = GetIntersect(line, oLine);
 						if (intersect.isIntersecting)
 							retCollision.AddIntersect(intersect);
 					}
@@ -308,10 +308,10 @@ namespace MathLib
 		Rectangle2D::Rectangle2D()
 			: Polygon2D(4)
 		{
-			m_PointArr[0] = Primitives::Float2(1, 1);
-			m_PointArr[1] = Primitives::Float2(1, -1);
-			m_PointArr[2] = Primitives::Float2(-1, -1);
-			m_PointArr[3] = Primitives::Float2(-1, 1);
+			m_PointArr[0] = Float2(1, 1);
+			m_PointArr[1] = Float2(1, -1);
+			m_PointArr[2] = Float2(-1, -1);
+			m_PointArr[3] = Float2(-1, 1);
 		}
 		Rectangle2D::Rectangle2D(Rectangle2D&& other) noexcept
 			: Polygon2D(std::move(other))
@@ -323,7 +323,7 @@ namespace MathLib
 		{
 
 		}
-		Rectangle2D::Rectangle2D(const Primitives::Float2& p1, const Primitives::Float2& p2, const Primitives::Float2& p3, const Primitives::Float2& p4)
+		Rectangle2D::Rectangle2D(const Float2& p1, const Float2& p2, const Float2& p3, const Float2& p4)
 			: Polygon2D(4)
 		{
 			m_PointArr[0] = p1;
@@ -331,18 +331,18 @@ namespace MathLib
 			m_PointArr[2] = p3;
 			m_PointArr[3] = p4;
 		}
-		Rectangle2D::Rectangle2D(const Primitives::Float2* const pointArr)
+		Rectangle2D::Rectangle2D(const Float2* const pointArr)
 			: Polygon2D(pointArr, 4)
 		{
 
 		}
-		Rectangle2D::Rectangle2D(const Primitives::Float2 position, const double& rotation, const Primitives::Float2 scale)
+		Rectangle2D::Rectangle2D(const Float2 position, const double& rotation, const Float2 scale)
 			: Polygon2D(4)
 		{
-			m_PointArr[0] = Primitives::Float2(1, 1);
-			m_PointArr[1] = Primitives::Float2(1, -1);
-			m_PointArr[2] = Primitives::Float2(-1, -1);
-			m_PointArr[3] = Primitives::Float2(-1, 1);
+			m_PointArr[0] = Float2(1, 1);
+			m_PointArr[1] = Float2(1, -1);
+			m_PointArr[2] = Float2(-1, -1);
+			m_PointArr[3] = Float2(-1, 1);
 
 			Scale(scale.x, scale.y);
 			Rotate(rotation);
@@ -404,19 +404,19 @@ namespace MathLib
 			{
 				for (unsigned int side = 0; side < m_Corners; side++)
 				{
-					Primitives::Line2D line = Primitives::Line2D(
+					Line2D line = Line2D(
 						m_PointArr[side],
 						m_PointArr[(side + 1) % 4]
 					);
 
 					for (unsigned int oSide = 0; oSide < other.m_Corners; oSide++)
 					{
-						Primitives::Line2D oLine = Primitives::Line2D(
+						Line2D oLine = Line2D(
 							other.m_PointArr[oSide],
 							other.m_PointArr[(oSide + 1) % 4]
 						);
 
-						Primitives::Intersect intersect = Primitives::GetIntersect(line, oLine);
+						Intersect intersect = GetIntersect(line, oLine);
 						if (intersect.isIntersecting)
 							retCollision.AddIntersect(intersect);
 					}
@@ -426,13 +426,13 @@ namespace MathLib
 			return retCollision;
 		}
 
-		bool Contains(const Rectangle2D& rect, const double& rotation, const Primitives::Float2& point)
+		bool Contains(const Rectangle2D& rect, const double& rotation, const Float2& point)
 		{
 			Rectangle2D calcRect = rect;
 			calcRect.Rotate(-rotation);
-			Vectors::Vector2D pointVec = {Primitives::Line2D(rect.GetCenter(), point)};
+			Vectors::Vector2D pointVec = {Line2D(rect.GetCenter(), point)};
 			pointVec.Rotate(-rotation);
-			Primitives::Float2 transPoint = pointVec.TransformPoint(calcRect.GetCenter());
+			Float2 transPoint = pointVec.TransformPoint(calcRect.GetCenter());
 
 			double xArr[2] = {calcRect.m_PointArr[0].x, calcRect.m_PointArr[2].x};
 			double yArr[2] = {calcRect.m_PointArr[0].y, calcRect.m_PointArr[2].y};
@@ -453,7 +453,7 @@ namespace MathLib
 
 			return retArr;
 		}
-		double* ProjectTo1D(const Primitives::Float2* pointArr, const unsigned int& pointCount, const Vectors::Vector2D& viewDir)
+		double* ProjectTo1D(const Float2* pointArr, const unsigned int& pointCount, const Vectors::Vector2D& viewDir)
 		{
 			double* retArr = new double[pointCount];
 

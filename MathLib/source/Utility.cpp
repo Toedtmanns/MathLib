@@ -9,14 +9,14 @@ namespace MathLib
 	{
 		return start + t * (end - start);
 	}
-	Primitives::Float2 Lerp(const Primitives::Float2& start, const Primitives::Float2& end, const double& t)
+	Float2 Lerp(const Float2& start, const Float2& end, const double& t)
 	{
 		return {
 			start.x + t * (end.x - start.x),
 			start.y + t * (end.y - start.y)
 		};
 	}
-	Primitives::Float2 Lerp(const Primitives::Line2D& line, const double& t)
+	Float2 Lerp(const Line2D& line, const double& t)
 	{
 		return {
 			line.p1.x + t * (line.p2.x - line.p1.x),
@@ -54,25 +54,25 @@ namespace MathLib
 			}
 			return max;
 		}
-		Primitives::Line2D Vector2Line(Vectors::Vector2D vector, Primitives::Float2 pos)
+		Line2D Vector2Line(Vectors::Vector2D vector, Float2 pos)
 		{
-			Primitives::Line2D line = Primitives::Line2D();
+			Line2D line = Line2D();
 			line.p1 = pos;
 			line.p2.x = vector.direction.x + pos.x;
 			line.p2.y = vector.direction.y + pos.y;
 
 			return line;
 		}
-		Vectors::Vector2D Line2Vector(Primitives::Line2D line)
+		Vectors::Vector2D Line2Vector(Line2D line)
 		{
 			Vectors::Vector2D vector = Vectors::Vector2D();
-			vector.direction = Primitives::Float2(line.p2.x - line.p1.x, line.p2.y - line.p1.y);
+			vector.direction = Float2(line.p2.x - line.p1.x, line.p2.y - line.p1.y);
 			return vector;
 		}
-		Vectors::Vector2D Line2Vector(Primitives::Float2 p1, Primitives::Float2 p2)
+		Vectors::Vector2D Line2Vector(Float2 p1, Float2 p2)
 		{
 			Vectors::Vector2D vector = Vectors::Vector2D();
-			vector.direction = Primitives::Float2(p2.x - p1.x, p2.y - p1.y);
+			vector.direction = Float2(p2.x - p1.x, p2.y - p1.y);
 			return vector;
 		}
 		int RandInt(int min, int max)

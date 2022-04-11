@@ -199,7 +199,7 @@ namespace MathLib
 		{
 
 		}
-		Quaternion::Quaternion(const Primitives::Float3& point)
+		Quaternion::Quaternion(const Float3& point)
 			: real(0), i(point.x), j(point.y), k(point.z)
 		{
 
@@ -226,15 +226,15 @@ namespace MathLib
 		{
 			return Quaternion(real, -i, -j, -k);
 		}
-		Primitives::Float3 Quaternion::GetPoint() const
+		Float3 Quaternion::GetPoint() const
 		{
-			return Primitives::Float3(i.num, j.num, k.num);
+			return Float3(i.num, j.num, k.num);
 		}
 		Quaternion Quaternion::RotateQuaternion(const Quaternion& quat) const
 		{
 			return Quaternion(*this * quat * this->GetInverse());
 		}
-		Primitives::Float3 Quaternion::RotatePoint(const Primitives::Float3& point) const
+		Float3 Quaternion::RotatePoint(const Float3& point) const
 		{
 			Quaternion pQuat(point);
 			return Quaternion(*this * pQuat * this->GetInverse()).GetPoint();
@@ -249,7 +249,7 @@ namespace MathLib
 			retQuat.k = imagK(kAxis * sinAngle);
 			return retQuat;
 		}
-		Quaternion QuaternionRotation(const double& angle, const Primitives::Float3& axis)
+		Quaternion QuaternionRotation(const double& angle, const Float3& axis)
 		{
 			Quaternion retQuat(cos(Utility::Deg2Rad(angle)), 0, 0, 0);
 			double sinAngle = sin(Utility::Deg2Rad(angle));

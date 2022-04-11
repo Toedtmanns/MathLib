@@ -861,9 +861,9 @@ namespace MathLib
 			if (!MatrixIsSquare(mat, 4))
 				throw std::invalid_argument("Matrix is not 4x4!");
 
-			Complex::Quaternion xQuat(Primitives::Float3(mat.GetNum(0, 0), mat.GetNum(0, 1), mat.GetNum(0, 2)));
-			Complex::Quaternion yQuat(Primitives::Float3(mat.GetNum(1, 0), mat.GetNum(1, 1), mat.GetNum(1, 2)));
-			Complex::Quaternion zQuat(Primitives::Float3(mat.GetNum(2, 0), mat.GetNum(2, 1), mat.GetNum(2, 2)));
+			Complex::Quaternion xQuat(Float3(mat.GetNum(0, 0), mat.GetNum(0, 1), mat.GetNum(0, 2)));
+			Complex::Quaternion yQuat(Float3(mat.GetNum(1, 0), mat.GetNum(1, 1), mat.GetNum(1, 2)));
+			Complex::Quaternion zQuat(Float3(mat.GetNum(2, 0), mat.GetNum(2, 1), mat.GetNum(2, 2)));
 
 			xQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(xQuat);
 			yQuat = const_cast<Complex::Quaternion&>(quat).RotateQuaternion(yQuat);
@@ -946,21 +946,21 @@ namespace MathLib
 
 		// Helper functions
 
-		MatrixI Point2Matrix(const Primitives::Int2& point)
+		MatrixI Point2Matrix(const Int2& point)
 		{
 			MatrixI retMat = MatrixI(2, 1);
 			retMat.SetNum(0, 0, point.x);
 			retMat.SetNum(1, 0, point.y);
 			return retMat;
 		}
-		MatrixF Point2Matrix(const Primitives::Float2& point)
+		MatrixF Point2Matrix(const Float2& point)
 		{
 			MatrixF retMat = MatrixF(2, 1);
 			retMat.SetNum(0, 0, point.x);
 			retMat.SetNum(1, 0, point.y);
 			return retMat;
 		}
-		MatrixI Point2Matrix(const Primitives::Int3& point)
+		MatrixI Point2Matrix(const Int3& point)
 		{
 			MatrixI retMat = MatrixI(3, 1);
 			retMat.SetNum(0, 0, point.x);
@@ -968,7 +968,7 @@ namespace MathLib
 			retMat.SetNum(2, 0, point.z);
 			return retMat;
 		}
-		MatrixF Point2Matrix(const Primitives::Float3& point)
+		MatrixF Point2Matrix(const Float3& point)
 		{
 			MatrixF retMat = MatrixF(3, 1);
 			retMat.SetNum(0, 0, point.x);
@@ -976,7 +976,7 @@ namespace MathLib
 			retMat.SetNum(2, 0, point.z);
 			return retMat;
 		}
-		MatrixI TransformI2x2(const Primitives::Int2& p1, const Primitives::Int2& p2)
+		MatrixI TransformI2x2(const Int2& p1, const Int2& p2)
 		{
 			MatrixI retMat = MatrixI(2);
 			retMat.SetNum(0, 0, p1.x);
@@ -986,7 +986,7 @@ namespace MathLib
 
 			return retMat;
 		}
-		MatrixF TransformF2x2(const Primitives::Float2& p1, const Primitives::Float2& p2)
+		MatrixF TransformF2x2(const Float2& p1, const Float2& p2)
 		{
 			MatrixF retMat = MatrixF(2);
 			retMat.SetNum(0, 0, p1.x);
