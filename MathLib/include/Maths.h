@@ -569,13 +569,10 @@ namespace MathLib
 		EXPORT void PrintProperties(const Vector3D& vector);
 	}
 
-	namespace Primitives
-	{
-		EXPORT Float2 operator*(const Float2& point, const Matrices::MatrixF& matrix);
-		EXPORT Float2 Transform(Float2 point, Float2 origin, Matrices::MatrixF* transform);
-		EXPORT Line2D Transform(Line2D line, Float2 origin, Matrices::MatrixF* transform);
-		EXPORT Float3 RotatePoint(Float3 point, const Complex::Quaternion& quat);
-	}
+	EXPORT Float2 operator*(const Float2& point, const Matrices::MatrixF& matrix);
+	EXPORT Float2 Transform(Float2 point, Float2 origin, Matrices::MatrixF* transform);
+	EXPORT Line2D Transform(Line2D line, Float2 origin, Matrices::MatrixF* transform);
+	EXPORT Float3 RotatePoint(Float3 point, const Complex::Quaternion& quat);
 
 	namespace Geometry
 	{
