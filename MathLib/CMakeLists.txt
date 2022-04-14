@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 
 project(MathLib)
 
-option(COMPILE_STATIC "Compile MathLib to a static library" ON)
+if(NOT LIBTYPE)
+    set(LIBTYPE SHARED)
+endif()
 
-if(COMPILE_STATIC)
+if(LIBTYPE STREQUAL "STATIC")
     add_library(MathLib STATIC
             ./source/Vectors.cpp
             ./source/ComplexNumbers.cpp

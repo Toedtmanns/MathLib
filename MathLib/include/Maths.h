@@ -40,6 +40,8 @@ namespace MathLib
 		return t2;
 	}
 
+	// Primitive types
+
 	union Int4;
 	union Int3;
 	union Int2;
@@ -287,467 +289,481 @@ namespace MathLib
 	Float2 Lerp(const Float2& start, const Float2& end, const double& t);
 	Float2 Lerp(const Line2D& line, const double& t);
 
-	namespace Complex
+	// Complex maths
+
+	class EXPORT imaginaryBase
 	{
-		class EXPORT imaginaryBase
-		{
-		public:
-			double num;
+	public:
+		double num;
 
-			imaginaryBase();
-			imaginaryBase(const double& num);
-
-			template <typename T>
-			imaginaryBase operator*(const T& other)
-			{
-				return imaginaryBase(num * other);
-			}
-			imaginaryBase operator+(const imaginaryBase& other) const;
-			imaginaryBase operator-(const imaginaryBase& other) const;
-			double operator*(const imaginaryBase& other) const;
-			double operator/(const imaginaryBase& other) const;
-			bool operator==(const imaginaryBase& other) const;
-			bool operator!=(const imaginaryBase& other) const;
-			bool operator>=(const imaginaryBase& other) const;
-			bool operator<=(const imaginaryBase& other) const;
-			bool operator>(const imaginaryBase& other) const;
-			bool operator<(const imaginaryBase& other) const;
-			imaginaryBase& operator++();
-			imaginaryBase& operator--();
-			imaginaryBase& operator++(int);
-			imaginaryBase& operator--(int);
-		};
+		imaginaryBase();
+		imaginaryBase(const double& num);
 
 		template <typename T>
-		imaginaryBase operator*(const T& num1, const imaginaryBase& num2)
+		imaginaryBase operator*(const T& other)
 		{
-			return imaginaryBase(num1 * num2.num);
+			return imaginaryBase(num * other);
 		}
-		EXPORT imaginaryBase operator-(const imaginaryBase& num);
+		imaginaryBase operator+(const imaginaryBase& other) const;
+		imaginaryBase operator-(const imaginaryBase& other) const;
+		double operator*(const imaginaryBase& other) const;
+		double operator/(const imaginaryBase& other) const;
+		bool operator==(const imaginaryBase& other) const;
+		bool operator!=(const imaginaryBase& other) const;
+		bool operator>=(const imaginaryBase& other) const;
+		bool operator<=(const imaginaryBase& other) const;
+		bool operator>(const imaginaryBase& other) const;
+		bool operator<(const imaginaryBase& other) const;
+		imaginaryBase& operator++();
+		imaginaryBase& operator--();
+		imaginaryBase& operator++(int);
+		imaginaryBase& operator--(int);
+	};
 
-		class imagJ;
-		class imagK;
-
-		class EXPORT imagI : public imaginaryBase
-		{
-		public:
-			imagI();
-			imagI(const double& num);
-			imagI(const imaginaryBase& base);
-
-			double operator*(const imagI& other) const;
-			imagK operator*(const imagJ& jNum) const;
-			imagJ operator*(const imagK& jNum) const;
-		};
-		class EXPORT imagJ : public imaginaryBase
-		{
-		public:
-			imagJ();
-			imagJ(const double& num);
-			imagJ(const imaginaryBase& base);
-
-			double operator*(const imagJ& other) const;
-			imagI operator*(const imagK& jNum) const;
-			imagK operator*(const imagI& jNum) const;
-		};
-		class EXPORT imagK : public imaginaryBase
-		{
-		public:
-			imagK();
-			imagK(const double& num);
-			imagK(const imaginaryBase& base);
-
-			double operator*(const imagK& other) const;
-			imagJ operator*(const imagI& jNum) const;
-			imagI operator*(const imagJ& jNum) const;
-		};
-
-		// Quaternions
-
-		class EXPORT Quaternion
-		{
-		public:
-			double real;
-			imagI i;
-			imagJ j;
-			imagK k;
-
-			Quaternion();
-			Quaternion(const double& real, const imagI& i, const imagJ& j, const imagK& k);
-			Quaternion(const Float3& point);
-
-			Quaternion operator+(const Quaternion& other) const;
-			Quaternion operator*(const Quaternion& other) const;
-			Quaternion RotateQuaternion(const Quaternion& quat) const;
-			Float3 RotatePoint(const Float3& point) const;
-
-			Quaternion GetInverse() const;
-			Float3 GetPoint() const;
-		};
-
-		EXPORT Quaternion QuaternionRotation(const double& angle, const double& iAxis, const double& jAxis, const double& kAxis);
-		EXPORT Quaternion QuaternionRotation(const double& angle, const Float3& axis);
-		EXPORT void PrintProperties(const Quaternion& quat);
-	}
-
-	namespace Matrices
+	template <typename T>
+	imaginaryBase operator*(const T& num1, const imaginaryBase& num2)
 	{
-		class EXPORT MatrixI
-		{
-			unsigned int m_Rows, m_Columns;
-			int** m_Matrix;
-
-		public:
-			MatrixI(MatrixI&& other) noexcept;
-			MatrixI(const MatrixI& other);
-			MatrixI(const unsigned int& dim);
-			MatrixI(const unsigned int& columns, const unsigned int& rows);
-			MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray);
-
-			void SetNum(const unsigned int& column, const unsigned int& row, const int& value);
-			void SetColumn(const unsigned int& column, const int* const content);
-			void SetMatrix(const int** const matrix);
-
-			const int& GetNum(const unsigned int& column, const unsigned int& row) const;
-			int* GetColumn(const unsigned int& column) const;
-			int** GetMatrix() const;
-			const unsigned int& GetRowCount() const;
-			const unsigned int& GetColumnCount() const;
-
-			void operator=(MatrixI&& other) noexcept;
-			void operator=(const MatrixI& other);
-			MatrixI operator+(const int& value) const;
-			MatrixI operator-(const int& value) const;
-			MatrixI operator*(const int& value) const;
-			MatrixI operator/(const int& value) const;
-			MatrixI operator+(const MatrixI& other) const;
-			MatrixI operator-(const MatrixI& other) const;
-			MatrixI operator*(const MatrixI& other) const;
-			int* operator[](const unsigned int& column);
-			const int* operator[](const unsigned int& column) const;
-
-			~MatrixI();
-		};
-		class EXPORT MatrixF
-		{
-			double** m_Matrix;
-			unsigned int m_Rows, m_Columns;
-
-		public:
-			MatrixF(MatrixF&& other) noexcept;
-			MatrixF(const MatrixF& other);
-			MatrixF(const unsigned int& dim);
-			MatrixF(const unsigned int& columns, const unsigned int& rows);
-			MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray);
-
-			void SetNum(const unsigned int& column, const unsigned int& row, const double& value);
-			void SetColumn(const unsigned int& column, const double* const content);
-			void SetMatrix(const double** const matrix);
-
-			const double& GetNum(const unsigned int& column, const unsigned int& row) const;
-			double* GetColumn(const unsigned int& column) const;
-			double** GetMatrix() const;
-			const unsigned int& GetRowCount() const;
-			const unsigned int& GetColumnCount() const;
-
-			void operator=(MatrixF&& other) noexcept;
-			void operator=(const MatrixF& other);
-			MatrixF operator+(const double& value) const;
-			MatrixF operator-(const double& value) const;
-			MatrixF operator*(const double& value) const;
-			MatrixF operator/(const double& value) const;
-			MatrixF operator+(const MatrixF& other) const;
-			MatrixF operator-(const MatrixF& other) const;
-			MatrixF operator*(const MatrixF& other) const;
-			double* operator[](const unsigned int& column);
-			const double* operator[](const unsigned int& column) const;
-
-			~MatrixF();
-		};
-
-		EXPORT void PrintContent(const MatrixI& mat);
-		EXPORT void PrintProperties(const MatrixI& mat);
-		EXPORT int MatrixGetDet(const MatrixI& mat);
-		EXPORT MatrixI MatrixOfMinors(const MatrixI& mat);
-		EXPORT MatrixI MatrixOfCofactors(const MatrixI& mat);
-		EXPORT MatrixI MatrixTranspose(const MatrixI& mat);
-		EXPORT MatrixI MatrixAdjugate(const MatrixI& mat);
-		EXPORT MatrixF MatrixInverse(const MatrixI& mat);
-
-		EXPORT void PrintContent(const MatrixF& mat);
-		EXPORT void PrintProperties(const MatrixF& mat);
-		EXPORT double MatrixGetDet(const MatrixF& mat);
-		EXPORT MatrixF MatrixOfMinors(const MatrixF& mat);
-		EXPORT MatrixF MatrixOfCofactors(const MatrixF& mat);
-		EXPORT MatrixF MatrixTranspose(const MatrixF& mat);
-		EXPORT MatrixF MatrixAdjugate(const MatrixF& mat);
-		EXPORT MatrixF MatrixInverse(const MatrixF& mat);
-
-		// Quaternion operations
-
-		EXPORT MatrixF MatrixRotate(const MatrixF& mat, const Complex::Quaternion& quat);
-
-		// Conversion and checking functions
-
-		EXPORT MatrixI MatrixF2I(const MatrixF& mat);
-		EXPORT MatrixF MatrixI2F(const MatrixI& mat);
-		EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
-		EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
-
-		// Helper functions
-
-		EXPORT MatrixI Point2Matrix(const Int2& point);
-		EXPORT MatrixF Point2Matrix(const Float2& point);
-		EXPORT MatrixI Point2Matrix(const Int3& point);
-		EXPORT MatrixF Point2Matrix(const Float3& point);
-		EXPORT MatrixI TransformI2x2(const Int2& p1, const Int2& p2);
-		EXPORT MatrixF TransformF2x2(const Float2& p1, const Float2& p2);
+		return imaginaryBase(num1 * num2.num);
 	}
+	EXPORT imaginaryBase operator-(const imaginaryBase& num);
 
-	namespace Vectors
+	class imagJ;
+	class imagK;
+
+	class EXPORT imagI : public imaginaryBase
 	{
-		class EXPORT Vector2D
-		{
-		public:
-			Float2 direction;
+	public:
+		imagI();
+		imagI(const double& num);
+		imagI(const imaginaryBase& base);
 
-			Vector2D();
-			Vector2D(const Float2& dir);
-			Vector2D(const double& angle, const double& length);
-			Vector2D(const Line2D& line);
-
-			void Transform(const Matrices::MatrixF& transformMat);
-			void Scale(const double& scale);
-			void Scale(const double& scaleX, const double& scaleY);
-			void SetScale(const double& scale);
-			void Rotate(double angle);
-
-			Vector2D operator+(const Vector2D& other) const;
-			Vector2D operator-(const Vector2D& other) const;
-			double operator*(const Vector2D& other) const;
-
-			double GetAngle() const;
-			double GetLen() const;
-			Matrices::MatrixF GetRowVector() const;
-			Matrices::MatrixF GetColVector() const;
-
-			Float2 TransformPoint(Float2 point) const;
-		};
-
-		class EXPORT Vector3D
-		{
-		public:
-			Float3 direction;
-
-			Vector3D();
-			Vector3D(const Float3& dir);
-
-			void Transform(const Matrices::MatrixF& mat);
-			void Scale(const double& scale);
-			void Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
-			void Rotate(const double& angle, const unsigned int& axis);
-			void SetLen(const double& len);
-
-			Vector3D operator+(const Vector3D& other) const;
-			Vector3D operator-(const Vector3D& other) const;
-			double operator*(const Vector3D& other) const;
-
-			double GetAngle(const int& axis) const;
-			double GetLen() const;
-			Matrices::MatrixF GetRowVector() const;
-			Matrices::MatrixF GetColVector() const;
-
-			Float3 TransformPoint(Float3 point);
-		};
-
-		EXPORT Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2);
-		EXPORT double VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
-		EXPORT double VectorDotProduct(const Vector2D& v1, const Vector2D& v2);
-		EXPORT Vector3D VectorCrossProduct(const Vector2D& v1, const Vector2D& v2);
-		EXPORT double VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
-		EXPORT void PrintProperties(const Vector2D& vector);
-		EXPORT void PrintProperties(const Vector3D& vector);
-	}
-
-	EXPORT Float2 operator*(const Float2& point, const Matrices::MatrixF& matrix);
-	EXPORT Float2 Transform(Float2 point, Float2 origin, Matrices::MatrixF* transform);
-	EXPORT Line2D Transform(Line2D line, Float2 origin, Matrices::MatrixF* transform);
-	EXPORT Float3 RotatePoint(Float3 point, const Complex::Quaternion& quat);
-
-	namespace Geometry
+		double operator*(const imagI& other) const;
+		imagK operator*(const imagJ& jNum) const;
+		imagJ operator*(const imagK& jNum) const;
+	};
+	class EXPORT imagJ : public imaginaryBase
 	{
-		template<typename T>
-		class EXPORT BaseIterator
-		{
-		protected:
-			using ValType = typename T::ValueType;
-			ValType* m_Ptr;
-		public:
-			BaseIterator(ValType* ptr)
+	public:
+		imagJ();
+		imagJ(const double& num);
+		imagJ(const imaginaryBase& base);
+
+		double operator*(const imagJ& other) const;
+		imagI operator*(const imagK& jNum) const;
+		imagK operator*(const imagI& jNum) const;
+	};
+	class EXPORT imagK : public imaginaryBase
+	{
+	public:
+		imagK();
+		imagK(const double& num);
+		imagK(const imaginaryBase& base);
+
+		double operator*(const imagK& other) const;
+		imagJ operator*(const imagI& jNum) const;
+		imagI operator*(const imagJ& jNum) const;
+	};
+
+	// Quaternions
+
+	class EXPORT Quaternion
+	{
+	public:
+		double real;
+		imagI i;
+		imagJ j;
+		imagK k;
+
+		Quaternion();
+		Quaternion(const double& real, const imagI& i, const imagJ& j, const imagK& k);
+		Quaternion(const Float3& point);
+
+		Quaternion operator+(const Quaternion& other) const;
+		Quaternion operator*(const Quaternion& other) const;
+		Quaternion RotateQuaternion(const Quaternion& quat) const;
+		Float3 RotatePoint(const Float3& point) const;
+
+		Quaternion GetInverse() const;
+		Float3 GetPoint() const;
+	};
+
+	EXPORT Quaternion QuaternionRotation(const double& angle, const double& iAxis, const double& jAxis, const double& kAxis);
+	EXPORT Quaternion QuaternionRotation(const double& angle, const Float3& axis);
+	EXPORT void PrintProperties(const Quaternion& quat);
+
+	// Matrix maths
+
+	class EXPORT MatrixI
+	{
+		unsigned int m_Rows, m_Columns;
+		int** m_Matrix;
+
+	public:
+		MatrixI(MatrixI&& other) noexcept;
+		MatrixI(const MatrixI& other);
+		MatrixI(const unsigned int& dim);
+		MatrixI(const unsigned int& columns, const unsigned int& rows);
+		MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray);
+
+		void SetNum(const unsigned int& column, const unsigned int& row, const int& value);
+		void SetColumn(const unsigned int& column, const int* const content);
+		void SetMatrix(const int** const matrix);
+
+		const int& GetNum(const unsigned int& column, const unsigned int& row) const;
+		int* GetColumn(const unsigned int& column) const;
+		int** GetMatrix() const;
+		const unsigned int& GetRowCount() const;
+		const unsigned int& GetColumnCount() const;
+
+		void operator=(MatrixI&& other) noexcept;
+		void operator=(const MatrixI& other);
+		MatrixI operator+(const int& value) const;
+		MatrixI operator-(const int& value) const;
+		MatrixI operator*(const int& value) const;
+		MatrixI operator/(const int& value) const;
+		MatrixI operator+(const MatrixI& other) const;
+		MatrixI operator-(const MatrixI& other) const;
+		MatrixI operator*(const MatrixI& other) const;
+		int* operator[](const unsigned int& column);
+		const int* operator[](const unsigned int& column) const;
+
+		~MatrixI();
+	};
+	class EXPORT MatrixF
+	{
+		double** m_Matrix;
+		unsigned int m_Rows, m_Columns;
+
+	public:
+		MatrixF(MatrixF&& other) noexcept;
+		MatrixF(const MatrixF& other);
+		MatrixF(const unsigned int& dim);
+		MatrixF(const unsigned int& columns, const unsigned int& rows);
+		MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray);
+
+		void SetNum(const unsigned int& column, const unsigned int& row, const double& value);
+		void SetColumn(const unsigned int& column, const double* const content);
+		void SetMatrix(const double** const matrix);
+
+		const double& GetNum(const unsigned int& column, const unsigned int& row) const;
+		double* GetColumn(const unsigned int& column) const;
+		double** GetMatrix() const;
+		const unsigned int& GetRowCount() const;
+		const unsigned int& GetColumnCount() const;
+
+		void operator=(MatrixF&& other) noexcept;
+		void operator=(const MatrixF& other);
+		MatrixF operator+(const double& value) const;
+		MatrixF operator-(const double& value) const;
+		MatrixF operator*(const double& value) const;
+		MatrixF operator/(const double& value) const;
+		MatrixF operator+(const MatrixF& other) const;
+		MatrixF operator-(const MatrixF& other) const;
+		MatrixF operator*(const MatrixF& other) const;
+		double* operator[](const unsigned int& column);
+		const double* operator[](const unsigned int& column) const;
+
+		~MatrixF();
+	};
+
+	EXPORT void PrintContent(const MatrixI& mat);
+	EXPORT void PrintProperties(const MatrixI& mat);
+	EXPORT int MatrixGetDet(const MatrixI& mat);
+	EXPORT MatrixI MatrixOfMinors(const MatrixI& mat);
+	EXPORT MatrixI MatrixOfCofactors(const MatrixI& mat);
+	EXPORT MatrixI MatrixTranspose(const MatrixI& mat);
+	EXPORT MatrixI MatrixAdjugate(const MatrixI& mat);
+	EXPORT MatrixF MatrixInverse(const MatrixI& mat);
+
+	EXPORT void PrintContent(const MatrixF& mat);
+	EXPORT void PrintProperties(const MatrixF& mat);
+	EXPORT double MatrixGetDet(const MatrixF& mat);
+	EXPORT MatrixF MatrixOfMinors(const MatrixF& mat);
+	EXPORT MatrixF MatrixOfCofactors(const MatrixF& mat);
+	EXPORT MatrixF MatrixTranspose(const MatrixF& mat);
+	EXPORT MatrixF MatrixAdjugate(const MatrixF& mat);
+	EXPORT MatrixF MatrixInverse(const MatrixF& mat);
+
+	// Quaternion operations
+
+	EXPORT MatrixF MatrixRotate(const MatrixF& mat, const Quaternion& quat);
+
+	// Conversion and checking functions
+
+	EXPORT MatrixI MatrixF2I(const MatrixF& mat);
+	EXPORT MatrixF MatrixI2F(const MatrixI& mat);
+	EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
+	EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
+
+	// Helper functions
+
+	EXPORT MatrixI Point2Matrix(const Int2& point);
+	EXPORT MatrixF Point2Matrix(const Float2& point);
+	EXPORT MatrixI Point2Matrix(const Int3& point);
+	EXPORT MatrixF Point2Matrix(const Float3& point);
+	EXPORT MatrixF TransformF2x2(const Float2& p1, const Float2& p2);
+	EXPORT MatrixI TransformI2x2(const Int2& p1, const Int2& p2);
+
+	// Vector math
+
+	class EXPORT Vector2D
+	{
+	public:
+		Float2 direction;
+
+		Vector2D();
+		Vector2D(const Float2& dir);
+		Vector2D(const double& x, const double& y);
+		Vector2D(const Line2D& line);
+		Vector2D(const Float2& p1, const Float2& p2);
+
+		void Transform(const MatrixF& transformMat);
+		void Scale(const double& scale);
+		void Scale(const double& scaleX, const double& scaleY);
+		void SetScale(const double& scale);
+		void Rotate(double angle);
+		void Rot90R();
+		void Rot90L();
+
+		Vector2D TripleProduct(const Vector2D& other) const;
+
+		Vector2D operator+(const Vector2D& other) const;
+		Vector2D operator-(const Vector2D& other) const;
+		double operator*(const Vector2D& other) const;
+		Vector2D operator*(const double& number) const;
+		void operator*=(const double& number);
+		Vector2D operator-() const;
+
+		double GetAngle() const;
+		double GetLen() const;
+		MatrixF GetRowVector() const;
+		MatrixF GetColVector() const;
+
+		Float2 TransformPoint(Float2 point) const;
+	};
+
+	class EXPORT Vector3D
+	{
+	public:
+		Float3 direction;
+
+		Vector3D();
+		Vector3D(const Float3& dir);
+		Vector3D(const double& x, const double& y, const double& z);
+		Vector3D(const Vector2D& vec, const double& z = 0);
+
+		void Transform(const MatrixF& mat);
+		void Scale(const double& scale);
+		void Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
+		void Rotate(const double& angle, const unsigned int& axis);
+		void SetLen(const double& len);
+
+		Vector3D operator+(const Vector3D& other) const;
+		Vector3D operator-(const Vector3D& other) const;
+		double operator*(const Vector3D& other) const;
+		Vector3D operator*(const double& number) const;
+		void operator*=(const double& number);
+		Vector3D operator-() const;
+
+		double GetAngle(const int& axis) const;
+		double GetLen() const;
+		MatrixF GetRowVector() const;
+		MatrixF GetColVector() const;
+
+		Float3 TransformPoint(Float3 point);
+	};
+
+	EXPORT Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2);
+	EXPORT double VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
+	EXPORT double VectorDotProduct(const Vector2D& v1, const Vector2D& v2);
+	EXPORT Vector3D VectorCrossProduct(const Vector2D& v1, const Vector2D& v2);
+	EXPORT Vector3D VectorCrossProduct(const Vector3D& v1, const Vector3D& v2);
+	EXPORT Vector2D VectorTripleProduct(const Vector2D& v1, const Vector2D& v2);
+	EXPORT Vector3D VectorTripleProduct(const Vector3D& v1, const Vector3D& v2);
+	EXPORT double VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
+	EXPORT void PrintProperties(const Vector2D& vector);
+	EXPORT void PrintProperties(const Vector3D& vector);
+
+	EXPORT Float2 operator*(const Float2& point, const MatrixF& matrix);
+	EXPORT Float2 Transform(Float2 point, Float2 origin, MatrixF* transform);
+	EXPORT Line2D Transform(Line2D line, Float2 origin, MatrixF* transform);
+	EXPORT Float3 RotatePoint(Float3 point, const Quaternion& quat);
+
+	// Geometry maths
+
+	template<typename T>
+	class EXPORT BaseIterator
+	{
+	protected:
+		using ValType = typename T::ValueType;
+		ValType* m_Ptr;
+	public:
+		BaseIterator(ValType* ptr)
 				: m_Ptr(ptr)
 			{
 
 			}
 
-			BaseIterator& operator++()
+		BaseIterator& operator++()
 			{
 				m_Ptr++;
 				return *this;
 			}
-			BaseIterator operator++(int)
+		BaseIterator operator++(int)
 			{
 				BaseIterator tmp = *this;
 				++(*this);
 				return tmp;
 			}
-			BaseIterator& operator--()
+		BaseIterator& operator--()
 			{
 				m_Ptr--;
 				return *this;
 			}
-			BaseIterator operator--(int)
+		BaseIterator operator--(int)
 			{
 				BaseIterator tmp = *this;
 				--(*this);
 				return tmp;
 			}
-			ValType& operator[](const unsigned int& index)
+		ValType& operator[](const unsigned int& index)
 			{
 				return *(m_Ptr + index);
 			}
-			ValType* operator->()
+		ValType* operator->()
 			{
 				return m_Ptr;
 			}
-			ValType& operator*()
+		ValType& operator*()
 			{
 				return *m_Ptr;
 			}
-			bool operator==(const BaseIterator& other) const
+		bool operator==(const BaseIterator& other) const
 			{
 				return m_Ptr == other.m_Ptr;
 			}
-			bool operator!=(const BaseIterator& other) const
+		bool operator!=(const BaseIterator& other) const
 			{
 				return !(m_Ptr == other.m_Ptr);
 			}
-		};
+	};
 
-		class EXPORT GeoCollision
-		{
-		protected:
-			unsigned int m_IntersectArrLength;
-			unsigned int m_IntersectCount;
-			Intersect* m_IntersectArray;
-		public:
-			using Iterator = BaseIterator<GeoCollision>;
-			using ValueType = Intersect;
-			bool isColliding;
-
-			GeoCollision();
-			GeoCollision(GeoCollision&& other) noexcept;
-			GeoCollision(const GeoCollision& other);
-			GeoCollision(const Intersect* intersectArr, const unsigned int& intersectArrLength);
-
-			void AddIntersect(const Intersect& intersect);
-			unsigned int GetIntersectCount() const;
-
-			void operator=(GeoCollision&& other) noexcept;
-			void operator=(const GeoCollision& other);
-			Intersect& operator[](const unsigned int& index);
-
-			Iterator begin();
-			Iterator end();
-
-			~GeoCollision();
-		};
-
-		class EXPORT Polygon2D
-		{
-		public:
-			using Iterator = BaseIterator<Polygon2D>;
-			using ValueType = Float2;
-			unsigned int m_Corners;
-			Float2* m_PointArr;
-
-			Polygon2D();
-			Polygon2D(Polygon2D&& other) noexcept;
-			Polygon2D(const Polygon2D& other);
-			Polygon2D(const unsigned int& corners);
-			Polygon2D(const Float2* const pointArr, const unsigned int& corners);
-
-			void Translate(const Float2& translation);
-			void Translate(const double& translateX, const double& translateY);
-			void Rotate(const double& angle);
-			void Scale(const double& scale);
-			void Scale(const double& scaleX, const double& scaleY);
-
-			Float2 GetCenter() const;
-
-			void operator=(Polygon2D&& other) noexcept;
-			void operator=(const Polygon2D& other);
-
-			Iterator begin();
-			Iterator end();
-
-			~Polygon2D();
-		};
-
-		class EXPORT Triangle2D : public Polygon2D
-		{
-		public:
-			Triangle2D();
-			Triangle2D(Triangle2D&& other) noexcept;
-			Triangle2D(const Triangle2D& other);
-			Triangle2D(const Float2& p1, const Float2& p2, const Float2& p3);
-			Triangle2D(const Float2* const pointArr);
-
-			void operator=(Triangle2D&& other) noexcept;
-			void operator=(const Triangle2D& other);
-
-			bool CollidesWith(const Triangle2D& other) const;
-			GeoCollision GetCollision(const Triangle2D& other) const;
-		};
-
-		class EXPORT Rectangle2D : public Polygon2D
-		{
-		public:
-			Rectangle2D();
-			Rectangle2D(Rectangle2D&& other) noexcept;
-			Rectangle2D(const Rectangle2D& other);
-			Rectangle2D(const Float2& p1, const Float2& p2, const Float2& p3, const Float2& p4);
-			Rectangle2D(const Float2* const pointArr);
-			Rectangle2D(const Float2 position, const double& rotation, const Float2 scale);
-
-			void operator=(Rectangle2D&& other) noexcept;
-			void operator=(const Rectangle2D& other);
-
-			bool CollidesWith(const Rectangle2D& other) const;
-			GeoCollision GetCollision(const Rectangle2D& other) const;
-		};
-
-		EXPORT bool Contains(const Rectangle2D& rect, const double& rotation, const Float2& point);
-		EXPORT double* ProjectTo1D(const Polygon2D& polygon, const Vectors::Vector2D& viewDir);
-		EXPORT double* ProjectTo1D(const Float2* pointArr, const unsigned int& pointCount, const Vectors::Vector2D& viewDir);
-	}
-
-	namespace Utility
+	class EXPORT GeoCollision
 	{
-		EXPORT double Deg2Rad(double deg);
-		EXPORT double Rad2Deg(double rad);
-		EXPORT double MinFromArray(const double* const arr, const unsigned int& length);
-		EXPORT double MaxFromArray(const double* const arr, const unsigned int& length);
-		EXPORT Line2D Vector2Line(Vectors::Vector2D vector, Float2 pos);
-		EXPORT Vectors::Vector2D Line2Vector(Line2D line);
-		EXPORT Vectors::Vector2D Line2Vector(Float2 p1, Float2 p2);
-		EXPORT int RandInt(int min, int max);
-		EXPORT inline double RoundFTo(const double& num, const int& decimal)
-		{
-			return round(pow(10, decimal) * num) / pow(10, decimal);
-		}
-		EXPORT Matrices::MatrixF Vec2Mat(const Vectors::Vector3D& vec, const int& front = 0);
-		EXPORT Vectors::Vector3D Mat2Vec(const Matrices::MatrixF& mat, const int& front = 0);
+	protected:
+		unsigned int m_IntersectArrLength;
+		unsigned int m_IntersectCount;
+		Intersect* m_IntersectArray;
+	public:
+		using Iterator = BaseIterator<GeoCollision>;
+		using ValueType = Intersect;
+		bool isColliding;
 
-		EXPORT bool SetArraySize(void** array, const unsigned int& currSize, const unsigned int& newSize);
+		GeoCollision();
+		GeoCollision(GeoCollision&& other) noexcept;
+		GeoCollision(const GeoCollision& other);
+		GeoCollision(const Intersect* intersectArr, const unsigned int& intersectArrLength);
+
+		void AddIntersect(const Intersect& intersect);
+		unsigned int GetIntersectCount() const;
+
+		void operator=(GeoCollision&& other) noexcept;
+		void operator=(const GeoCollision& other);
+		Intersect& operator[](const unsigned int& index);
+
+		Iterator begin();
+		Iterator end();
+
+		~GeoCollision();
+	};
+
+	class EXPORT Polygon2D
+	{
+	public:
+		using Iterator = BaseIterator<Polygon2D>;
+		using ValueType = Float2;
+		unsigned int m_NumCorners;
+		Float2* m_CornerArr;
+
+		Polygon2D();
+		Polygon2D(Polygon2D&& other) noexcept;
+		Polygon2D(const Polygon2D& other);
+		Polygon2D(const unsigned int& corners);
+		Polygon2D(const Float2* const pointArr, const unsigned int& corners);
+
+		void Translate(const Float2& translation);
+		void Translate(const double& translateX, const double& translateY);
+		void Rotate(const double& angle);
+		void Scale(const double& scale);
+		void Scale(const double& scaleX, const double& scaleY);
+
+		Float2 GetCenter() const;
+		Float2 SupportFunction(const Vector2D& direction) const;
+		bool CollidesWith(const Polygon2D& other) const;
+		bool Contains(const Float2& point) const;
+
+		void operator=(Polygon2D&& other) noexcept;
+		void operator=(const Polygon2D& other);
+
+		Iterator begin();
+		Iterator end();
+
+		~Polygon2D();
+	};
+
+	class EXPORT Triangle2D : public Polygon2D
+	{
+	public:
+		Triangle2D();
+		Triangle2D(Triangle2D&& other) noexcept;
+		Triangle2D(const Triangle2D& other);
+		Triangle2D(const Float2& p1, const Float2& p2, const Float2& p3);
+		Triangle2D(const Float2* const pointArr);
+
+		void operator=(Triangle2D&& other) noexcept;
+		void operator=(const Triangle2D& other);
+
+		bool CollidesWith(const Triangle2D& other) const;
+		GeoCollision GetCollision(const Triangle2D& other) const;
+	};
+
+	class EXPORT Rectangle2D : public Polygon2D
+	{
+	public:
+		Rectangle2D();
+		Rectangle2D(Rectangle2D&& other) noexcept;
+		Rectangle2D(const Rectangle2D& other);
+		Rectangle2D(const Float2& p1, const Float2& p2, const Float2& p3, const Float2& p4);
+		Rectangle2D(const Float2* const pointArr);
+		Rectangle2D(const Float2 position, const double& rotation, const Float2 scale);
+
+		void operator=(Rectangle2D&& other) noexcept;
+		void operator=(const Rectangle2D& other);
+
+		bool CollidesWith(const Rectangle2D& other) const;
+		GeoCollision GetCollision(const Rectangle2D& other) const;
+	};
+
+	EXPORT bool Contains(const Rectangle2D& rect, const double& rotation, const Float2& point);
+	EXPORT double* ProjectTo1D(const Polygon2D& polygon, const Vector2D& viewDir);
+	EXPORT double* ProjectTo1D(const Float2* pointArr, const unsigned int& pointCount, const Vector2D& viewDir);
+
+	// Utility
+
+	EXPORT double Deg2Rad(double deg);
+	EXPORT double Rad2Deg(double rad);
+	EXPORT double MinFromArray(const double* const arr, const unsigned int& length);
+	EXPORT double MaxFromArray(const double* const arr, const unsigned int& length);
+	EXPORT Line2D Vector2Line(Vector2D vector, Float2 pos);
+	EXPORT Vector2D Line2Vector(Line2D line);
+	EXPORT Vector2D Line2Vector(Float2 p1, Float2 p2);
+	EXPORT int RandInt(int min, int max);
+	EXPORT inline double RoundFTo(const double& num, const int& decimal)
+	{
+		return round(pow(10, decimal) * num) / pow(10, decimal);
 	}
+	EXPORT MatrixF Vec2Mat(const Vector3D& vec, const int& front = 0);
+	EXPORT Vector3D Mat2Vec(const MatrixF& mat, const int& front = 0);
+
+	EXPORT bool SetArraySize(void** array, const unsigned int& currSize, const unsigned int& newSize);
 }
