@@ -92,11 +92,11 @@ namespace MathLib
 	}
 	double& Float2::operator[](const unsigned int& index)
 	{
-		return content[index];
+		return ((double*) this)[index];
 	}
 	const double& Float2::operator[](const unsigned int& index) const
 	{
-		return content[index];
+		return ((double*) this)[index];
 	}
 
 	Int4::Int4()
@@ -187,11 +187,11 @@ namespace MathLib
 	}
 	int& Int2::operator[](const unsigned int& index)
 	{
-		return content[index];
+		return ((int*) this)[index];
 	}
 	const int& Int2::operator[](const unsigned int& index) const
 	{
-		return content[index];
+		return ((int*) this)[index];
 	}
 
 	bool operator==(const Float2& f1, const Float2& f2)
@@ -390,19 +390,19 @@ namespace MathLib
 
 	Float2 Transform(Float2 point, Float2 origin, const MatrixF& transform)
 	{
-		Vector2D vec = Line2Vector(origin, point);
+		Vector2D vec = Vector2D(origin, point);
 		vec.Transform(transform);
 
-		return origin + vec.direction;
+		return origin + (Float2) vec;
 	}
 	Line2D Transform(Line2D line, Float2 origin, const MatrixF& transform)
 	{
-		Vector2D vec1 = Line2Vector(origin, line.p1);
-		Vector2D vec2 = Line2Vector(origin, line.p2);
+		Vector2D vec1 = Vector2D(origin, line.p1);
+		Vector2D vec2 = Vector2D(origin, line.p2);
 		vec1.Transform(transform);
 		vec2.Transform(transform);
 
-		return Line2D(vec1.direction + origin, vec2.direction + origin);
+		return Line2D((Float2) vec1 + origin, (Float2) vec2 + origin);
 	}
 	Float3 RotatePoint(const Float3& point, Quaternion& quat)
 	{
@@ -434,7 +434,7 @@ namespace MathLib
 		p1.y = y1;
 		p2.x = x2;
 		p2.y = y2;
-		normal = Line2Vector(Float2(x1, y1), Float2(x2, y2)).GetAngle() + 90;
+		normal = Vector2D(Float2(x1, y1), Float2(x2, y2)).GetAngle() + 90;
 	}
 	Line2D::Line2D(const Float2& p1, const Float2& p2)
 	{
@@ -443,7 +443,7 @@ namespace MathLib
 		this->p2.x = p2.x;
 		this->p2.y = p2.y;
 
-		normal = Line2Vector(p1, p2).GetAngle() + 90;
+		normal = Vector2D(p1, p2).GetAngle() + 90;
 		if (normal < 0)
 			normal = 360 + normal;
 	}

@@ -42,28 +42,31 @@ namespace MathLib
 
 	// Primitive types
 
-	union Int4;
-	union Int3;
-	union Int2;
+	class Int4;
+	class Int3;
+	class Int2;
 
-	union EXPORT Float4
+	class EXPORT Float4
 	{
 	public:
-		struct
+		union
 		{
-			double x;
-			double y;
-			double z;
-			double w;
+			struct
+			{
+				double x;
+				double y;
+				double z;
+				double w;
+			};
+			struct
+			{
+				double r;
+				double g;
+				double b;
+				double a;
+			};
+			double content[4];
 		};
-		struct
-		{
-			double r;
-			double g;
-			double b;
-			double a;
-		};
-		double content[4];
 
 		Float4();
 		Float4(const double& x, const double& y, const double& z, const double& w);
@@ -74,22 +77,25 @@ namespace MathLib
 		const double& operator[](const unsigned int& index) const;
 	};
 
-	union EXPORT Float3
+	class EXPORT Float3
 	{
 	public:
-		struct
+		union
 		{
-			double x;
-			double y;
-			double z;
+			struct
+			{
+				double x;
+				double y;
+				double z;
+			};
+			struct
+			{
+				double r;
+				double g;
+				double b;
+			};
+			double content[3];
 		};
-		struct
-		{
-			double r;
-			double g;
-			double b;
-		};
-		double content[3];
 
 		Float3();
 		Float3(const double& x, const double& y, const double& z);
@@ -100,15 +106,11 @@ namespace MathLib
 		const double& operator[](const unsigned int& index) const;
 	};
 
-	union EXPORT Float2
+	class EXPORT Float2
 	{
 	public:
-		struct
-		{
-			double x;
-			double y;
-		};
-		double content[2];
+		double x;
+		double y;
 
 		Float2();
 		Float2(const double& x, const double& y);
@@ -119,24 +121,27 @@ namespace MathLib
 		const double& operator[](const unsigned int& index) const;
 	};
 
-	union EXPORT Int4
+	class EXPORT Int4
 	{
 	public:
-		struct
+		union
 		{
-			int x;
-			int y;
-			int z;
-			int w;
+			struct
+			{
+				int x;
+				int y;
+				int z;
+				int w;
+			};
+			struct
+			{
+				int r;
+				int g;
+				int b;
+				int a;
+			};
+			int content[4];
 		};
-		struct
-		{
-			int r;
-			int g;
-			int b;
-			int a;
-		};
-		int content[4];
 
 		Int4();
 		Int4(const int& x, const int& y, const int& z, const int& w);
@@ -147,22 +152,25 @@ namespace MathLib
 		const int& operator[](const unsigned int& index) const;
 	};
 
-	union EXPORT Int3
+	class EXPORT Int3
 	{
 	public:
-		struct
+		union
 		{
-			int x;
-			int y;
-			int z;
+			struct
+			{
+				int x;
+				int y;
+				int z;
+			};
+			struct
+			{
+				int r;
+				int g;
+				int b;
+			};
+			int content[3];
 		};
-		struct
-		{
-			int r;
-			int g;
-			int b;
-		};
-		int content[3];
 
 		Int3();
 		Int3(const int& x, const int& y, const int& z);
@@ -173,15 +181,11 @@ namespace MathLib
 		const int& operator[](const unsigned int& index) const;
 	};
 
-	union EXPORT Int2
+	class EXPORT Int2
 	{
 	public:
-		struct
-		{
-			int x;
-			int y;
-		};
-		int content[2];
+		int x;
+		int y;
 
 		Int2();
 		Int2(const int& x, const int& y);
@@ -411,6 +415,7 @@ namespace MathLib
 
 		const int& GetNum(const unsigned int& column, const unsigned int& row) const;
 		int* GetColumn(const unsigned int& column) const;
+		int* GetArray() const;
 		int** GetMatrix() const;
 		const unsigned int& GetRowCount() const;
 		const unsigned int& GetColumnCount() const;
@@ -447,6 +452,7 @@ namespace MathLib
 
 		const double& GetNum(const unsigned int& column, const unsigned int& row) const;
 		double* GetColumn(const unsigned int& column) const;
+		double* GetArray() const;
 		double** GetMatrix() const;
 		const unsigned int& GetRowCount() const;
 		const unsigned int& GetColumnCount() const;
@@ -506,24 +512,22 @@ namespace MathLib
 
 	// Vector math
 
-	class EXPORT Vector2D
+	class EXPORT Vector2D : public Float2
 	{
 	public:
-		Float2 direction;
-
 		Vector2D();
 		Vector2D(const Float2& dir);
 		Vector2D(const double& x, const double& y);
 		Vector2D(const Line2D& line);
 		Vector2D(const Float2& p1, const Float2& p2);
 
-		void Transform(const MatrixF& transformMat);
-		void Scale(const double& scale);
-		void Scale(const double& scaleX, const double& scaleY);
-		void SetScale(const double& scale);
-		void Rotate(double angle);
-		void Rot90R();
-		void Rot90L();
+		const Vector2D& Transform(const MatrixF& transformMat);
+		const Vector2D& Scale(const double& scale);
+		const Vector2D& Scale(const double& scaleX, const double& scaleY);
+		const Vector2D& SetScale(const double& scale);
+		const Vector2D& Rotate(double angle);
+		const Vector2D& Rot90R();
+		const Vector2D& Rot90L();
 
 		Vector2D TripleProduct(const Vector2D& other) const;
 
@@ -531,6 +535,7 @@ namespace MathLib
 		Vector2D operator-(const Vector2D& other) const;
 		double operator*(const Vector2D& other) const;
 		Vector2D operator*(const double& number) const;
+		Vector2D operator*(const MatrixF& matrix) const;
 		void operator*=(const double& number);
 		Vector2D operator-() const;
 
@@ -542,21 +547,20 @@ namespace MathLib
 		Float2 TransformPoint(Float2 point) const;
 	};
 
-	class EXPORT Vector3D
+	class EXPORT Vector3D : public Float3
 	{
 	public:
-		Float3 direction;
-
 		Vector3D();
 		Vector3D(const Float3& dir);
 		Vector3D(const double& x, const double& y, const double& z);
 		Vector3D(const Vector2D& vec, const double& z = 0);
+		Vector3D(const Float3& p1, const Float3& p2);
 
-		void Transform(const MatrixF& mat);
-		void Scale(const double& scale);
-		void Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
-		void Rotate(const double& angle, const unsigned int& axis);
-		void SetLen(const double& len);
+		const Vector3D& Transform(const MatrixF& mat);
+		const Vector3D& Scale(const double& scale);
+		const Vector3D& Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
+		const Vector3D& SetScale(const double& len);
+		const Vector3D& Rotate(const double& angle, const unsigned int& axis);
 
 		Vector3D operator+(const Vector3D& other) const;
 		Vector3D operator-(const Vector3D& other) const;
@@ -677,6 +681,8 @@ namespace MathLib
 		~GeoCollision();
 	};
 
+	class Circle2D;
+
 	class EXPORT Polygon2D
 	{
 	public:
@@ -700,6 +706,7 @@ namespace MathLib
 		Float2 GetCenter() const;
 		Float2 SupportFunction(const Vector2D& direction) const;
 		bool CollidesWith(const Polygon2D& other) const;
+		bool CollidesWith(const Circle2D& other) const;
 		bool Contains(const Float2& point) const;
 
 		void operator=(Polygon2D&& other) noexcept;
@@ -709,6 +716,23 @@ namespace MathLib
 		Iterator end();
 
 		~Polygon2D();
+	};
+
+	class EXPORT Circle2D
+	{
+	public:
+		Float2 position;
+		double radius;
+
+		Circle2D();
+		Circle2D(const Float2& position, const double& radius = 0.5);
+
+		void Translate(const Float2& translation);
+		void Translate(const double& translateX, const double& translateY);
+
+		Float2 SupportFunction(const Vector2D& direction) const;
+		bool CollidesWith(const Polygon2D& other) const;
+		bool CollidesWith(const Circle2D& other) const;
 	};
 
 	class EXPORT Triangle2D : public Polygon2D
@@ -755,8 +779,6 @@ namespace MathLib
 	EXPORT double MinFromArray(const double* const arr, const unsigned int& length);
 	EXPORT double MaxFromArray(const double* const arr, const unsigned int& length);
 	EXPORT Line2D Vector2Line(Vector2D vector, Float2 pos);
-	EXPORT Vector2D Line2Vector(Line2D line);
-	EXPORT Vector2D Line2Vector(Float2 p1, Float2 p2);
 	EXPORT int RandInt(int min, int max);
 	EXPORT inline double RoundFTo(const double& num, const int& decimal)
 	{

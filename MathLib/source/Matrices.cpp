@@ -71,6 +71,18 @@ namespace MathLib
 
 		return retCol;
 	}
+	int* MatrixI::GetArray() const
+	{
+		int* retArray = new int[m_Rows * m_Columns];
+
+		int* rArrayInsert = retArray;
+		for (unsigned int c = 0; c < m_Columns; c++)
+		{
+			memcpy(rArrayInsert, m_Matrix[c], m_Rows);
+			rArrayInsert += m_Rows;
+		}
+		return retArray;
+	}
 	int** MatrixI::GetMatrix() const
 	{
 		int** retMat = new int* [m_Columns];
@@ -311,6 +323,18 @@ namespace MathLib
 		memcpy(retCol, m_Matrix[column], m_Rows * sizeof(double));
 
 		return retCol;
+	}
+	double* MatrixF::GetArray() const
+	{
+		double* retArray = new double[m_Rows * m_Columns];
+
+		double* rArrayInsert = retArray;
+		for (unsigned int c = 0; c < m_Columns; c++)
+		{
+			memcpy(rArrayInsert, m_Matrix[c], m_Rows);
+			rArrayInsert += m_Rows;
+		}
+		return retArray;
 	}
 	double** MatrixF::GetMatrix() const
 	{

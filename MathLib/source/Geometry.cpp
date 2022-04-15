@@ -230,6 +230,51 @@ namespace MathLib
 				return true;
 		}
 	}
+	bool Polygon2D::CollidesWith(const Circle2D& other) const
+	{
+		Vector2D dirThis{1, 1};
+		Vector2D originCheck;
+		Float2 checkTri[3];
+
+		Vector2D vecAB, vecAC;
+
+		checkTri[0] = SupportFunction(dirThis) - other.SupportFunction(-dirThis);
+
+		dirThis = Vector2D(checkTri[0], {0, 0});
+
+		checkTri[1] = SupportFunction(dirThis) - other.SupportFunction(-dirThis);
+
+		originCheck = Vector2D(checkTri[0], {0, 0});
+		if (originCheck * Vector2D({0, 0}, checkTri[1]) < 0)
+			return false;
+
+		dirThis = VectorTripleProduct(Vector2D(checkTri[0], checkTri[1]), originCheck);
+
+		int a = 2, b = 1, c = 0;
+		while (true)
+		{
+			checkTri[a] = SupportFunction(dirThis) - other.SupportFunction(-dirThis);
+
+			originCheck = Vector2D(checkTri[c], {0, 0});
+			if (dirThis * Vector2D({0, 0}, checkTri[a]) <= 0)
+				return false;
+
+			vecAB = Vector2D(checkTri[a], checkTri[b]);
+			vecAC = Vector2D(checkTri[a], checkTri[c]);
+			originCheck = Vector2D(checkTri[a], {0, 0});
+
+			a = (a + 1) % 3;
+			b = (b + 1) % 3;
+			c = (c + 1) % 3;
+
+			if ((dirThis = -VectorTripleProduct(vecAB, vecAC)) * originCheck > 0)
+				continue;
+			else if ((dirThis = -VectorTripleProduct(vecAC, vecAB)) * originCheck > 0)
+				continue;
+			else
+				return true;
+		}
+	}
 	bool Polygon2D::Contains(const Float2& point) const
 	{
 		Vector2D pointVec = Vector2D(m_CornerArr[0], point);
@@ -280,6 +325,44 @@ namespace MathLib
 	{
 		delete[] m_CornerArr;
 	}
+
+	// Circle2D class definitions
+
+	Circle2D::Circle2D()
+		: position(), radius(0.5)
+	{
+
+	}
+	Circle2D::Circle2D(const Float2& position, const double& radius)
+		: position(position), radius(radius)
+	{
+
+	}
+	void Circle2D::Translate(const Float2& translation)
+	{
+		position += translation;
+	}
+	void Circle2D::Translate(const double& translateX, const double& translateY)
+	{
+		position.x += translateX;
+		position.y += translateY;
+	}
+	Float2 Circle2D::SupportFunction(const Vector2D& direction) const
+	{
+		Vector2D calcVec = direction;
+		calcVec.SetScale(radius);
+		return (Float2) (calcVec) + position;
+	}
+	bool Circle2D::CollidesWith(const Polygon2D& other) const
+	{
+		return other.CollidesWith(*this);
+	}
+	bool Circle2D::CollidesWith(const Circle2D& other) const
+	{
+		return GetDistance(position, other.position) < radius + other.radius;
+	}
+
+	// Triangle2D class definitions
 
 	Triangle2D::Triangle2D()
 		: Polygon2D()
@@ -386,13 +469,15 @@ namespace MathLib
 		return retCollision;
 	}
 
+	// Rectangle2D class definitions
+
 	Rectangle2D::Rectangle2D()
 		: Polygon2D(4)
 	{
-		m_CornerArr[0] = Float2(1, 1);
-		m_CornerArr[1] = Float2(1, -1);
-		m_CornerArr[2] = Float2(-1, -1);
-		m_CornerArr[3] = Float2(-1, 1);
+		m_CornerArr[0] = Float2(0.5, 0.5);
+		m_CornerArr[1] = Float2(0.5, -0.5);
+		m_CornerArr[2] = Float2(-0.5, -0.5);
+		m_CornerArr[3] = Float2(-0.5, 0.5);
 	}
 	Rectangle2D::Rectangle2D(Rectangle2D&& other) noexcept
 		: Polygon2D(std::move(other))
@@ -420,10 +505,10 @@ namespace MathLib
 	Rectangle2D::Rectangle2D(const Float2 position, const double& rotation, const Float2 scale)
 		: Polygon2D(4)
 	{
-		m_CornerArr[0] = Float2(1, 1);
-		m_CornerArr[1] = Float2(1, -1);
-		m_CornerArr[2] = Float2(-1, -1);
-		m_CornerArr[3] = Float2(-1, 1);
+		m_CornerArr[0] = Float2(0.5, 0.5);
+		m_CornerArr[1] = Float2(0.5, -0.5);
+		m_CornerArr[2] = Float2(-0.5, -0.5);
+		m_CornerArr[3] = Float2(-0.5, 0.5);
 
 		Scale(scale.x, scale.y);
 		Rotate(rotation);
@@ -529,7 +614,7 @@ namespace MathLib
 		{
 			Vector2D transVec = Vector2D(polygon.m_CornerArr[p]);
 			transVec.Rotate(-(viewDir.GetAngle()));
-			retArr[p] = -transVec.direction.y;
+			retArr[p] = -transVec.y;
 		}
 
 		return retArr;
@@ -542,7 +627,7 @@ namespace MathLib
 		{
 			Vector2D transVec = Vector2D(pointArr[p]);
 			transVec.Rotate(-(viewDir.GetAngle()));
-			retArr[p] = -transVec.direction.y;
+			retArr[p] = -transVec.y;
 		}
 
 		return retArr;

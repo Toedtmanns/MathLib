@@ -56,22 +56,10 @@ namespace MathLib
 	{
 		Line2D line = Line2D();
 		line.p1 = pos;
-		line.p2.x = vector.direction.x + pos.x;
-		line.p2.y = vector.direction.y + pos.y;
+		line.p2.x = vector.x + pos.x;
+		line.p2.y = vector.y + pos.y;
 
 		return line;
-	}
-	Vector2D Line2Vector(Line2D line)
-	{
-		Vector2D vector = Vector2D();
-		vector.direction = Float2(line.p2.x - line.p1.x, line.p2.y - line.p1.y);
-		return vector;
-	}
-	Vector2D Line2Vector(Float2 p1, Float2 p2)
-	{
-		Vector2D vector = Vector2D();
-		vector.direction = Float2(p2.x - p1.x, p2.y - p1.y);
-		return vector;
 	}
 	int RandInt(int min, int max)
 	{
@@ -81,17 +69,17 @@ namespace MathLib
 	MatrixF Vec2Mat(const Vector3D& vec, const int& front)
 	{
 		MatrixF mat = MatrixF(3);
-		mat.SetNum(0, 0, vec.direction.x);
-		mat.SetNum(1, 1, vec.direction.y);
-		mat.SetNum(2, 2, vec.direction.z);
+		mat.SetNum(0, 0, vec.x);
+		mat.SetNum(1, 1, vec.y);
+		mat.SetNum(2, 2, vec.z);
 		return mat;
 	}
 	Vector3D Mat2Vec(const MatrixF& mat, const int& front)
 	{
 		Vector3D vec = Vector3D();
-		vec.direction.x = mat.GetNum(0, 0);
-		vec.direction.y = mat.GetNum(1, 1);
-		vec.direction.z = mat.GetNum(2, 2);
+		vec.x = mat.GetNum(0, 0);
+		vec.y = mat.GetNum(1, 1);
+		vec.z = mat.GetNum(2, 2);
 		return vec;
 	}
 
