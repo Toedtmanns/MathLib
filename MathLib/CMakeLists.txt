@@ -28,4 +28,4 @@ else()
     add_compile_definitions(MATHLIB_EXPORTS)
 endif()
 
-set_target_properties(MathLib PROPERTIES PUBLIC_HEADER ./include/Maths.h)
+target_include_directories(MathLib PUBLIC ./include)

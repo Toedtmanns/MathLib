@@ -141,7 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\Maths.h" />
+    <ClInclude Include="include\Maths.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Geometry.cpp" />

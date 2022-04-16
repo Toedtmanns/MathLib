@@ -145,6 +145,7 @@ namespace MathLib
 
 		Int4();
 		Int4(const int& x, const int& y, const int& z, const int& w);
+		Int4(const double& x, const double& y, const double& z, const double& w);
 		Int4(const Float4& other);
 
 		void operator=(const Float4& other);
@@ -174,6 +175,7 @@ namespace MathLib
 
 		Int3();
 		Int3(const int& x, const int& y, const int& z);
+		Int3(const double& x, const double& y, const double& z);
 		Int3(const Float3& other);
 
 		void operator=(const Float3& other);
@@ -189,6 +191,7 @@ namespace MathLib
 
 		Int2();
 		Int2(const int& x, const int& y);
+		Int2(const double& x, const double& y);
 		Int2(const Float2& other);
 
 		void operator=(const Float2& other);

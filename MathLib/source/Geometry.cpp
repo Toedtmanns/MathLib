@@ -1,4 +1,4 @@
-#include "../include/Maths.h"
+#include "../include/Maths.hpp"
 #include <cstring>
 #include <stdexcept>
 

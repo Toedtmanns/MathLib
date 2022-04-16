@@ -1,4 +1,4 @@
-#include "../include/Maths.h"
+#include "../include/Maths.hpp"
 #include <stdexcept>
 #include <cmath>
 
@@ -37,6 +37,7 @@ namespace MathLib
 			throw std::invalid_argument("Matrix is not 2x2!");
 
 		*this = *this * transformMat;
+		return *this;
 	}
 	const Vector2D& Vector2D::Scale(const double& scale)
 	{
