@@ -107,8 +107,8 @@ namespace MathLib
 	}
 	Vector2D Vector2D::operator*(const MatrixF& matrix) const
 	{
-		MatrixF result = GetColVector() * matrix;
-		return {result[0][0], result[0][1]};
+		MatrixF result = GetRowVector() * matrix;
+		return {result[0][0], result[1][0]};
 	}
 	void Vector2D::operator*=(const double& number)
 	{
@@ -186,10 +186,10 @@ namespace MathLib
 	}
 	const Vector3D& Vector3D::Transform(const MatrixF& mat)
 	{
-		MatrixF result = GetColVector() * mat;
+		MatrixF result = GetRowVector() * mat;
 		x = result[0][0];
-		y = result[0][1];
-		z = result[0][2];
+		y = result[1][0];
+		z = result[2][0];
 		return *this;
 	}
 	const Vector3D& Vector3D::Scale(const double& s)
@@ -264,6 +264,11 @@ namespace MathLib
 	Vector3D Vector3D::operator*(const double& number) const
 	{
 		return Vector3D(x * number, y * number, z * number);
+	}
+	Vector3D Vector3D::operator*(const MatrixF& matrix) const
+	{
+		MatrixF result = GetRowVector() * matrix;
+		return {result[0][0], result[1][0], result[2][0]};
 	}
 	void Vector3D::operator*=(const double& number)
 	{

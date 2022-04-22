@@ -78,7 +78,7 @@ namespace MathLib
 		int* rArrayInsert = retArray;
 		for (unsigned int c = 0; c < m_Columns; c++)
 		{
-			memcpy(rArrayInsert, m_Matrix[c], m_Rows);
+			memcpy(rArrayInsert, m_Matrix[c], m_Rows * sizeof(int));
 			rArrayInsert += m_Rows;
 		}
 		return retArray;
@@ -331,7 +331,7 @@ namespace MathLib
 		double* rArrayInsert = retArray;
 		for (unsigned int c = 0; c < m_Columns; c++)
 		{
-			memcpy(rArrayInsert, m_Matrix[c], m_Rows);
+			memcpy(rArrayInsert, m_Matrix[c], m_Rows * sizeof(double));
 			rArrayInsert += m_Rows;
 		}
 		return retArray;

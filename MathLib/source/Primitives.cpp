@@ -109,11 +109,6 @@ namespace MathLib
 	{
 
 	}
-	Int4::Int4(const double& x, const double& y, const double& z, const double& w)
-		: x((int) round(x)), y((int) round(y)), z((int) round(z)), w((int) round(w))
-	{
-
-	}
 	Int4::Int4(const Float4& other)
 	{
 		x = (int) round(other.x);
@@ -147,11 +142,6 @@ namespace MathLib
 	{
 
 	}
-	Int3::Int3(const double& x, const double& y, const double& z)
-		:x((int) round(x)), y((int) round(y)), z((int) round(z))
-	{
-
-	}
 	Int3::Int3(const Float3& other)
 	{
 		x = (int) round(other.x);
@@ -182,11 +172,6 @@ namespace MathLib
 	}
 	Int2::Int2(const int& x, const int& y)
 		: x(x), y(y)
-	{
-
-	}
-	Int2::Int2(const double& x, const double& y)
-		: x((int) round(x)), y((int) round(y))
 	{
 
 	}
