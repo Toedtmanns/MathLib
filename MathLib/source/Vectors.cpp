@@ -1,4 +1,4 @@
-#include "../include/Maths.hpp"
+#include "../include/MathLib.hpp"
 #include <stdexcept>
 #include <cmath>
 
@@ -61,7 +61,7 @@ namespace MathLib
 	{
 		MatrixF rotMat = MatrixF(2);
 		rotMat[0][0] = sin(Deg2Rad(angle + 90));
-		rotMat[0][1] = cos(Deg2Rad(angle + 90));
+		rotMat[0][1] = -cos(Deg2Rad(angle + 90));
 		rotMat[1][0] = sin(Deg2Rad(angle));
 		rotMat[1][1] = cos(Deg2Rad(angle));
 
@@ -108,7 +108,7 @@ namespace MathLib
 	Vector2D Vector2D::operator*(const MatrixF& matrix) const
 	{
 		MatrixF result = GetRowVector() * matrix;
-		return {result[0][0], result[1][0]};
+		return {result[0][0], result[0][1]};
 	}
 	void Vector2D::operator*=(const double& number)
 	{
@@ -188,8 +188,8 @@ namespace MathLib
 	{
 		MatrixF result = GetRowVector() * mat;
 		x = result[0][0];
-		y = result[1][0];
-		z = result[2][0];
+		y = result[0][1];
+		z = result[0][2];
 		return *this;
 	}
 	const Vector3D& Vector3D::Scale(const double& s)
@@ -268,7 +268,7 @@ namespace MathLib
 	Vector3D Vector3D::operator*(const MatrixF& matrix) const
 	{
 		MatrixF result = GetRowVector() * matrix;
-		return {result[0][0], result[1][0], result[2][0]};
+		return {result[0][0], result[0][1], result[0][2]};
 	}
 	void Vector3D::operator*=(const double& number)
 	{

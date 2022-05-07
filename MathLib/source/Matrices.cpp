@@ -1,4 +1,4 @@
-#include "../include/Maths.hpp"
+#include "../include/MathLib.hpp"
 #include <stdexcept>
 
 namespace MathLib
@@ -653,7 +653,7 @@ namespace MathLib
 		{
 			for (unsigned int col = 0; col < dim; col++)
 			{
-				resMat.SetNum(row, col, mat.GetNum(row, col));
+				resMat.SetNum(row, col, mat.GetNum(col, row));
 			}
 		}
 
@@ -838,7 +838,7 @@ namespace MathLib
 		{
 			for (unsigned int col = 0; col < dim; col++)
 			{
-				resMat.SetNum(row, col, mat.GetNum(row, col));
+				resMat.SetNum(row, col, mat.GetNum(col, row));
 			}
 		}
 

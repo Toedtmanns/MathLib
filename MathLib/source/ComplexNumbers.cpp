@@ -1,4 +1,4 @@
-#include "../include/Maths.hpp"
+#include "../include/MathLib.hpp"
 #include <stdio.h>
 
 namespace MathLib
