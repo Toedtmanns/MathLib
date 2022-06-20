@@ -747,9 +747,6 @@ namespace MathLib
 
 		void operator=(Triangle2D&& other) noexcept;
 		void operator=(const Triangle2D& other);
-
-		bool CollidesWith(const Triangle2D& other) const;
-		GeoCollision GetCollision(const Triangle2D& other) const;
 	};
 
 	class EXPORT Rectangle2D : public Polygon2D
@@ -764,9 +761,6 @@ namespace MathLib
 
 		void operator=(Rectangle2D&& other) noexcept;
 		void operator=(const Rectangle2D& other);
-
-		bool CollidesWith(const Rectangle2D& other) const;
-		GeoCollision GetCollision(const Rectangle2D& other) const;
 	};
 
 	EXPORT bool Contains(const Rectangle2D& rect, const double& rotation, const Float2& point);

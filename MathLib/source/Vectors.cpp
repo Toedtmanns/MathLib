@@ -60,10 +60,10 @@ namespace MathLib
 	const Vector2D& Vector2D::Rotate(double angle)
 	{
 		MatrixF rotMat = MatrixF(2);
-		rotMat[0][0] = sin(Deg2Rad(angle + 90));
-		rotMat[0][1] = -cos(Deg2Rad(angle + 90));
-		rotMat[1][0] = sin(Deg2Rad(angle));
-		rotMat[1][1] = cos(Deg2Rad(angle));
+		rotMat[0][0] = cos(Deg2Rad(angle));
+		rotMat[0][1] = -sin(Deg2Rad(angle));
+		rotMat[1][0] = -rotMat[0][1];
+		rotMat[1][1] = rotMat[0][0];
 
 		*this = *this * rotMat;
 		return *this;
