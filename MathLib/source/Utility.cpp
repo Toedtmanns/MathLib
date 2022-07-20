@@ -24,14 +24,6 @@ namespace MathLib
 		};
 	}
 
-	double Deg2Rad(double deg)
-	{
-		return deg * PI / 180;
-	}
-	double Rad2Deg(double rad)
-	{
-		return rad * 180 / PI;
-	}
 	double MinFromArray(const double* const arr, const unsigned int& length)
 	{
 		double min = arr[0];

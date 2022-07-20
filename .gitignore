@@ -2,6 +2,7 @@
 x64
 MathLib/x64
 MathLib/Debug
+MathLib/build
 Documentation
 build
 .vscode

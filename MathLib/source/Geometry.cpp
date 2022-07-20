@@ -110,12 +110,12 @@ namespace MathLib
 	{
 		memcpy(m_CornerArr, other.m_CornerArr, m_NumCorners * sizeof(Float2));
 	}
-	Polygon2D::Polygon2D(const unsigned int& corners)
+	Polygon2D::Polygon2D(const unsigned int corners)
 		: m_NumCorners(corners), m_CornerArr(new Float2[corners])
 	{
 
 	}
-	Polygon2D::Polygon2D(const Float2* const pointArr, const unsigned int& corners)
+	Polygon2D::Polygon2D(const Float2* const pointArr, const unsigned int corners)
 		: m_CornerArr(new Float2[corners]), m_NumCorners(corners)
 	{
 		memcpy(m_CornerArr, pointArr, corners * sizeof(Float2));
@@ -125,24 +125,20 @@ namespace MathLib
 		for (unsigned int c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += translation;
 	}
-	void Polygon2D::Translate(const double& translateX, const double& translateY)
+	void Polygon2D::Translate(const double translateX, const double translateY)
 	{
 		for (unsigned int c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += Float2(translateX, translateY);
 	}
-	void Polygon2D::Rotate(const double& angle)
+	void Polygon2D::Rotate(const double angle)
 	{
-		MatrixF rotMat = MatrixF(2, 2);
-		rotMat[0][0] = sin(Deg2Rad(angle + 90));
-		rotMat[0][1] = cos(Deg2Rad(angle + 90));
-		rotMat[1][0] = sin(Deg2Rad(angle));
-		rotMat[1][1] = cos(Deg2Rad(angle));
+		Mat2 rotMat = RotationMatrix2D(angle);
 
 		Float2 center = GetCenter();
 		for (unsigned int c = 0; c < m_NumCorners; c++)
-			m_CornerArr[c] = (m_CornerArr[c] - center) * rotMat + center;
+			m_CornerArr[c] = Vector2D(m_CornerArr[c] - center) * rotMat + Vector2D(center);
 	}
-	void Polygon2D::Scale(const double& scale)
+	void Polygon2D::Scale(const double scale)
 	{
 		for (Float2& corner : *this)
 		{
@@ -150,7 +146,7 @@ namespace MathLib
 			corner.y = corner.y * scale;
 		}
 	}
-	void Polygon2D::Scale(const double& scaleX, const double& scaleY)
+	void Polygon2D::Scale(const double scaleX, const double scaleY)
 	{
 		for (Float2& corner : *this)
 		{

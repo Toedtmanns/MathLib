@@ -1,19 +1,9 @@
 #include "../include/MathLib.hpp"
 #include <stdio.h>
-#include <cmath>
+#include <math.h>
 
 namespace MathLib
 {
-	Float4::Float4()
-		: x(0), y(0), z(0), w(0)
-	{
-
-	}
-	Float4::Float4(const double& x, const double& y, const double& z, const double& w)
-		: x(x), y(y), z(z), w(w)
-	{
-
-	}
 	Float4::Float4(const Int4& other)
 	{
 		x = other.x;
@@ -28,25 +18,7 @@ namespace MathLib
 		z = other.z;
 		w = other.w;
 	}
-	double& Float4::operator[](const unsigned int& index)
-	{
-		return content[index];
-	}
-	const double& Float4::operator[](const unsigned int& index) const
-	{
-		return content[index];
-	}
 
-	Float3::Float3()
-		: x(0), y(0), z(0)
-	{
-
-	}
-	Float3::Float3(const double& x, const double& y, const double& z)
-		: x(x), y(y), z(z)
-	{
-
-	}
 	Float3::Float3(const Int3& other)
 	{
 		x = other.x;
@@ -59,27 +31,7 @@ namespace MathLib
 		y = other.y;
 		z = other.z;
 	}
-	double& Float3::operator[](const unsigned int& index)
-	{
 
-		return content[index];
-
-	}
-	const double& Float3::operator[](const unsigned int& index) const
-	{
-		return content[index];
-	}
-
-	Float2::Float2()
-		: x(0), y(0)
-	{
-
-	}
-	Float2::Float2(const double& x, const double& y)
-		: x(x), y(y)
-	{
-
-	}
 	Float2::Float2(const Int2& other)
 	{
 		x = other.x;
@@ -90,330 +42,10 @@ namespace MathLib
 		x = other.x;
 		y = other.y;
 	}
-	double& Float2::operator[](const unsigned int& index)
-	{
-		return ((double*) this)[index];
-	}
-	const double& Float2::operator[](const unsigned int& index) const
-	{
-		return ((double*) this)[index];
-	}
-
-	Int4::Int4()
-		: x(0), y(0), z(0), w(0)
-	{
-
-	}
-	Int4::Int4(const int& x, const int& y, const int& z, const int& w)
-		: x(x), y(y), z(z), w(w)
-	{
-
-	}
-	Int4::Int4(const Float4& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-		z = (int) round(other.z);
-		w = (int) round(other.w);
-	}
-	void Int4::operator=(const Float4& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-		z = (int) round(other.z);
-		w = (int) round(other.w);
-	}
-	int& Int4::operator[](const unsigned int& index)
-	{
-		return content[index];
-	}
-	const int& Int4::operator[](const unsigned int& index) const
-	{
-		return content[index];
-	}
-
-	Int3::Int3()
-		: x(0), y(0), z(0)
-	{
-
-	}
-	Int3::Int3(const int& x, const int& y, const int& z)
-		: x(x), y(y), z(z)
-	{
-
-	}
-	Int3::Int3(const Float3& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-		z = (int) round(other.z);
-	}
-	void Int3::operator=(const Float3& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-		z = (int) round(other.z);
-	}
-	int& Int3::operator[](const unsigned int& index)
-	{
-
-		return content[index];
-
-	}
-	const int& Int3::operator[](const unsigned int& index) const
-	{
-		return content[index];
-	}
-
-	Int2::Int2()
-		: x(0), y(0)
-	{
-
-	}
-	Int2::Int2(const int& x, const int& y)
-		: x(x), y(y)
-	{
-
-	}
-	Int2::Int2(const Float2& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-	}
-	void Int2::operator=(const Float2& other)
-	{
-		x = (int) round(other.x);
-		y = (int) round(other.y);
-	}
-	int& Int2::operator[](const unsigned int& index)
-	{
-		return ((int*) this)[index];
-	}
-	const int& Int2::operator[](const unsigned int& index) const
-	{
-		return ((int*) this)[index];
-	}
-
-	bool operator==(const Float2& f1, const Float2& f2)
-	{
-		return f1.x == f2.x && f1.y == f2.y;
-	}
-	bool operator!=(const Float2& f1, const Float2& f2)
-	{
-		return f1.x != f2.x || f1.y != f2.y;
-	}
-	bool operator==(const Float3& f1, const Float3& f2)
-	{
-		return f1.x == f2.x && f1.y == f2.y && f1.z == f2.z;
-	}
-	bool operator!=(const Float3& f1, const Float3& f2)
-	{
-		return f1.x != f2.x || f1.y != f2.y || f1.z != f2.z;
-	}
-	bool operator==(const Float4& f1, const Float4& f2)
-	{
-		return f1.x == f2.x && f1.y == f2.y && f1.z == f2.z && f1.w == f2.w;
-	}
-	bool operator!=(const Float4& f1, const Float4& f2)
-	{
-		return f1.x != f2.x || f1.y != f2.y || f1.z != f2.z || f1.w != f2.w;
-	}
-	Float2 operator+(const Float2& f1, const Float2& f2)
-	{
-		return Float2(f1.x + f2.x, f1.y + f2.y);
-	}
-	Float3 operator+(const Float3& f1, const Float3& f2)
-	{
-		return Float3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
-	}
-	Float4 operator+(const Float4& f1, const Float4& f2)
-	{
-		return Float4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
-	}
-	Float2 operator-(const Float2& f1, const Float2& f2)
-	{
-		return Float2(f1.x - f2.x, f1.y - f2.y);
-	}
-	Float3 operator-(const Float3& f1, const Float3& f2)
-	{
-		return Float3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
-	}
-	Float4 operator-(const Float4& f1, const Float4& f2)
-	{
-		return Float4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
-	}
-	void operator+=(Float2& f1, const Float2& f2)
-	{
-		f1 = Float2(f1.x + f2.x, f1.y + f2.y);
-	}
-	void operator+=(Float3& f1, const Float3& f2)
-	{
-		f1 = Float3(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z);
-	}
-	void operator+=(Float4& f1, const Float4& f2)
-	{
-		f1 = Float4(f1.x + f2.x, f1.y + f2.y, f1.z + f2.z, f1.w + f2.w);
-	}
-	void operator-=(Float2& f1, const Float2& f2)
-	{
-		f1 = Float2(f1.x - f2.x, f1.y - f2.y);
-	}
-	void operator-=(Float3& f1, const Float3& f2)
-	{
-		f1 = Float3(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z);
-	}
-	void operator-=(Float4& f1, const Float4& f2)
-	{
-		f1 = Float4(f1.x - f2.x, f1.y - f2.y, f1.z - f2.z, f1.w - f2.w);
-	}
-	Float2 operator*(const Float2& f1, const Float2& f2)
-	{
-		return Float2(f1.x * f2.x, f1.y * f2.y);
-	}
-	Float3 operator*(const Float3& f1, const Float3& f2)
-	{
-		return Float3(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z);
-	}
-	Float4 operator*(const Float4& f1, const Float4& f2)
-	{
-		return Float4(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z, f1.w * f2.w);
-	}
-	Float2 operator*(const Float2& f1, const double& f2)
-	{
-		return Float2(f1.x * f2, f1.y * f2);
-	}
-	Float3 operator*(const Float3& f1, const double& f2)
-	{
-		return Float3(f1.x * f2, f1.y * f2, f1.z * f2);
-	}
-	Float4 operator*(const Float4& f1, const double& f2)
-	{
-		return Float4(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
-	}
-
-	bool operator==(const Int2& i1, const Int2& i2)
-	{
-		return i1.x == i2.x && i1.y == i2.y;
-	}
-	bool operator!=(const Int2& i1, const Int2& i2)
-	{
-		return i1.x != i2.x || i1.y != i2.y;
-	}
-	bool operator==(const Int3& i1, const Int3& i2)
-	{
-		return i1.x == i2.x && i1.y == i2.y && i1.z == i2.z;
-	}
-	bool operator!=(const Int3& i1, const Int3& i2)
-	{
-		return i1.x != i2.x || i1.y != i2.y || i1.z != i2.z;
-	}
-	bool operator==(const Int4& i1, const Int4& i2)
-	{
-		return i1.x == i2.x && i1.y == i2.y && i1.z == i2.z && i1.w == i2.w;
-	}
-	bool operator!=(const Int4& i1, const Int4& i2)
-	{
-		return i1.x != i2.x || i1.y != i2.y || i1.z != i2.z || i1.w != i2.w;
-	}
-	Int2 operator+(const Int2& i1, const Int2& i2)
-	{
-		return Int2(i1.x + i2.x, i1.y + i2.y);
-	}
-	Int3 operator+(const Int3& i1, const Int3& i2)
-	{
-		return Int3(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z);
-	}
-	Int4 operator+(const Int4& i1, const Int4& i2)
-	{
-		return Int4(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z, i1.w + i2.w);
-	}
-	Int2 operator-(const Int2& i1, const Int2& i2)
-	{
-		return Int2(i1.x - i2.x, i1.y - i2.y);
-	}
-	Int3 operator-(const Int3& i1, const Int3& i2)
-	{
-		return Int3(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z);
-	}
-	Int4 operator-(const Int4& i1, const Int4& i2)
-	{
-		return Int4(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z, i1.w - i2.w);
-	}
-	void operator+=(Int2& i1, const Int2& i2)
-	{
-		i1 = Int2(i1.x + i2.x, i1.y + i2.y);
-	}
-	void operator+=(Int3& i1, const Int3& i2)
-	{
-		i1 = Int3(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z);
-	}
-	void operator+=(Int4& i1, const Int4& i2)
-	{
-		i1 = Int4(i1.x + i2.x, i1.y + i2.y, i1.z + i2.z, i1.w + i2.w);
-	}
-	void operator-=(Int2& i1, const Int2& i2)
-	{
-		i1 = Int2(i1.x - i2.x, i1.y - i2.y);
-	}
-	void operator-=(Int3& i1, const Int3& i2)
-	{
-		i1 = Int3(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z);
-	}
-	void operator-=(Int4& i1, const Int4& i2)
-	{
-		i1 = Int4(i1.x - i2.x, i1.y - i2.y, i1.z - i2.z, i1.w - i2.w);
-	}
-	Int2 operator*(const Int2& i1, const Int2& i2)
-	{
-		return Int2(i1.x * i2.x, i1.y * i2.y);
-	}
-	Int3 operator*(const Int3& i1, const Int3& i2)
-	{
-		return Int3(i1.x * i2.x, i1.y * i2.y, i1.z * i2.z);
-	}
-	Int4 operator*(const Int4& i1, const Int4& i2)
-	{
-		return Int4(i1.x * i2.x, i1.y * i2.y, i1.z * i2.z, i1.w * i2.w);
-	}
-	Int2 operator*(const Int2& i1, const int& i2)
-	{
-		return Int2(i1.x * i2, i1.y * i2);
-	}
-	Int3 operator*(const Int3& i1, const int& i2)
-	{
-		return Int3(i1.x * i2, i1.y * i2, i1.z * i2);
-	}
-	Int4 operator*(const Int4& i1, const int& i2)
-	{
-		return Int4(i1.x * i2, i1.y * i2, i1.z * i2, i1.w * i2);
-	}
-
-	Float2 Transform(Float2 point, Float2 origin, const MatrixF& transform)
-	{
-		Vector2D vec = Vector2D(origin, point);
-		vec.Transform(transform);
-
-		return origin + (Float2) vec;
-	}
-	Line2D Transform(Line2D line, Float2 origin, const MatrixF& transform)
-	{
-		Vector2D vec1 = Vector2D(origin, line.p1);
-		Vector2D vec2 = Vector2D(origin, line.p2);
-		vec1.Transform(transform);
-		vec2.Transform(transform);
-
-		return Line2D((Float2) vec1 + origin, (Float2) vec2 + origin);
-	}
-	Float3 RotatePoint(const Float3& point, Quaternion& quat)
-	{
-		Quaternion retQuat(point);
-		retQuat = quat * retQuat * quat.GetInverse();
-		return retQuat.GetPoint();
-	}
 
 	void PrintProperties(const Float2& p)
 	{
-		printf("X: %f, Y: %f\n", p.x, p.y);
+		printf("X: %.3f, Y: %.3f\n", p.x, p.y);
 	}
 	void PrintProperties(const Float3& p)
 	{
@@ -445,7 +77,7 @@ namespace MathLib
 
 		normal = Vector2D(p1, p2).GetAngle() + 90;
 		if (normal < 0)
-			normal = 360 + normal;
+			normal += 360;
 	}
 	bool Line2D::operator==(const Line2D& other)
 	{
@@ -459,7 +91,7 @@ namespace MathLib
 	// Intersects
 
 	Intersect::Intersect()
-		: pos({nan(""), nan("")}), isIntersecting(false), isCollinear(false), line1(), line2()
+		: pos(nan(""), nan("")), isIntersecting(false), isCollinear(false), line1(), line2()
 	{
 
 	}
@@ -592,21 +224,11 @@ namespace MathLib
 			if (p.y >= fmin(l.p1.y, l.p2.y) && p.y <= fmax(l.p1.y, l.p2.y))
 			{
 				intersect.isIntersecting = true;
-				intersect.pos = {p.x, p.y};
+				intersect.pos = Float2(p.x, p.y);
 			}
 		}
 
 		return intersect;
-	}
-
-	// Matrix calculations
-
-	Float2 operator*(const Float2& point, const MatrixF& matrix)
-	{
-		Float2 retFloat = Float2(
-			point.x * matrix.GetNum(0, 0) + point.y * matrix.GetNum(1, 0),
-			point.x * matrix.GetNum(0, 1) + point.y * matrix.GetNum(1, 1));
-		return retFloat;
 	}
 
 	void PrintProperties(const Line2D& l)

@@ -935,7 +935,7 @@ namespace MathLib
 
 		return resMat;
 	}
-	bool MatrixIsSquare(const MatrixI& mat, const int& dimension)
+	bool MatrixIsSquare(const MatrixF& mat, const int& dimension)
 	{
 		if (mat.GetRowCount() == mat.GetColumnCount())
 		{
@@ -950,7 +950,7 @@ namespace MathLib
 		}
 		return false;
 	}
-	bool MatrixIsSquare(const MatrixF& mat, const int& dimension)
+	bool MatrixIsSquare(const MatrixI& mat, const int& dimension)
 	{
 		if (mat.GetRowCount() == mat.GetColumnCount())
 		{

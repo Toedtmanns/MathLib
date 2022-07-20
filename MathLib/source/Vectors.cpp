@@ -1,6 +1,6 @@
 #include "../include/MathLib.hpp"
 #include <stdexcept>
-#include <cmath>
+#include <math.h>
 
 namespace MathLib
 {
@@ -22,20 +22,17 @@ namespace MathLib
 
 	}
 	Vector2D::Vector2D(const Line2D& line)
-		: Float2({line.p2.x - line.p1.x, line.p2.y - line.p1.y})
+		: Float2(line.p2.x - line.p1.x, line.p2.y - line.p1.y)
 	{
 		
 	}
 	Vector2D::Vector2D(const Float2& p1, const Float2& p2)
-		: Float2({p2.x - p1.x, p2.y - p1.y})
+		: Float2(p2.x - p1.x, p2.y - p1.y)
 	{
 
 	}
-	const Vector2D& Vector2D::Transform(const MatrixF& transformMat)
+	const Vector2D& Vector2D::Transform(const Mat2& transformMat)
 	{
-		if (!MatrixIsSquare(transformMat, 2))
-			throw std::invalid_argument("Matrix is not 2x2!");
-
 		*this = *this * transformMat;
 		return *this;
 	}
@@ -59,11 +56,7 @@ namespace MathLib
 	}
 	const Vector2D& Vector2D::Rotate(double angle)
 	{
-		MatrixF rotMat = MatrixF(2);
-		rotMat[0][0] = cos(Deg2Rad(angle));
-		rotMat[0][1] = -sin(Deg2Rad(angle));
-		rotMat[1][0] = -rotMat[0][1];
-		rotMat[1][1] = rotMat[0][0];
+		Mat2 rotMat = RotationMatrix2D(angle);
 
 		*this = *this * rotMat;
 		return *this;
@@ -92,7 +85,7 @@ namespace MathLib
 	}
 	Vector2D Vector2D::operator-(const Vector2D& other) const
 	{
-		return Vector2D({x - other.x, y - other.y});
+		return Vector2D(x - other.x, y - other.y);
 	}
 	double Vector2D::operator*(const Vector2D& other) const
 	{
@@ -100,15 +93,15 @@ namespace MathLib
 	}
 	Vector2D Vector2D::operator*(const double& number) const
 	{
-		return {
+		return Vector2D(
 			x * number,
 			y * number
-		};
+		);
 	}
-	Vector2D Vector2D::operator*(const MatrixF& matrix) const
+	Vector2D Vector2D::operator*(const Mat2& matrix) const
 	{
-		MatrixF result = GetRowVector() * matrix;
-		return {result[0][0], result[0][1]};
+		Mat2x1 result = GetRowVector() * matrix;
+		return Vector2D(result.GetVal(0), result.GetVal(1));
 	}
 	void Vector2D::operator*=(const double& number)
 	{
@@ -117,7 +110,7 @@ namespace MathLib
 	}
 	Vector2D Vector2D::operator-() const
 	{
-		return {-x, -y};
+		return Vector2D(-x, -y);
 	}
 	double Vector2D::GetAngle() const
 	{
@@ -133,19 +126,19 @@ namespace MathLib
 	{
 		return sqrt(pow(x, 2) + pow(y, 2));
 	}
-	MatrixF Vector2D::GetRowVector() const
+	Mat2x1 Vector2D::GetRowVector() const
 	{
-		MatrixF retMat(2, 1);
-		retMat.SetNum(0, 0, x);
-		retMat.SetNum(1, 0, y);
+		Mat2x1 retMat;
+		retMat.SetVal(0, x);
+		retMat.SetVal(1, y);
 
 		return retMat;
 	}
-	MatrixF Vector2D::GetColVector() const
+	Mat1x2 Vector2D::GetColVector() const
 	{
-		MatrixF retMat(1, 2);
-		retMat.SetNum(0, 0, x);
-		retMat.SetNum(0, 1, y);
+		Mat1x2 retMat;
+		retMat.SetVal(0, x);
+		retMat.SetVal(1, y);
 
 		return retMat;
 	}
@@ -184,12 +177,12 @@ namespace MathLib
 	{
 
 	}
-	const Vector3D& Vector3D::Transform(const MatrixF& mat)
+	const Vector3D& Vector3D::Transform(const Mat3& mat)
 	{
-		MatrixF result = GetRowVector() * mat;
-		x = result[0][0];
-		y = result[0][1];
-		z = result[0][2];
+		Mat3x1 result = GetRowVector() * mat;
+		x = result.GetVal(0);
+		y = result.GetVal(1);
+		z = result.GetVal(2);
 		return *this;
 	}
 	const Vector3D& Vector3D::Scale(const double& s)
@@ -243,19 +236,19 @@ namespace MathLib
 	}*/
 	Vector3D Vector3D::operator+(const Vector3D& other) const
 	{
-		return Vector3D({
+		return Vector3D(
 			x + other.x,
 			y + other.y,
 			z + other.z
-			});
+		);
 	}
 	Vector3D Vector3D::operator-(const Vector3D& other) const
 	{
-		return Vector3D({
+		return Vector3D(
 			x - other.x,
 			y - other.y,
 			z - other.z
-			});
+		);
 	}
 	double Vector3D::operator*(const Vector3D& other) const
 	{
@@ -265,10 +258,10 @@ namespace MathLib
 	{
 		return Vector3D(x * number, y * number, z * number);
 	}
-	Vector3D Vector3D::operator*(const MatrixF& matrix) const
+	Vector3D Vector3D::operator*(const Mat3& matrix) const
 	{
-		MatrixF result = GetRowVector() * matrix;
-		return {result[0][0], result[0][1], result[0][2]};
+		Mat3x1 result = GetRowVector() * matrix;
+		return Vector3D(result.GetVal(0), result.GetVal(1), result.GetVal(2));
 	}
 	void Vector3D::operator*=(const double& number)
 	{
@@ -313,21 +306,21 @@ namespace MathLib
 	{
 		return sqrt(pow(sqrt(pow(x, 2) + pow(y, 2)), 2) + pow(z, 2));
 	}
-	MatrixF Vector3D::GetRowVector() const
+	Mat3x1 Vector3D::GetRowVector() const
 	{
-		MatrixF retMat(3, 1);
-		retMat.SetNum(0, 0, x);
-		retMat.SetNum(1, 0, y);
-		retMat.SetNum(2, 0, z);
+		Mat3x1 retMat;
+		retMat.SetVal(0, x);
+		retMat.SetVal(1, y);
+		retMat.SetVal(2, z);
 
 		return retMat;
 	}
-	MatrixF Vector3D::GetColVector() const
+	Mat1x3 Vector3D::GetColVector() const
 	{
-		MatrixF retMat(1, 3);
-		retMat.SetNum(0, 0, x);
-		retMat.SetNum(0, 1, y);
-		retMat.SetNum(0, 2, z);
+		Mat1x3 retMat;
+		retMat.SetVal(0, x);
+		retMat.SetVal(1, y);
+		retMat.SetVal(2, z);
 
 		return retMat;
 	}

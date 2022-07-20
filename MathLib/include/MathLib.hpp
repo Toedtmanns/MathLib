@@ -1,251 +1,9 @@
 #pragma once
-#define MATHLIB
-
-#include <cmath>
-
-#define PI 3.14159265
-
-#ifndef MATHLIB_STATIC
-#ifndef EXPORT
-#ifdef MATHLIB_EXPORTS
-#define EXPORT __declspec(dllexport)
-#else
-#define EXPORT __declspec(dllimport)
-#endif // MATHLIB_EXPORTS
-#endif // EXPORT
-
-#else
-#ifndef EXPORT
-#define EXPORT
-#endif // EXPORT
-#endif // MATHLIB_STATIC
+#include "mlPrimitives.hpp"
+#include "mlMatrices.hpp"
 
 namespace MathLib
 {
-	// Generally useful functions
-
-	template<typename T>
-	T Max(T t1, T t2)
-	{
-		if (t1 > t2)
-			return t1;
-		return t2;
-	}
-
-	template<typename T>
-	T Min(T t1, T t2)
-	{
-		if (t1 < t2)
-			return t1;
-		return t2;
-	}
-
-	// Primitive types
-
-	class Int4;
-	class Int3;
-	class Int2;
-
-	class EXPORT Float4
-	{
-	public:
-		union
-		{
-			struct
-			{
-				double x;
-				double y;
-				double z;
-				double w;
-			};
-			struct
-			{
-				double r;
-				double g;
-				double b;
-				double a;
-			};
-			double content[4];
-		};
-
-		Float4();
-		Float4(const double& x, const double& y, const double& z, const double& w);
-		Float4(const Int4& other);
-
-		void operator=(const Int4& other);
-		double& operator[](const unsigned int& index);
-		const double& operator[](const unsigned int& index) const;
-	};
-
-	class EXPORT Float3
-	{
-	public:
-		union
-		{
-			struct
-			{
-				double x;
-				double y;
-				double z;
-			};
-			struct
-			{
-				double r;
-				double g;
-				double b;
-			};
-			double content[3];
-		};
-
-		Float3();
-		Float3(const double& x, const double& y, const double& z);
-		Float3(const Int3& other);
-
-		void operator=(const Int3& other);
-		double& operator[](const unsigned int& index);
-		const double& operator[](const unsigned int& index) const;
-	};
-
-	class EXPORT Float2
-	{
-	public:
-		double x;
-		double y;
-
-		Float2();
-		Float2(const double& x, const double& y);
-		Float2(const Int2& other);
-
-		void operator=(const Int2& other);
-		double& operator[](const unsigned int& index);
-		const double& operator[](const unsigned int& index) const;
-	};
-
-	class EXPORT Int4
-	{
-	public:
-		union
-		{
-			struct
-			{
-				int x;
-				int y;
-				int z;
-				int w;
-			};
-			struct
-			{
-				int r;
-				int g;
-				int b;
-				int a;
-			};
-			int content[4];
-		};
-
-		Int4();
-		Int4(const int& x, const int& y, const int& z, const int& w);
-		Int4(const Float4& other);
-
-		void operator=(const Float4& other);
-		int& operator[](const unsigned int& index);
-		const int& operator[](const unsigned int& index) const;
-	};
-
-	class EXPORT Int3
-	{
-	public:
-		union
-		{
-			struct
-			{
-				int x;
-				int y;
-				int z;
-			};
-			struct
-			{
-				int r;
-				int g;
-				int b;
-			};
-			int content[3];
-		};
-
-		Int3();
-		Int3(const int& x, const int& y, const int& z);
-		Int3(const Float3& other);
-
-		void operator=(const Float3& other);
-		int& operator[](const unsigned int& index);
-		const int& operator[](const unsigned int& index) const;
-	};
-
-	class EXPORT Int2
-	{
-	public:
-		int x;
-		int y;
-
-		Int2();
-		Int2(const int& x, const int& y);
-		Int2(const Float2& other);
-
-		void operator=(const Float2& other);
-		int& operator[](const unsigned int& index);
-		const int& operator[](const unsigned int& index) const;
-	};
-
-	EXPORT bool operator==(const Float2& f1, const Float2& f2);
-	EXPORT bool operator!=(const Float2& f1, const Float2& f2);
-	EXPORT bool operator==(const Float3& f1, const Float3& f2);
-	EXPORT bool operator!=(const Float3& f1, const Float3& f2);
-	EXPORT bool operator==(const Float4& f1, const Float4& f2);
-	EXPORT bool operator!=(const Float4& f1, const Float4& f2);
-	EXPORT Float2 operator+(const Float2& f1, const Float2& f2);
-	EXPORT Float3 operator+(const Float3& f1, const Float3& f2);
-	EXPORT Float4 operator+(const Float4& f1, const Float4& f2);
-	EXPORT Float2 operator-(const Float2& f1, const Float2& f2);
-	EXPORT Float3 operator-(const Float3& f1, const Float3& f2);
-	EXPORT Float4 operator-(const Float4& f1, const Float4& f2);
-	EXPORT void operator+=(Float2& f1, const Float2& f2);
-	EXPORT void operator+=(Float3& f1, const Float3& f2);
-	EXPORT void operator+=(Float4& f1, const Float4& f2);
-	EXPORT void operator-=(Float2& f1, const Float2& f2);
-	EXPORT void operator-=(Float3& f1, const Float3& f2);
-	EXPORT void operator-=(Float4& f1, const Float4& f2);
-	EXPORT Float2 operator*(const Float2& f1, const Float2& f2);
-	EXPORT Float3 operator*(const Float3& f1, const Float3& f2);
-	EXPORT Float4 operator*(const Float4& f1, const Float4& f2);
-	EXPORT Float2 operator*(const Float2& f1, const double& f2);
-	EXPORT Float3 operator*(const Float3& f1, const double& f2);
-	EXPORT Float4 operator*(const Float4& f1, const double& f2);
-
-	EXPORT bool operator==(const Int2& i1, const Int2& i2);
-	EXPORT bool operator!=(const Int2& i1, const Int2& i2);
-	EXPORT bool operator==(const Int3& i1, const Int3& i2);
-	EXPORT bool operator!=(const Int3& i1, const Int3& i2);
-	EXPORT bool operator==(const Int4& i1, const Int4& i2);
-	EXPORT bool operator!=(const Int4& i1, const Int4& i2);
-	EXPORT Int2 operator+(const Int2& i1, const Int2& i2);
-	EXPORT Int3 operator+(const Int3& i1, const Int3& i2);
-	EXPORT Int4 operator+(const Int4& i1, const Int4& i2);
-	EXPORT Int2 operator-(const Int2& i1, const Int2& i2);
-	EXPORT Int3 operator-(const Int3& i1, const Int3& i2);
-	EXPORT Int4 operator-(const Int4& i1, const Int4& i2);
-	EXPORT void operator+=(Int2& i1, const Int2& i2);
-	EXPORT void operator+=(Int3& i1, const Int3& i2);
-	EXPORT void operator+=(Int4& i1, const Int4& i2);
-	EXPORT void operator-=(Int2& i1, const Int2& i2);
-	EXPORT void operator-=(Int3& i1, const Int3& i2);
-	EXPORT void operator-=(Int4& i1, const Int4& i2);
-	EXPORT Int2 operator*(const Int2& f1, const Int2& f2);
-	EXPORT Int3 operator*(const Int3& f1, const Int3& f2);
-	EXPORT Int4 operator*(const Int4& f1, const Int4& f2);
-	EXPORT Int2 operator*(const Int2& f1, const int& f2);
-	EXPORT Int3 operator*(const Int3& f1, const int& f2);
-	EXPORT Int4 operator*(const Int4& f1, const int& f2);
-
 	EXPORT void PrintProperties(const Float2& p);
 	EXPORT void PrintProperties(const Float3& p);
 
@@ -395,119 +153,30 @@ namespace MathLib
 	EXPORT Quaternion QuaternionRotation(const double& angle, const Float3& axis);
 	EXPORT void PrintProperties(const Quaternion& quat);
 
-	// Matrix maths
-
-	class EXPORT MatrixI
-	{
-		unsigned int m_Rows, m_Columns;
-		int** m_Matrix;
-
-	public:
-		MatrixI(MatrixI&& other) noexcept;
-		MatrixI(const MatrixI& other);
-		MatrixI(const unsigned int& dim);
-		MatrixI(const unsigned int& columns, const unsigned int& rows);
-		MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray);
-
-		void SetNum(const unsigned int& column, const unsigned int& row, const int& value);
-		void SetColumn(const unsigned int& column, const int* const content);
-		void SetMatrix(const int** const matrix);
-
-		const int& GetNum(const unsigned int& column, const unsigned int& row) const;
-		int* GetColumn(const unsigned int& column) const;
-		int* GetArray() const;
-		int** GetMatrix() const;
-		const unsigned int& GetRowCount() const;
-		const unsigned int& GetColumnCount() const;
-
-		void operator=(MatrixI&& other) noexcept;
-		void operator=(const MatrixI& other);
-		MatrixI operator+(const int& value) const;
-		MatrixI operator-(const int& value) const;
-		MatrixI operator*(const int& value) const;
-		MatrixI operator/(const int& value) const;
-		MatrixI operator+(const MatrixI& other) const;
-		MatrixI operator-(const MatrixI& other) const;
-		MatrixI operator*(const MatrixI& other) const;
-		int* operator[](const unsigned int& column);
-		const int* operator[](const unsigned int& column) const;
-
-		~MatrixI();
-	};
-	class EXPORT MatrixF
-	{
-		double** m_Matrix;
-		unsigned int m_Rows, m_Columns;
-
-	public:
-		MatrixF(MatrixF&& other) noexcept;
-		MatrixF(const MatrixF& other);
-		MatrixF(const unsigned int& dim);
-		MatrixF(const unsigned int& columns, const unsigned int& rows);
-		MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray);
-
-		void SetNum(const unsigned int& column, const unsigned int& row, const double& value);
-		void SetColumn(const unsigned int& column, const double* const content);
-		void SetMatrix(const double** const matrix);
-
-		const double& GetNum(const unsigned int& column, const unsigned int& row) const;
-		double* GetColumn(const unsigned int& column) const;
-		double* GetArray() const;
-		double** GetMatrix() const;
-		const unsigned int& GetRowCount() const;
-		const unsigned int& GetColumnCount() const;
-
-		void operator=(MatrixF&& other) noexcept;
-		void operator=(const MatrixF& other);
-		MatrixF operator+(const double& value) const;
-		MatrixF operator-(const double& value) const;
-		MatrixF operator*(const double& value) const;
-		MatrixF operator/(const double& value) const;
-		MatrixF operator+(const MatrixF& other) const;
-		MatrixF operator-(const MatrixF& other) const;
-		MatrixF operator*(const MatrixF& other) const;
-		double* operator[](const unsigned int& column);
-		const double* operator[](const unsigned int& column) const;
-
-		~MatrixF();
-	};
-
-	EXPORT void PrintContent(const MatrixI& mat);
-	EXPORT void PrintProperties(const MatrixI& mat);
-	EXPORT int MatrixGetDet(const MatrixI& mat);
-	EXPORT MatrixI MatrixOfMinors(const MatrixI& mat);
-	EXPORT MatrixI MatrixOfCofactors(const MatrixI& mat);
-	EXPORT MatrixI MatrixTranspose(const MatrixI& mat);
-	EXPORT MatrixI MatrixAdjugate(const MatrixI& mat);
-	EXPORT MatrixF MatrixInverse(const MatrixI& mat);
-
-	EXPORT void PrintContent(const MatrixF& mat);
-	EXPORT void PrintProperties(const MatrixF& mat);
-	EXPORT double MatrixGetDet(const MatrixF& mat);
-	EXPORT MatrixF MatrixOfMinors(const MatrixF& mat);
-	EXPORT MatrixF MatrixOfCofactors(const MatrixF& mat);
-	EXPORT MatrixF MatrixTranspose(const MatrixF& mat);
-	EXPORT MatrixF MatrixAdjugate(const MatrixF& mat);
-	EXPORT MatrixF MatrixInverse(const MatrixF& mat);
-
 	// Quaternion operations
 
 	EXPORT MatrixF MatrixRotate(const MatrixF& mat, const Quaternion& quat);
 
 	// Conversion and checking functions
 
+	DEPRECATED()
 	EXPORT MatrixI MatrixF2I(const MatrixF& mat);
+	DEPRECATED()
 	EXPORT MatrixF MatrixI2F(const MatrixI& mat);
-	EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
 	EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
+	DEPRECATED()
+	EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
 
 	// Helper functions
 
+	DEPRECATED()
 	EXPORT MatrixI Point2Matrix(const Int2& point);
 	EXPORT MatrixF Point2Matrix(const Float2& point);
+	DEPRECATED()
 	EXPORT MatrixI Point2Matrix(const Int3& point);
 	EXPORT MatrixF Point2Matrix(const Float3& point);
 	EXPORT MatrixF TransformF2x2(const Float2& p1, const Float2& p2);
+	DEPRECATED()
 	EXPORT MatrixI TransformI2x2(const Int2& p1, const Int2& p2);
 
 	// Vector math
@@ -517,11 +186,11 @@ namespace MathLib
 	public:
 		Vector2D();
 		Vector2D(const Float2& dir);
-		Vector2D(const double& x, const double& y);
+		explicit Vector2D(const double& x, const double& y);
 		Vector2D(const Line2D& line);
 		Vector2D(const Float2& p1, const Float2& p2);
 
-		const Vector2D& Transform(const MatrixF& transformMat);
+		const Vector2D& Transform(const Mat2& transformMat);
 		const Vector2D& Scale(const double& scale);
 		const Vector2D& Scale(const double& scaleX, const double& scaleY);
 		const Vector2D& SetScale(const double& scale);
@@ -535,14 +204,14 @@ namespace MathLib
 		Vector2D operator-(const Vector2D& other) const;
 		double operator*(const Vector2D& other) const;
 		Vector2D operator*(const double& number) const;
-		Vector2D operator*(const MatrixF& matrix) const;
+		Vector2D operator*(const Mat2& matrix) const;
 		void operator*=(const double& number);
 		Vector2D operator-() const;
 
 		double GetAngle() const;
 		double GetLen() const;
-		MatrixF GetRowVector() const;
-		MatrixF GetColVector() const;
+		Mat2x1 GetRowVector() const;
+		Mat1x2 GetColVector() const;
 
 		Float2 TransformPoint(Float2 point) const;
 	};
@@ -552,11 +221,11 @@ namespace MathLib
 	public:
 		Vector3D();
 		Vector3D(const Float3& dir);
-		Vector3D(const double& x, const double& y, const double& z);
+		explicit Vector3D(const double& x, const double& y, const double& z);
 		Vector3D(const Vector2D& vec, const double& z = 0);
 		Vector3D(const Float3& p1, const Float3& p2);
 
-		const Vector3D& Transform(const MatrixF& mat);
+		const Vector3D& Transform(const Mat3& mat);
 		const Vector3D& Scale(const double& scale);
 		const Vector3D& Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
 		const Vector3D& SetScale(const double& len);
@@ -566,14 +235,14 @@ namespace MathLib
 		Vector3D operator-(const Vector3D& other) const;
 		double operator*(const Vector3D& other) const;
 		Vector3D operator*(const double& number) const;
-		Vector3D operator*(const MatrixF& matrix) const;
+		Vector3D operator*(const Mat3& matrix) const;
 		void operator*=(const double& number);
 		Vector3D operator-() const;
 
 		double GetAngle(const int& axis) const;
 		double GetLen() const;
-		MatrixF GetRowVector() const;
-		MatrixF GetColVector() const;
+		Mat3x1 GetRowVector() const;
+		Mat1x3 GetColVector() const;
 
 		Float3 TransformPoint(Float3 point);
 	};
@@ -588,11 +257,6 @@ namespace MathLib
 	EXPORT double VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
 	EXPORT void PrintProperties(const Vector2D& vector);
 	EXPORT void PrintProperties(const Vector3D& vector);
-
-	EXPORT Float2 operator*(const Float2& point, const MatrixF& matrix);
-	EXPORT Float2 Transform(Float2 point, Float2 origin, MatrixF* transform);
-	EXPORT Line2D Transform(Line2D line, Float2 origin, MatrixF* transform);
-	EXPORT Float3 RotatePoint(Float3 point, const Quaternion& quat);
 
 	// Geometry maths
 
@@ -659,6 +323,7 @@ namespace MathLib
 		unsigned int m_IntersectArrLength;
 		unsigned int m_IntersectCount;
 		Intersect* m_IntersectArray;
+
 	public:
 		using Iterator = BaseIterator<GeoCollision>;
 		using ValueType = Intersect;
@@ -689,20 +354,20 @@ namespace MathLib
 	public:
 		using Iterator = BaseIterator<Polygon2D>;
 		using ValueType = Float2;
-		unsigned int m_NumCorners;
+		size_t m_NumCorners;
 		Float2* m_CornerArr;
 
 		Polygon2D();
 		Polygon2D(Polygon2D&& other) noexcept;
 		Polygon2D(const Polygon2D& other);
-		Polygon2D(const unsigned int& corners);
-		Polygon2D(const Float2* const pointArr, const unsigned int& corners);
+		Polygon2D(const unsigned int corners);
+		Polygon2D(const Float2* const pointArr, const unsigned int corners);
 
 		void Translate(const Float2& translation);
-		void Translate(const double& translateX, const double& translateY);
-		void Rotate(const double& angle);
-		void Scale(const double& scale);
-		void Scale(const double& scaleX, const double& scaleY);
+		void Translate(const double translateX, const double translateY);
+		void Rotate(const double angle);
+		void Scale(const double scale);
+		void Scale(const double scaleX, const double scaleY);
 
 		Float2 GetCenter() const;
 		Float2 SupportFunction(const Vector2D& direction) const;
@@ -768,9 +433,6 @@ namespace MathLib
 	EXPORT double* ProjectTo1D(const Float2* pointArr, const unsigned int& pointCount, const Vector2D& viewDir);
 
 	// Utility
-
-	EXPORT double Deg2Rad(double deg);
-	EXPORT double Rad2Deg(double rad);
 	EXPORT double MinFromArray(const double* const arr, const unsigned int& length);
 	EXPORT double MaxFromArray(const double* const arr, const unsigned int& length);
 	EXPORT Line2D Vector2Line(Vector2D vector, Float2 pos);
