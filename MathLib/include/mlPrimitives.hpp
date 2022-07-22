@@ -32,11 +32,11 @@ namespace MathLib
 		};
 
 		constexpr Float4();
-		constexpr Float4(const double& x, const double& y, const double& z, const double& w);
+		constexpr Float4(const double x, const double y, const double z, const double w);
 		Float4(const Int4& other);
 		void operator=(const Int4& other);
-		constexpr double& operator[](const unsigned int& index);
-		constexpr const double& operator[](const unsigned int& index) const;
+		constexpr double operator[](const size_t index);
+		constexpr const double operator[](const size_t index) const;
 	};
 
 	class EXPORT Float3
@@ -60,11 +60,11 @@ namespace MathLib
 		};
 
 		constexpr Float3();
-		constexpr Float3(const double& x, const double& y, const double& z);
+		constexpr Float3(const double x, const double y, const double z);
 		Float3(const Int3& other);
 		void operator=(const Int3& other);
-		constexpr double& operator[](const unsigned int& index);
-		constexpr const double& operator[](const unsigned int& index) const;
+		constexpr double operator[](const size_t index);
+		constexpr const double operator[](const size_t index) const;
 	};
 
 	class EXPORT Float2
@@ -81,11 +81,11 @@ namespace MathLib
 		};
 
 		constexpr Float2();
-		constexpr Float2(const double& x, const double& y);
+		constexpr Float2(const double x, const double y);
 		Float2(const Int2& other);
 		void operator=(const Int2& other);
-		constexpr double& operator[](const unsigned int& index);
-		constexpr const double& operator[](const unsigned int& index) const;
+		constexpr double operator[](const size_t index);
+		constexpr const double operator[](const size_t index) const;
 	};
 
 	class EXPORT Int4
@@ -115,7 +115,7 @@ namespace MathLib
 		{
 
 		}
-		constexpr Int4(const int& x, const int& y, const int& z, const int& w)
+		constexpr Int4(const int x, const int y, const int z, const int w)
 			: x(x), y(y), z(z), w(w)
 		{
 
@@ -134,11 +134,11 @@ namespace MathLib
 			z = (int) round(other.z);
 			w = (int) round(other.w);
 		}
-		constexpr int& operator[](const unsigned int& index)
+		constexpr int operator[](const size_t index)
 		{
 			return content[index];
 		}
-		constexpr const int& operator[](const unsigned int& index) const
+		constexpr const int operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -169,7 +169,7 @@ namespace MathLib
 		{
 
 		}
-		constexpr Int3(const int& x, const int& y, const int& z)
+		constexpr Int3(const int x, const int y, const int z)
 			: x(x), y(y), z(z)
 		{
 
@@ -186,13 +186,11 @@ namespace MathLib
 			y = (int) round(other.y);
 			z = (int) round(other.z);
 		}
-		constexpr int& operator[](const unsigned int& index)
+		constexpr int operator[](const size_t index)
 		{
-
 			return content[index];
-
 		}
-		constexpr const int& operator[](const unsigned int& index) const
+		constexpr const int operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -216,7 +214,7 @@ namespace MathLib
 		{
 
 		}
-		constexpr Int2(const int& x, const int& y)
+		constexpr Int2(const int x, const int y)
 			: x(x), y(y)
 		{
 
@@ -231,11 +229,11 @@ namespace MathLib
 			x = (int) round(other.x);
 			y = (int) round(other.y);
 		}
-		constexpr int& operator[](const unsigned int& index)
+		constexpr int operator[](const size_t index)
 		{
 			return content[index];
 		}
-		constexpr const int& operator[](const unsigned int& index) const
+		constexpr const int operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -248,16 +246,16 @@ namespace MathLib
 	{
 
 	}
-	constexpr Float4::Float4(const double& x, const double& y, const double& z, const double& w)
+	constexpr Float4::Float4(const double x, const double y, const double z, const double w)
 		: x(x), y(y), z(z), w(w)
 	{
 
 	}
-	constexpr double& Float4::operator[](const unsigned int& index)
+	constexpr double Float4::operator[](const size_t index)
 	{
 		return content[index];
 	}
-	constexpr const double& Float4::operator[](const unsigned int& index) const
+	constexpr const double Float4::operator[](const size_t index) const
 	{
 		return content[index];
 	}
@@ -267,18 +265,18 @@ namespace MathLib
 	{
 
 	}
-	constexpr Float3::Float3(const double& x, const double& y, const double& z)
+	constexpr Float3::Float3(const double x, const double y, const double z)
 		: x(x), y(y), z(z)
 	{
 
 	}
-	constexpr double& Float3::operator[](const unsigned int& index)
+	constexpr double Float3::operator[](const size_t index)
 	{
 
 		return content[index];
 
 	}
-	constexpr const double& Float3::operator[](const unsigned int& index) const
+	constexpr const double Float3::operator[](const size_t index) const
 	{
 		return content[index];
 	}
@@ -288,16 +286,16 @@ namespace MathLib
 	{
 
 	}
-	constexpr Float2::Float2(const double& x, const double& y)
+	constexpr Float2::Float2(const double x, const double y)
 		: x(x), y(y)
 	{
 
 	}
-	constexpr double& Float2::operator[](const unsigned int& index)
+	constexpr double Float2::operator[](const size_t index)
 	{
 		return content[index];
 	}
-	constexpr const double& Float2::operator[](const unsigned int& index) const
+	constexpr const double Float2::operator[](const size_t index) const
 	{
 		return content[index];
 	}
@@ -388,15 +386,15 @@ namespace MathLib
 	{
 		return Float4(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z, f1.w * f2.w);
 	}
-	EXPORT constexpr Float2 operator*(const Float2& f1, const double& f2)
+	EXPORT constexpr Float2 operator*(const Float2& f1, const double f2)
 	{
 		return Float2(f1.x * f2, f1.y * f2);
 	}
-	EXPORT constexpr Float3 operator*(const Float3& f1, const double& f2)
+	EXPORT constexpr Float3 operator*(const Float3& f1, const double f2)
 	{
 		return Float3(f1.x * f2, f1.y * f2, f1.z * f2);
 	}
-	EXPORT constexpr Float4 operator*(const Float4& f1, const double& f2)
+	EXPORT constexpr Float4 operator*(const Float4& f1, const double f2)
 	{
 		return Float4(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
 	}

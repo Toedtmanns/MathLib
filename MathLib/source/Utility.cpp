@@ -5,18 +5,18 @@
 
 namespace MathLib
 {
-	double Lerp(const double& start, const double& end, const double& t)
+	double Lerp(const double start, const double end, const double t)
 	{
 		return start + t * (end - start);
 	}
-	Float2 Lerp(const Float2& start, const Float2& end, const double& t)
+	Float2 Lerp(const Float2& start, const Float2& end, const double t)
 	{
 		return {
 			start.x + t * (end.x - start.x),
 			start.y + t * (end.y - start.y)
 		};
 	}
-	Float2 Lerp(const Line2D& line, const double& t)
+	Float2 Lerp(const Line2D& line, const double t)
 	{
 		return {
 			line.p1.x + t * (line.p2.x - line.p1.x),
@@ -24,7 +24,7 @@ namespace MathLib
 		};
 	}
 
-	double MinFromArray(const double* const arr, const unsigned int& length)
+	double MinFromArray(const double* arr, const size_t length)
 	{
 		double min = arr[0];
 		for (unsigned int i = 1; i < length; i++)
@@ -34,7 +34,7 @@ namespace MathLib
 		}
 		return min;
 	}
-	double MaxFromArray(const double* const arr, const unsigned int& length)
+	double MaxFromArray(const double* arr, const size_t length)
 	{
 		double max = arr[0];
 		for (unsigned int i = 1; i < length; i++)
@@ -58,7 +58,7 @@ namespace MathLib
 		int range = max + 1 - min;
 		return rand() % range + min;
 	}
-	MatrixF Vec2Mat(const Vector3D& vec, const int& front)
+	MatrixF Vec2Mat(const Vector3D& vec, const int front)
 	{
 		MatrixF mat = MatrixF(3);
 		mat.SetNum(0, 0, vec.x);
@@ -66,7 +66,7 @@ namespace MathLib
 		mat.SetNum(2, 2, vec.z);
 		return mat;
 	}
-	Vector3D Mat2Vec(const MatrixF& mat, const int& front)
+	Vector3D Mat2Vec(const MatrixF& mat, const int front)
 	{
 		Vector3D vec = Vector3D();
 		vec.x = mat.GetNum(0, 0);
@@ -75,7 +75,7 @@ namespace MathLib
 		return vec;
 	}
 
-	bool SetArraySize(void** array, const unsigned int& currLength, const unsigned int& newLength)
+	bool SetArraySize(void** array, const size_t currLength, const size_t newLength)
 	{
 		unsigned int newSize = newLength * sizeof(array[0]);
 

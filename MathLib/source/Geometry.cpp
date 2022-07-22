@@ -19,7 +19,7 @@ namespace MathLib
 	{
 		memcpy(m_IntersectArray, other.m_IntersectArray, m_IntersectArrLength * sizeof(Intersect));
 	}
-	GeoCollision::GeoCollision(const Intersect* intersectArr, const unsigned int& intersectArrLength)
+	GeoCollision::GeoCollision(const Intersect* intersectArr, const size_t intersectArrLength)
 		: m_IntersectCount(intersectArrLength), m_IntersectArrLength(intersectArrLength)
 	{
 		if (intersectArrLength == 0 || intersectArr == nullptr)
@@ -46,7 +46,7 @@ namespace MathLib
 		m_IntersectArray[m_IntersectCount] = Intersect(intersect);
 		m_IntersectCount++;
 	}
-	unsigned int GeoCollision::GetIntersectCount() const
+	size_t GeoCollision::GetIntersectCount() const
 	{
 		return m_IntersectCount;
 	}
@@ -72,7 +72,7 @@ namespace MathLib
 		m_IntersectCount = other.m_IntersectCount;
 		isColliding = other.isColliding;
 	}
-	Intersect& GeoCollision::operator[](const unsigned int& index)
+	Intersect& GeoCollision::operator[](const size_t index)
 	{
 		if (index < m_IntersectCount)
 			return m_IntersectArray[index];
@@ -110,24 +110,24 @@ namespace MathLib
 	{
 		memcpy(m_CornerArr, other.m_CornerArr, m_NumCorners * sizeof(Float2));
 	}
-	Polygon2D::Polygon2D(const unsigned int corners)
+	Polygon2D::Polygon2D(const size_t corners)
 		: m_NumCorners(corners), m_CornerArr(new Float2[corners])
 	{
 
 	}
-	Polygon2D::Polygon2D(const Float2* const pointArr, const unsigned int corners)
+	Polygon2D::Polygon2D(const Float2* const pointArr, const size_t corners)
 		: m_CornerArr(new Float2[corners]), m_NumCorners(corners)
 	{
 		memcpy(m_CornerArr, pointArr, corners * sizeof(Float2));
 	}
 	void Polygon2D::Translate(const Float2& translation)
 	{
-		for (unsigned int c = 0; c < m_NumCorners; c++)
+		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += translation;
 	}
 	void Polygon2D::Translate(const double translateX, const double translateY)
 	{
-		for (unsigned int c = 0; c < m_NumCorners; c++)
+		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += Float2(translateX, translateY);
 	}
 	void Polygon2D::Rotate(const double angle)
@@ -135,7 +135,7 @@ namespace MathLib
 		Mat2 rotMat = RotationMatrix2D(angle);
 
 		Float2 center = GetCenter();
-		for (unsigned int c = 0; c < m_NumCorners; c++)
+		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] = Vector2D(m_CornerArr[c] - center) * rotMat + Vector2D(center);
 	}
 	void Polygon2D::Scale(const double scale)
@@ -157,7 +157,7 @@ namespace MathLib
 	Float2 Polygon2D::GetCenter() const
 	{
 		Float2 center = Float2();
-		for (unsigned int c = 0; c < m_NumCorners; c++)
+		for (size_t c = 0; c < m_NumCorners; c++)
 			center = center + m_CornerArr[c];
 		center.x = center.x / m_NumCorners;
 		center.y = center.y / m_NumCorners;
@@ -170,7 +170,7 @@ namespace MathLib
 		Float2 matching = m_CornerArr[0];
 
 		maxDot = Vector2D(center, m_CornerArr[0]) * direction;
-		for (unsigned int c = 1; c < m_NumCorners; c++)
+		for (size_t c = 1; c < m_NumCorners; c++)
 		{
 			double tempVal = Vector2D(center, m_CornerArr[c]) * direction;
 			if (tempVal > maxDot)
@@ -280,7 +280,7 @@ namespace MathLib
 		if (pointVec * checkVec < 0)
 			neg = true;
 
-		for (unsigned int c = 1; c < m_NumCorners; c++)
+		for (size_t c = 1; c < m_NumCorners; c++)
 		{
 			pointVec = Vector2D(m_CornerArr[c], point);
 			checkVec = Vector2D(m_CornerArr[c], m_CornerArr[(c + 1) % m_NumCorners]);
@@ -329,7 +329,7 @@ namespace MathLib
 	{
 
 	}
-	Circle2D::Circle2D(const Float2& position, const double& radius)
+	Circle2D::Circle2D(const Float2& position, const double radius)
 		: position(position), radius(radius)
 	{
 
@@ -338,7 +338,7 @@ namespace MathLib
 	{
 		position += translation;
 	}
-	void Circle2D::Translate(const double& translateX, const double& translateY)
+	void Circle2D::Translate(const double translateX, const double translateY)
 	{
 		position.x += translateX;
 		position.y += translateY;
@@ -429,7 +429,7 @@ namespace MathLib
 	{
 
 	}
-	Rectangle2D::Rectangle2D(const Float2 position, const double& rotation, const Float2 scale)
+	Rectangle2D::Rectangle2D(const Float2& position, const double rotation, const Float2& scale)
 		: Polygon2D(4)
 	{
 		m_CornerArr[0] = Float2(0.5, 0.5);
@@ -450,7 +450,7 @@ namespace MathLib
 		Polygon2D::operator=(other);
 	}
 
-	bool Contains(const Rectangle2D& rect, const double& rotation, const Float2& point)
+	bool Contains(const Rectangle2D& rect, const double rotation, const Float2& point)
 	{
 		Rectangle2D calcRect = rect;
 		calcRect.Rotate(-rotation);
@@ -468,7 +468,7 @@ namespace MathLib
 	{
 		double* retArr = new double[polygon.m_NumCorners];
 
-		for (unsigned int p = 0; p < polygon.m_NumCorners; p++)
+		for (size_t p = 0; p < polygon.m_NumCorners; p++)
 		{
 			Vector2D transVec = Vector2D(polygon.m_CornerArr[p]);
 			transVec.Rotate(-(viewDir.GetAngle()));
@@ -477,11 +477,11 @@ namespace MathLib
 
 		return retArr;
 	}
-	double* ProjectTo1D(const Float2* pointArr, const unsigned int& pointCount, const Vector2D& viewDir)
+	double* ProjectTo1D(const Float2* pointArr, const size_t pointCount, const Vector2D& viewDir)
 	{
 		double* retArr = new double[pointCount];
 
-		for (unsigned int p = 0; p < pointCount; p++)
+		for (size_t p = 0; p < pointCount; p++)
 		{
 			Vector2D transVec = Vector2D(pointArr[p]);
 			transVec.Rotate(-(viewDir.GetAngle()));

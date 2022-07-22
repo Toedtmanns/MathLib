@@ -60,7 +60,7 @@ namespace MathLib
 		p2 = Float2();
 		normal = 0;
 	}
-	Line2D::Line2D(const double& x1, const double& y1, const double& x2, const double& y2)
+	Line2D::Line2D(const double x1, const double y1, const double x2, const double y2)
 	{
 		p1.x = x1;
 		p1.y = y1;
@@ -95,7 +95,7 @@ namespace MathLib
 	{
 
 	}
-	Intersect::Intersect(const Float2& pos, const bool& intersecting, const bool& parallel)
+	Intersect::Intersect(const Float2& pos, const bool intersecting, const bool parallel)
 		: pos(pos), isIntersecting(intersecting), isCollinear(parallel), line1(), line2()
 	{
 

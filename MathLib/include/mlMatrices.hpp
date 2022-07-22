@@ -1,5 +1,5 @@
 #pragma once
-#include "mlCommon.hpp"
+#include "mlPrimitives.hpp"
 #include <string.h>
 
 namespace MathLib
@@ -86,11 +86,13 @@ namespace MathLib
 		{
 			memcpy(m_Matrix, other.m_Matrix, sizeof(m_Matrix));
 		}
-		double* operator[](const size_t index) const
+		constexpr const double* operator[](const size_t index) const
 		{
-			double retArr[rows];
-			memcpy(retArr, m_Matrix + index * rows, rows);
-			return retArr;
+			return m_Matrix + index * rows;
+		}
+		constexpr double* operator[](const size_t index)
+		{
+			return m_Matrix + index * rows;
 		}
 
 		constexpr Matrix<columns, rows> operator*(const double value)
@@ -201,6 +203,33 @@ namespace MathLib
 	EXPORT typedef Matrix<4, 1> Mat4x1;
 	EXPORT typedef Matrix<4, 2> Mat4x2;
 	EXPORT typedef Matrix<4, 3> Mat4x3;
+
+	EXPORT constexpr Float2 operator*(const Float2& point, const Mat2& matrix)
+	{
+		return Float2{
+			point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1),
+			point.y * matrix.GetVal(2) + point.y * matrix.GetVal(3)
+		};
+	}
+	EXPORT constexpr void operator*=(Float2& point, const Mat2& matrix)
+	{
+		point.x = point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1);
+		point.y = point.y * matrix.GetVal(2) + point.y * matrix.GetVal(3);
+	}
+	EXPORT constexpr Float3 operator*(const Float3& point, const Mat3& matrix)
+	{
+		return Float3{
+			point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1) + point.x * matrix.GetVal(2),
+			point.y * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.y * matrix.GetVal(5),
+			point.z * matrix.GetVal(6) + point.z * matrix.GetVal(7) + point.z * matrix.GetVal(8)
+		};
+	}
+	EXPORT constexpr void operator*=(Float3& point, const Mat3& matrix)
+	{
+		point.x = point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1) + point.x * matrix.GetVal(2);
+		point.y = point.y * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.y * matrix.GetVal(5);
+		point.z = point.z * matrix.GetVal(6) + point.z * matrix.GetVal(7) + point.z * matrix.GetVal(8);
+	}
 
 	template<size_t columns, size_t rows>
 	EXPORT constexpr Matrix<rows, columns> Transpose(const Matrix<columns, rows>& matrix)

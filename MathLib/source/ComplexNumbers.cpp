@@ -15,46 +15,46 @@ namespace MathLib
 	{
 
 	}
-	imaginaryBase imaginaryBase::operator+(const imaginaryBase& other) const
+	imaginaryBase imaginaryBase::operator+(const imaginaryBase other) const
 	{
 		return num + other.num;
 	}
-	imaginaryBase imaginaryBase::operator-(const imaginaryBase& other) const
+	imaginaryBase imaginaryBase::operator-(const imaginaryBase other) const
 	{
 		return num - other.num;
 	}
-	double imaginaryBase::operator*(const imaginaryBase& other) const
+	double imaginaryBase::operator*(const imaginaryBase other) const
 	{
 		if (num == other.num)
 			return -1;
 		else
 			return num * other.num;
 	}
-	double imaginaryBase::operator/(const imaginaryBase& other) const
+	double imaginaryBase::operator/(const imaginaryBase other) const
 	{
 		return num / other.num;
 	}
-	bool imaginaryBase::operator==(const imaginaryBase& other) const
+	bool imaginaryBase::operator==(const imaginaryBase other) const
 	{
 		return num == other.num;
 	}
-	bool imaginaryBase::operator!=(const imaginaryBase& other) const
+	bool imaginaryBase::operator!=(const imaginaryBase other) const
 	{
 		return num != other.num;
 	}
-	bool imaginaryBase::operator>=(const imaginaryBase& other) const
+	bool imaginaryBase::operator>=(const imaginaryBase other) const
 	{
 		return num >= other.num;
 	}
-	bool imaginaryBase::operator<=(const imaginaryBase& other) const
+	bool imaginaryBase::operator<=(const imaginaryBase other) const
 	{
 		return num <= other.num;
 	}
-	bool imaginaryBase::operator>(const imaginaryBase& other) const
+	bool imaginaryBase::operator>(const imaginaryBase other) const
 	{
 		return num > other.num;
 	}
-	bool imaginaryBase::operator<(const imaginaryBase& other) const
+	bool imaginaryBase::operator<(const imaginaryBase other) const
 	{
 		return num < other.num;
 	}
@@ -79,7 +79,7 @@ namespace MathLib
 		return *this;
 	}
 
-	imaginaryBase operator-(const imaginaryBase& num)
+	imaginaryBase operator-(const imaginaryBase num)
 	{
 		return imaginaryBase(-num.num);
 	}
@@ -91,7 +91,7 @@ namespace MathLib
 	{
 
 	}
-	imagI::imagI(const double& num)
+	imagI::imagI(const double num)
 		: imaginaryBase(num)
 	{
 
@@ -101,7 +101,7 @@ namespace MathLib
 	{
 
 	}
-	double imagI::operator*(const imagI& other) const
+	double imagI::operator*(const imagI other) const
 	{
 		if (num != other.num)
 			return num * other.num;
@@ -110,11 +110,11 @@ namespace MathLib
 		else
 			return -1;
 	}
-	imagK imagI::operator*(const imagJ& other) const
+	imagK imagI::operator*(const imagJ other) const
 	{
 		return imagK(num * other.num);
 	}
-	imagJ imagI::operator*(const imagK& other) const
+	imagJ imagI::operator*(const imagK other) const
 	{
 		return imagJ(-num * other.num);
 	}
@@ -124,7 +124,7 @@ namespace MathLib
 	{
 
 	}
-	imagJ::imagJ(const double& num)
+	imagJ::imagJ(const double num)
 		: imaginaryBase(num)
 	{
 
@@ -134,7 +134,7 @@ namespace MathLib
 	{
 
 	}
-	double imagJ::operator*(const imagJ& other) const
+	double imagJ::operator*(const imagJ other) const
 	{
 		if (num != other.num)
 			return num * other.num;
@@ -143,11 +143,11 @@ namespace MathLib
 		else
 			return -1;
 	}
-	imagI imagJ::operator*(const imagK& other) const
+	imagI imagJ::operator*(const imagK other) const
 	{
 		return imagI(num * other.num);
 	}
-	imagK imagJ::operator*(const imagI& other) const
+	imagK imagJ::operator*(const imagI other) const
 	{
 		return imagK(-num * other.num);
 	}
@@ -157,7 +157,7 @@ namespace MathLib
 	{
 
 	}
-	imagK::imagK(const double& num)
+	imagK::imagK(const double num)
 		: imaginaryBase(num)
 	{
 
@@ -167,7 +167,7 @@ namespace MathLib
 	{
 
 	}
-	double imagK::operator*(const imagK& other) const
+	double imagK::operator*(const imagK other) const
 	{
 		if (num != other.num)
 			return num * other.num;
@@ -176,11 +176,11 @@ namespace MathLib
 		else
 			return -1;
 	}
-	imagJ imagK::operator*(const imagI& other) const
+	imagJ imagK::operator*(const imagI other) const
 	{
 		return imagJ(num * other.num);
 	}
-	imagI imagK::operator*(const imagJ& other) const
+	imagI imagK::operator*(const imagJ other) const
 	{
 		return imagI(-num * other.num);
 	}
@@ -192,7 +192,7 @@ namespace MathLib
 	{
 
 	}
-	Quaternion::Quaternion(const double& real, const imagI& i, const imagJ& j, const imagK& k)
+	Quaternion::Quaternion(const double real, const imagI i, const imagJ j, const imagK k)
 		: real(real), i(i), j(j), k(k)
 	{
 
@@ -238,7 +238,7 @@ namespace MathLib
 		return Quaternion(*this * pQuat * this->GetInverse()).GetPoint();
 	}
 
-	Quaternion QuaternionRotation(const double& angle, const double& iAxis, const double& jAxis, const double& kAxis)
+	Quaternion QuaternionRotation(const double angle, const double iAxis, const double jAxis, const double kAxis)
 	{
 		Quaternion retQuat(cos(Deg2Rad(angle)), 0, 0, 0);
 		double sinAngle = sin(Deg2Rad(angle));
@@ -247,7 +247,7 @@ namespace MathLib
 		retQuat.k = imagK(kAxis * sinAngle);
 		return retQuat;
 	}
-	Quaternion QuaternionRotation(const double& angle, const Float3& axis)
+	Quaternion QuaternionRotation(const double angle, const Float3& axis)
 	{
 		Quaternion retQuat(cos(Deg2Rad(angle)), 0, 0, 0);
 		double sinAngle = sin(Deg2Rad(angle));

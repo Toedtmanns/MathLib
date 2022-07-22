@@ -16,7 +16,7 @@ namespace MathLib
 	{
 
 	}
-	Vector2D::Vector2D(const double& x, const double& y)
+	Vector2D::Vector2D(const double x, const double y)
 		: Float2(x, y)
 	{
 
@@ -36,19 +36,19 @@ namespace MathLib
 		*this = *this * transformMat;
 		return *this;
 	}
-	const Vector2D& Vector2D::Scale(const double& scale)
+	const Vector2D& Vector2D::Scale(const double scale)
 	{
 		x *= scale;
 		y *= scale;
 		return *this;
 	}
-	const Vector2D& Vector2D::Scale(const double& scaleX, const double& scaleY)
+	const Vector2D& Vector2D::Scale(const double scaleX, const double scaleY)
 	{
 		x *= scaleX;
 		y *= scaleY;
 		return *this;
 	}
-	const Vector2D& Vector2D::SetScale(const double& scale)
+	const Vector2D& Vector2D::SetScale(const double scale)
 	{
 		double factor = sqrt(pow(x, 2) + pow(y, 2));
 		*this = *this * (1.0 / factor);
@@ -91,7 +91,7 @@ namespace MathLib
 	{
 		return x * other.x + y * other.y;
 	}
-	Vector2D Vector2D::operator*(const double& number) const
+	Vector2D Vector2D::operator*(const double number) const
 	{
 		return Vector2D(
 			x * number,
@@ -103,7 +103,7 @@ namespace MathLib
 		Mat2x1 result = GetRowVector() * matrix;
 		return Vector2D(result.GetVal(0), result.GetVal(1));
 	}
-	void Vector2D::operator*=(const double& number)
+	void Vector2D::operator*=(const double number)
 	{
 		x *= number;
 		y *= number;
@@ -162,12 +162,12 @@ namespace MathLib
 	{
 
 	}
-	Vector3D::Vector3D(const double& x, const double& y, const double& z)
+	Vector3D::Vector3D(const double x, const double y, const double z)
 		: Float3(x, y, z)
 	{
 
 	}
-	Vector3D::Vector3D(const Vector2D& vec, const double& z)
+	Vector3D::Vector3D(const Vector2D& vec, const double z)
 		: Float3(vec.x, vec.y, z)
 	{
 
@@ -254,7 +254,7 @@ namespace MathLib
 	{
 		return x * other.x + y * other.y + z * other.z;
 	}
-	Vector3D Vector3D::operator*(const double& number) const
+	Vector3D Vector3D::operator*(const double number) const
 	{
 		return Vector3D(x * number, y * number, z * number);
 	}
@@ -263,7 +263,7 @@ namespace MathLib
 		Mat3x1 result = GetRowVector() * matrix;
 		return Vector3D(result.GetVal(0), result.GetVal(1), result.GetVal(2));
 	}
-	void Vector3D::operator*=(const double& number)
+	void Vector3D::operator*=(const double number)
 	{
 		x *= number;
 		y *= number;
@@ -273,7 +273,7 @@ namespace MathLib
 	{
 		return Vector3D(-x, -y, -z);
 	}
-	double Vector3D::GetAngle(const int& axis) const
+	double Vector3D::GetAngle(const int axis) const
 	{
 		Vector2D calcVec = Vector2D();
 		double angle;
