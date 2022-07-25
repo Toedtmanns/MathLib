@@ -77,7 +77,7 @@ namespace MathLib
 
 	bool SetArraySize(void** array, const size_t currLength, const size_t newLength)
 	{
-		unsigned int newSize = newLength * sizeof(array[0]);
+		size_t newSize = newLength * sizeof(array[0]);
 
 		void* newArray = realloc(*array, newSize);
 		if (newArray)

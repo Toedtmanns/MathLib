@@ -197,6 +197,7 @@ namespace MathLib
 		const Vector2D& Rotate(double angle);
 		const Vector2D& Rot90R();
 		const Vector2D& Rot90L();
+		const Vector2D& Normalize();
 
 		Vector2D TripleProduct(const Vector2D& other) const;
 
@@ -230,6 +231,7 @@ namespace MathLib
 		const Vector3D& Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
 		const Vector3D& SetScale(const double& len);
 		const Vector3D& Rotate(const double& angle, const unsigned int& axis);
+		const Vector3D& Normalize();
 
 		Vector3D operator+(const Vector3D& other) const;
 		Vector3D operator-(const Vector3D& other) const;

@@ -374,7 +374,7 @@ namespace MathLib
 		retMat.SetVal(0, cos(Deg2Rad(rotation)));
 		retMat.SetVal(1, -sin(Deg2Rad(rotation)));
 		retMat.SetVal(2, -retMat.GetVal(1));
-		retMat.SetVal(3, retMat.GetVal(1));
+		retMat.SetVal(3, retMat.GetVal(0));
 
 		return retMat;
 	}

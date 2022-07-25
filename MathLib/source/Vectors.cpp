@@ -51,7 +51,8 @@ namespace MathLib
 	const Vector2D& Vector2D::SetScale(const double scale)
 	{
 		double factor = sqrt(pow(x, 2) + pow(y, 2));
-		*this = *this * (1.0 / factor);
+		if (factor != 0)
+			*this = *this * (1.0 / factor);
 		return *this;
 	}
 	const Vector2D& Vector2D::Rotate(double angle)
@@ -74,6 +75,10 @@ namespace MathLib
 		x = -y;
 		y = tmp;
 		return *this;
+	}
+	const Vector2D& Vector2D::Normalize()
+	{
+		return SetScale(1);
 	}
 	Vector2D Vector2D::TripleProduct(const Vector2D& other) const
 	{
@@ -228,6 +233,11 @@ namespace MathLib
 			*this = Vector3D(calcVec.x, calcVec.y, z);
 			break;
 		}
+		return *this;
+	}
+	const Vector3D& Vector3D::Normalize()
+	{
+		SetScale(1);
 		return *this;
 	}
 	/*Vector3D Vector3D::Rotate(double angle, Vector3D *normal)

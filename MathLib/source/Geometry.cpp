@@ -104,6 +104,9 @@ namespace MathLib
 	{
 		m_NumCorners = other.m_NumCorners;
 		m_CornerArr = other.m_CornerArr;
+
+		other.m_NumCorners = 0;
+		other.m_CornerArr = nullptr;
 	}
 	Polygon2D::Polygon2D(const Polygon2D& other)
 		: m_CornerArr(new Float2[other.m_NumCorners]), m_NumCorners(other.m_NumCorners)
@@ -296,6 +299,9 @@ namespace MathLib
 		delete[] m_CornerArr;
 		m_NumCorners = other.m_NumCorners;
 		m_CornerArr = other.m_CornerArr;
+
+		other.m_NumCorners = 0;
+		other.m_CornerArr = nullptr;
 	}
 	void Polygon2D::operator=(const Polygon2D& other)
 	{

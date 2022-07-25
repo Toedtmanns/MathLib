@@ -10,14 +10,24 @@
 	#ifndef EXPORT
 		#ifdef MATHLIB_EXPORTS
 			#ifdef _WIN32
-				#define EXPORT __declspec(dllexport)
-			#elif __unix__
+				#ifdef _MSC_VER
+					#define EXPORT __declspec(dllexport)
+				#elif __GNUC__
+					#define EXPORT __attribute__((dllexport))
+				#endif // OS check
+			#else
 				#define EXPORT __attribute__((visibility("default")))
-			#endif // OS check
+			#endif
 		#else
 			#ifdef _WIN32
-				#define EXPORT __declspec(dllimport)
-			#endif // __WIN32
+				#ifdef _MSC_VER
+					#define EXPORT __declspec(dllimport)
+				#elif __GNUC__
+					#define EXPORT __attribute__((dllimport))
+				#endif // __WIN32
+			#else
+				#define EXPORT
+			#endif
 		#endif // MATHLIB_EXPORTS
 	#endif // EXPORT
 
@@ -29,17 +39,17 @@
 
 #ifndef DEPRECATED
 	#if __cplusplus >= 201402L
-		#define DEPRECATED(reason) [[deprecated(#reason)]]
+		#define DEPRECATED(...) [[deprecated(#__VA_ARGS__)]]
 	#else
-		#define DEPRECATED(reason)
+		#define DEPRECATED(...)
 	#endif // __cplusplus version
 #endif // DEPRECATED
 
 #ifndef DEPRECATEDCLASS
 	#if __cplusplus >= 201402L && defined __WIN32
-		#define DEPRECATEDCLASS(reason) __declspec(deprecated(#reason))
+		#define DEPRECATEDCLASS(...) __declspec(deprecated(#__VA_ARGS__))
 	#else
-		#define DEPRECATEDCLASS(reason)
+		#define DEPRECATEDCLASS(...)
 	#endif // __cplusplus version
 #endif // DEPRECATEDCLASS
 
@@ -80,6 +90,7 @@ namespace MathLib
 		T res = base;
 		for (; exponent > 0; exponent--)
 			res *= base;
+		return res;
 	}
 	EXPORT constexpr const size_t PowNeg1(size_t exponent)
 	{
