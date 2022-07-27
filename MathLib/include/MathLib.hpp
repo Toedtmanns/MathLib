@@ -249,6 +249,9 @@ namespace MathLib
 		Float3 TransformPoint(Float3 point);
 	};
 
+	EXPORT Vector2D operator*(const Mat2& matrix, const Vector2D& vector);
+	EXPORT Vector3D operator*(const Mat3& matrix, const Vector3D& vector);
+
 	EXPORT Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2);
 	EXPORT double VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
 	EXPORT double VectorDotProduct(const Vector2D& v1, const Vector2D& v2);

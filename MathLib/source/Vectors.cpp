@@ -59,7 +59,7 @@ namespace MathLib
 	{
 		Mat2 rotMat = RotationMatrix2D(angle);
 
-		*this = *this * rotMat;
+		*this = rotMat * *this;
 		return *this;
 	}
 	const Vector2D& Vector2D::Rot90R()
@@ -343,6 +343,18 @@ namespace MathLib
 		return point;
 	}
 
+	Vector2D operator*(const Mat2& matrix, const Vector2D& vector)
+	{
+		Mat1x2 colVec = vector.GetColVector();
+		colVec = matrix * colVec;
+		return Vector2D(colVec.GetVal(0), colVec.GetVal(1));
+	}
+	Vector3D operator*(const Mat3& matrix, const Vector3D& vector)
+	{
+		Mat1x3 colVec = vector.GetColVector();
+		colVec = matrix * colVec;
+		return Vector3D(colVec.GetVal(0), colVec.GetVal(1), colVec.GetVal(2));
+	}
 	Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2)
 	{
 		Vector3D retVec = Vector3D();

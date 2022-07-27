@@ -104,6 +104,13 @@ namespace MathLib
 			}
 			return retMat;
 		}
+		constexpr void operator*=(const double value)
+		{
+			for (size_t i = 0; i < columns * rows; i++)
+			{
+				m_Matrix[i] = m_Matrix[i] * value;
+			}
+		}
 		template<size_t oColumns>
 		constexpr Matrix<oColumns, rows> operator*(const Matrix<oColumns, columns>& other) const
 		{
@@ -115,7 +122,7 @@ namespace MathLib
 					double num = 0;
 					for (size_t calcCol = 0; calcCol < columns; calcCol++)
 					{
-						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[calcCol * columns + c];
+						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[c * columns + calcCol];
 					}
 					retMat.SetVal(c, r, num);
 				}
@@ -132,7 +139,7 @@ namespace MathLib
 					double num = 0;
 					for (size_t calcCol = 0; calcCol < columns; calcCol++)
 					{
-						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[calcCol * columns + c];
+						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[c * columns + calcCol];
 					}
 					m_Matrix[c * rows + r] = num;
 				}
@@ -207,28 +214,28 @@ namespace MathLib
 	EXPORT constexpr Float2 operator*(const Float2& point, const Mat2& matrix)
 	{
 		return Float2{
-			point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1),
-			point.y * matrix.GetVal(2) + point.y * matrix.GetVal(3)
+			point.x * matrix.GetVal(0) + point.y * matrix.GetVal(1),
+			point.x * matrix.GetVal(2) + point.y * matrix.GetVal(3)
 		};
 	}
 	EXPORT constexpr void operator*=(Float2& point, const Mat2& matrix)
 	{
-		point.x = point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1);
-		point.y = point.y * matrix.GetVal(2) + point.y * matrix.GetVal(3);
+		point.x = point.x * matrix.GetVal(0) + point.y * matrix.GetVal(1);
+		point.y = point.x * matrix.GetVal(2) + point.y * matrix.GetVal(3);
 	}
 	EXPORT constexpr Float3 operator*(const Float3& point, const Mat3& matrix)
 	{
 		return Float3{
-			point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1) + point.x * matrix.GetVal(2),
-			point.y * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.y * matrix.GetVal(5),
-			point.z * matrix.GetVal(6) + point.z * matrix.GetVal(7) + point.z * matrix.GetVal(8)
+			point.x * matrix.GetVal(0) + point.y * matrix.GetVal(1) + point.z * matrix.GetVal(2),
+			point.x * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.z * matrix.GetVal(5),
+			point.x * matrix.GetVal(6) + point.y * matrix.GetVal(7) + point.z * matrix.GetVal(8)
 		};
 	}
 	EXPORT constexpr void operator*=(Float3& point, const Mat3& matrix)
 	{
-		point.x = point.x * matrix.GetVal(0) + point.x * matrix.GetVal(1) + point.x * matrix.GetVal(2);
-		point.y = point.y * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.y * matrix.GetVal(5);
-		point.z = point.z * matrix.GetVal(6) + point.z * matrix.GetVal(7) + point.z * matrix.GetVal(8);
+		point.x = point.x * matrix.GetVal(0) + point.y * matrix.GetVal(1) + point.z * matrix.GetVal(2);
+		point.y = point.x * matrix.GetVal(3) + point.y * matrix.GetVal(4) + point.z * matrix.GetVal(5);
+		point.z = point.x * matrix.GetVal(6) + point.y * matrix.GetVal(7) + point.z * matrix.GetVal(8);
 	}
 
 	template<size_t columns, size_t rows>
@@ -323,6 +330,8 @@ namespace MathLib
 
 			retMat.SetVal(mColumn, mRow, Determinant(tempMat));
 		}
+
+		return retMat;
 	}
 
 	template<size_t dim>
@@ -351,20 +360,23 @@ namespace MathLib
 		retMat = MatrixOfMinors(matrix);
 		retMat = MatrixOfCofactors(retMat);
 		retMat = Transpose(retMat);
-		retMat = retMat * (1 / det);
+		retMat *= (1 / det);
 		return retMat;
 	}
 	template<>
 	EXPORT constexpr Matrix<2> Inverse(const Matrix<2>& matrix)
 	{
+		double det = Determinant(matrix);
 		double matArray[4] = {
 			matrix.GetVal(3),
-			-matrix.GetVal(1),
 			-matrix.GetVal(2),
+			-matrix.GetVal(1),
 			matrix.GetVal(0)
 		};
 		Mat2 retMat;
 		retMat.SetMatrix(matArray);
+
+		retMat *= (1 / det);
 		return retMat;
 	}
 
