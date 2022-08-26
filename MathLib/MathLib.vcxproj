@@ -142,10 +142,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\mlCommon.hpp" />
-    <ClInclude Include="include\mlMatrices.hpp" />
-    <ClInclude Include="include\mlPrimitives.hpp" />
-    <ClInclude Include="include\MathLib.hpp" />
+    <ClInclude Include="include\MathLib\mlCommon.hpp" />
+    <ClInclude Include="include\MathLib\mlMatrices.hpp" />
+    <ClInclude Include="include\MathLib\mlPrimitives.hpp" />
+    <ClInclude Include="include\MathLib\MathLib.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Geometry.cpp" />

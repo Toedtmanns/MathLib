@@ -1,48 +1,9 @@
-#include "../include/MathLib.hpp"
+#include "../include/MathLib/MathLib.hpp"
 #include <stdio.h>
 #include <math.h>
 
 namespace MathLib
 {
-	Float4::Float4(const Int4& other)
-	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
-		w = other.w;
-	}
-	void Float4::operator=(const Int4& other)
-	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
-		w = other.w;
-	}
-
-	Float3::Float3(const Int3& other)
-	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
-	}
-	void Float3::operator=(const Int3& other)
-	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
-	}
-
-	Float2::Float2(const Int2& other)
-	{
-		x = other.x;
-		y = other.y;
-	}
-	void Float2::operator=(const Int2& other)
-	{
-		x = other.x;
-		y = other.y;
-	}
-
 	void PrintProperties(const Float2& p)
 	{
 		printf("X: %.3f, Y: %.3f\n", p.x, p.y);
