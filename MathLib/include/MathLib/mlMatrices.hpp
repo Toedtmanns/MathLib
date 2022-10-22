@@ -10,7 +10,7 @@ namespace MathLib
 	class EXPORT Matrix
 	{
 	protected:
-		double m_Matrix[columns * rows]{0};
+		float m_Matrix[columns * rows]{0};
 
 	public:
 		constexpr Matrix(Matrix<columns, rows>&& other) noexcept
@@ -21,11 +21,19 @@ namespace MathLib
 		{
 			memcpy(m_Matrix, other.m_Matrix, sizeof(m_Matrix));
 		}
+		template <size_t oColumns, size_t oRows>
+		constexpr Matrix(const Matrix<oColumns, oRows>& other)
+		{
+			for (size_t i = 0; i < Min(columns, oColumns) * rows; i += Min(columns, oColumns))
+			{
+				memcpy(m_Matrix + i, other.GetMatrix() + i + oRows - rows, Min(rows, oRows) * sizeof(float));
+			}
+		}
 		constexpr Matrix()
 		{
 
 		}
-		constexpr Matrix(const double defaultVal)
+		constexpr Matrix(const float defaultVal)
 		{
 			if (columns != rows)
 				return;
@@ -36,34 +44,34 @@ namespace MathLib
 			}
 		}
 
-		constexpr void SetVal(const size_t column, const size_t row, const double value)
+		constexpr void SetVal(const size_t column, const size_t row, const float value)
 		{
 			m_Matrix[column * rows + row] = value;
 		}
-		constexpr void SetVal(const size_t index, const double value)
+		constexpr void SetVal(const size_t index, const float value)
 		{
 			m_Matrix[index] = value;
 		}
-		constexpr void SetMatrix(const double* matValues)
+		constexpr void SetMatrix(const float* matValues)
 		{
 			memcpy(m_Matrix, matValues, sizeof(m_Matrix));
 		}
 
 		// Getter methods
 
-		constexpr const double GetVal(const size_t column, const size_t row) const
+		constexpr const float GetVal(const size_t column, const size_t row) const
 		{
 			return m_Matrix[column * rows + row];
 		}
-		constexpr const double GetVal(const size_t index) const
+		constexpr const float GetVal(const size_t index) const
 		{
 			return m_Matrix[index];
 		}
-		constexpr double* GetMatrix()
+		constexpr float* GetMatrix()
 		{
 			return m_Matrix;
 		}
-		constexpr const double* GetMatrix() const
+		constexpr const float* GetMatrix() const
 		{
 			return m_Matrix;
 		}
@@ -86,16 +94,16 @@ namespace MathLib
 		{
 			memcpy(m_Matrix, other.m_Matrix, sizeof(m_Matrix));
 		}
-		constexpr const double* operator[](const size_t index) const
+		constexpr const float* operator[](const size_t index) const
 		{
 			return m_Matrix + index * rows;
 		}
-		constexpr double* operator[](const size_t index)
+		constexpr float* operator[](const size_t index)
 		{
 			return m_Matrix + index * rows;
 		}
 
-		constexpr Matrix<columns, rows> operator*(const double value)
+		constexpr Matrix<columns, rows> operator*(const float value)
 		{
 			Matrix<columns, rows> retMat{0};
 			for (size_t i = 0; i < columns * rows; i++)
@@ -104,7 +112,7 @@ namespace MathLib
 			}
 			return retMat;
 		}
-		constexpr void operator*=(const double value)
+		constexpr void operator*=(const float value)
 		{
 			for (size_t i = 0; i < columns * rows; i++)
 			{
@@ -119,7 +127,7 @@ namespace MathLib
 			{
 				for (size_t r = 0; r < rows; r++)
 				{
-					double num = 0;
+					float num = 0;
 					for (size_t calcCol = 0; calcCol < columns; calcCol++)
 					{
 						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[c * columns + calcCol];
@@ -136,7 +144,7 @@ namespace MathLib
 			{
 				for (size_t r = 0; r < rows; r++)
 				{
-					double num = 0;
+					float num = 0;
 					for (size_t calcCol = 0; calcCol < columns; calcCol++)
 					{
 						num = num + m_Matrix[calcCol * rows + r] * other.GetMatrix()[c * columns + calcCol];
@@ -145,14 +153,14 @@ namespace MathLib
 				}
 			}
 		}
-		constexpr Matrix<columns, rows> operator+(const double value) const
+		constexpr Matrix<columns, rows> operator+(const float value) const
 		{
 			Matrix<columns, rows> retMat;
 			for (size_t i = 0; i < columns * rows; i++)
 				retMat.SetVal(i, m_Matrix[i] + value);
 			return retMat;
 		}
-		constexpr void operator+=(const double value)
+		constexpr void operator+=(const float value)
 		{
 			for (size_t i = 0; i < columns * rows; i++)
 				m_Matrix[i] += value;
@@ -169,14 +177,14 @@ namespace MathLib
 			for (size_t i = 0; i < columns * rows; i++)
 				m_Matrix[i] += other.GetVal(i);
 		}
-		constexpr Matrix<columns, rows> operator-(const double value) const
+		constexpr Matrix<columns, rows> operator-(const float value) const
 		{
 			Matrix<columns, rows> retMat;
 			for (size_t i = 0; i < columns * rows; i++)
 				retMat.SetVal(i, m_Matrix[i] - value);
 			return retMat;
 		}
-		constexpr void operator-=(const double value)
+		constexpr void operator-=(const float value)
 		{
 			for (size_t i = 0; i < columns * rows; i++)
 				m_Matrix[i] -= value;
@@ -250,9 +258,9 @@ namespace MathLib
 		return retMat;
 	}
 	template<size_t dim>
-	EXPORT constexpr double Determinant(const Matrix<dim>& matrix)
+	EXPORT constexpr float Determinant(const Matrix<dim>& matrix)
 	{
-		double num = 0;
+		float num = 0;
 		for (size_t mCol = 0; mCol < dim; mCol++)
 		{
 			Matrix<dim - 1> tempMat;
@@ -279,20 +287,20 @@ namespace MathLib
 		return num;
 	}
 	template<>
-	EXPORT constexpr double Determinant<2>(const Mat2& matrix)
+	EXPORT constexpr float Determinant<2>(const Mat2& matrix)
 	{
 		return matrix.GetVal(0) * matrix.GetVal(3) - matrix.GetVal(1) * matrix.GetVal(2);
 	}
 	template<>
-	EXPORT constexpr double Determinant<3>(const Mat3& matrix)
+	EXPORT constexpr float Determinant<3>(const Mat3& matrix)
 	{
-		double pos1 = matrix.GetVal(0, 0) * matrix.GetVal(1, 1) * matrix.GetVal(2, 2);
-		double pos2 = matrix.GetVal(1, 0) * matrix.GetVal(2, 1) * matrix.GetVal(0, 2);
-		double pos3 = matrix.GetVal(2, 0) * matrix.GetVal(0, 1) * matrix.GetVal(1, 2);
+		float pos1 = matrix.GetVal(0, 0) * matrix.GetVal(1, 1) * matrix.GetVal(2, 2);
+		float pos2 = matrix.GetVal(1, 0) * matrix.GetVal(2, 1) * matrix.GetVal(0, 2);
+		float pos3 = matrix.GetVal(2, 0) * matrix.GetVal(0, 1) * matrix.GetVal(1, 2);
 
-		double neg1 = matrix.GetVal(0, 2) * matrix.GetVal(1, 1) * matrix.GetVal(2, 0);
-		double neg2 = matrix.GetVal(1, 2) * matrix.GetVal(2, 1) * matrix.GetVal(0, 0);
-		double neg3 = matrix.GetVal(2, 2) * matrix.GetVal(0, 1) * matrix.GetVal(1, 0);
+		float neg1 = matrix.GetVal(0, 2) * matrix.GetVal(1, 1) * matrix.GetVal(2, 0);
+		float neg2 = matrix.GetVal(1, 2) * matrix.GetVal(2, 1) * matrix.GetVal(0, 0);
+		float neg3 = matrix.GetVal(2, 2) * matrix.GetVal(0, 1) * matrix.GetVal(1, 0);
 
 		return pos1 + pos2 + pos3 - neg1 - neg2 - neg3;
 	}
@@ -351,7 +359,7 @@ namespace MathLib
 	template <size_t dim>
 	EXPORT constexpr Matrix<dim> Inverse(const Matrix<dim>& matrix)
 	{
-		double det = Determinant(matrix);
+		float det = Determinant(matrix);
 		Matrix<dim> retMat;
 
 		if (det == 0)
@@ -366,8 +374,8 @@ namespace MathLib
 	template<>
 	EXPORT constexpr Matrix<2> Inverse(const Matrix<2>& matrix)
 	{
-		double det = Determinant(matrix);
-		double matArray[4] = {
+		float det = Determinant(matrix);
+		float matArray[4] = {
 			matrix.GetVal(3),
 			-matrix.GetVal(2),
 			-matrix.GetVal(1),
@@ -380,7 +388,7 @@ namespace MathLib
 		return retMat;
 	}
 
-	EXPORT constexpr Mat2 RotationMatrix2D(const double rotation)
+	EXPORT constexpr Mat2 RotationMatrix2D(const float rotation)
 	{
 		Mat2 retMat;
 		retMat.SetVal(0, cos(Deg2Rad(rotation)));
@@ -392,45 +400,6 @@ namespace MathLib
 	}
 
 	// Old matrix classes
-
-	
-	class DEPRECATEDCLASS("Integer matrices are unnecessary and reworked matrices are available") EXPORT MatrixI
-	{
-		unsigned int m_Rows, m_Columns;
-		int** m_Matrix;
-
-	public:
-		MatrixI(MatrixI&& other) noexcept;
-		MatrixI(const MatrixI& other);
-		MatrixI(const unsigned int& dim);
-		MatrixI(const unsigned int& columns, const unsigned int& rows);
-		MatrixI(const unsigned int& columns, const unsigned int& rows, const int** const columnArray);
-
-		void SetNum(const unsigned int& column, const unsigned int& row, const int& value);
-		void SetColumn(const unsigned int& column, const int* const content);
-		void SetMatrix(const int** const matrix);
-
-		const int& GetNum(const unsigned int& column, const unsigned int& row) const;
-		int* GetColumn(const unsigned int& column) const;
-		int* GetArray() const;
-		int** GetMatrix() const;
-		const unsigned int& GetRowCount() const;
-		const unsigned int& GetColumnCount() const;
-
-		void operator=(MatrixI&& other) noexcept;
-		void operator=(const MatrixI& other);
-		MatrixI operator+(const int& value) const;
-		MatrixI operator-(const int& value) const;
-		MatrixI operator*(const int& value) const;
-		MatrixI operator/(const int& value) const;
-		MatrixI operator+(const MatrixI& other) const;
-		MatrixI operator-(const MatrixI& other) const;
-		MatrixI operator*(const MatrixI& other) const;
-		int* operator[](const unsigned int& column);
-		const int* operator[](const unsigned int& column) const;
-
-		~MatrixI();
-	};
 
 	class EXPORT MatrixF
 	{
@@ -469,23 +438,6 @@ namespace MathLib
 
 		~MatrixF();
 	};
-
-	DEPRECATED()
-	EXPORT void PrintContent(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT void PrintProperties(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT int MatrixGetDet(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT MatrixI MatrixOfMinors(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT MatrixI MatrixOfCofactors(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT MatrixI MatrixTranspose(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT MatrixI MatrixAdjugate(const MatrixI& mat);
-	DEPRECATED()
-	EXPORT MatrixF MatrixInverse(const MatrixI& mat);
 
 	EXPORT void PrintContent(const MatrixF& mat);
 	EXPORT void PrintProperties(const MatrixF& mat);

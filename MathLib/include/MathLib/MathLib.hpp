@@ -51,97 +51,21 @@ namespace MathLib
 	Float2 Lerp(const Float2& start, const Float2& end, const double t);
 	Float2 Lerp(const Line2D& line, const double t);
 
-	// Complex maths
-
-	class EXPORT imaginaryBase
-	{
-	public:
-		double num;
-
-		imaginaryBase();
-		imaginaryBase(const double& num);
-
-		template <typename T>
-		imaginaryBase operator*(const T& other)
-		{
-			return imaginaryBase(num * other);
-		}
-		imaginaryBase operator+(const imaginaryBase other) const;
-		imaginaryBase operator-(const imaginaryBase other) const;
-		double operator*(const imaginaryBase other) const;
-		double operator/(const imaginaryBase other) const;
-		bool operator==(const imaginaryBase other) const;
-		bool operator!=(const imaginaryBase other) const;
-		bool operator>=(const imaginaryBase other) const;
-		bool operator<=(const imaginaryBase other) const;
-		bool operator>(const imaginaryBase other) const;
-		bool operator<(const imaginaryBase other) const;
-		imaginaryBase& operator++();
-		imaginaryBase& operator--();
-		imaginaryBase& operator++(int);
-		imaginaryBase& operator--(int);
-	};
-
-	template <typename T>
-	imaginaryBase operator*(const T& num1, const imaginaryBase num2)
-	{
-		return imaginaryBase(num1 * num2.num);
-	}
-	EXPORT imaginaryBase operator-(const imaginaryBase num);
-
-	class imagJ;
-	class imagK;
-
-	class EXPORT imagI : public imaginaryBase
-	{
-	public:
-		imagI();
-		imagI(const double num);
-		imagI(const imaginaryBase& base);
-
-		double operator*(const imagI other) const;
-		imagK operator*(const imagJ jNum) const;
-		imagJ operator*(const imagK jNum) const;
-	};
-	class EXPORT imagJ : public imaginaryBase
-	{
-	public:
-		imagJ();
-		imagJ(const double num);
-		imagJ(const imaginaryBase& base);
-
-		double operator*(const imagJ other) const;
-		imagI operator*(const imagK jNum) const;
-		imagK operator*(const imagI jNum) const;
-	};
-	class EXPORT imagK : public imaginaryBase
-	{
-	public:
-		imagK();
-		imagK(const double num);
-		imagK(const imaginaryBase& base);
-
-		double operator*(const imagK other) const;
-		imagJ operator*(const imagI jNum) const;
-		imagI operator*(const imagJ jNum) const;
-	};
-
 	// Quaternions
 
 	class EXPORT Quaternion
 	{
 	public:
-		double real;
-		imagI i;
-		imagJ j;
-		imagK k;
+		double real, i, j, k;
 
 		Quaternion();
-		Quaternion(const double real, const imagI i, const imagJ j, const imagK k);
+		Quaternion(const double real, const double i, const double j, const double k);
 		Quaternion(const Float3& point);
 
 		Quaternion operator+(const Quaternion& other) const;
 		Quaternion operator*(const Quaternion& other) const;
+		void operator+=(const Quaternion& other);
+		void operator*=(const Quaternion& other);
 		Quaternion RotateQuaternion(const Quaternion& quat) const;
 		Float3 RotatePoint(const Float3& point) const;
 
@@ -155,29 +79,17 @@ namespace MathLib
 
 	// Quaternion operations
 
-	EXPORT MatrixF MatrixRotate(const MatrixF& mat, const Quaternion& quat);
+	EXPORT Mat4 MatrixRotate(const Mat4& mat, const Quaternion& quat);
 
 	// Conversion and checking functions
 
-	DEPRECATED()
-	EXPORT MatrixI MatrixF2I(const MatrixF& mat);
-	DEPRECATED()
-	EXPORT MatrixF MatrixI2F(const MatrixI& mat);
 	EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
-	DEPRECATED()
-	EXPORT bool MatrixIsSquare(const MatrixI& mat, const int& dimension = -1);
 
 	// Helper functions
 
-	DEPRECATED()
-	EXPORT MatrixI Point2Matrix(const Int2& point);
 	EXPORT MatrixF Point2Matrix(const Float2& point);
-	DEPRECATED()
-	EXPORT MatrixI Point2Matrix(const Int3& point);
 	EXPORT MatrixF Point2Matrix(const Float3& point);
 	EXPORT MatrixF TransformF2x2(const Float2& p1, const Float2& p2);
-	DEPRECATED()
-	EXPORT MatrixI TransformI2x2(const Int2& p1, const Int2& p2);
 
 	// Vector math
 

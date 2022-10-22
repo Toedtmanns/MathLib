@@ -333,4 +333,35 @@ namespace MathLib
 	{
 		return Primitive4<Type>(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
 	}
+
+	template <typename Type>
+	EXPORT constexpr Primitive2<Type> operator*=(Primitive2<Type>& f1, const Primitive2<Type>& f2)
+	{
+		f1 = Primitive2<Type>(f1.x * f2.x, f1.y * f2.y);
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive3<Type> operator*=(Primitive3<Type>& f1, const Primitive3<Type>& f2)
+	{
+		f1 = Primitive3<Type>(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z);
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive4<Type> operator*=(Primitive4<Type>& f1, const Primitive4<Type>& f2)
+	{
+		f1 = Primitive4<Type>(f1.x * f2.x, f1.y * f2.y, f1.z * f2.z, f1.w * f2.w);
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive2<Type> operator*=(Primitive2<Type>& f1, const double f2)
+	{
+		f1 = Primitive2<Type>(f1.x * f2, f1.y * f2);
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive3<Type> operator*=(Primitive3<Type>& f1, const double f2)
+	{
+		f1 = Primitive3<Type>(f1.x * f2, f1.y * f2, f1.z * f2);
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive4<Type> operator*=(Primitive4<Type>& f1, const double f2)
+	{
+		f1 = Primitive4<Type>(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
+	}
 }
