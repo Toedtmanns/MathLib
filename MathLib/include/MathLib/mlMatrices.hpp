@@ -33,7 +33,7 @@ namespace MathLib
 		{
 
 		}
-		constexpr Matrix(const float defaultVal)
+		explicit constexpr Matrix(const float defaultVal)
 		{
 			if (columns != rows)
 				return;
@@ -203,21 +203,21 @@ namespace MathLib
 		}
 	};
 
-	EXPORT typedef Matrix<4> Mat4;
-	EXPORT typedef Matrix<3> Mat3;
-	EXPORT typedef Matrix<2> Mat2;
-	EXPORT typedef Matrix<1, 2> Mat1x2;
-	EXPORT typedef Matrix<1, 3> Mat1x3;
-	EXPORT typedef Matrix<1, 4> Mat1x4;
-	EXPORT typedef Matrix<2, 1> Mat2x1;
-	EXPORT typedef Matrix<2, 3> Mat2x3;
-	EXPORT typedef Matrix<2, 4> Mat2x4;
-	EXPORT typedef Matrix<3, 1> Mat3x1;
-	EXPORT typedef Matrix<3, 2> Mat3x2;
-	EXPORT typedef Matrix<3, 4> Mat3x4;
-	EXPORT typedef Matrix<4, 1> Mat4x1;
-	EXPORT typedef Matrix<4, 2> Mat4x2;
-	EXPORT typedef Matrix<4, 3> Mat4x3;
+	typedef Matrix<4> Mat4;
+	typedef Matrix<3> Mat3;
+	typedef Matrix<2> Mat2;
+	typedef Matrix<1, 2> Mat1x2;
+	typedef Matrix<1, 3> Mat1x3;
+	typedef Matrix<1, 4> Mat1x4;
+	typedef Matrix<2, 1> Mat2x1;
+	typedef Matrix<2, 3> Mat2x3;
+	typedef Matrix<2, 4> Mat2x4;
+	typedef Matrix<3, 1> Mat3x1;
+	typedef Matrix<3, 2> Mat3x2;
+	typedef Matrix<3, 4> Mat3x4;
+	typedef Matrix<4, 1> Mat4x1;
+	typedef Matrix<4, 2> Mat4x2;
+	typedef Matrix<4, 3> Mat4x3;
 
 	EXPORT constexpr Float2 operator*(const Float2& point, const Mat2& matrix)
 	{
@@ -341,7 +341,6 @@ namespace MathLib
 
 		return retMat;
 	}
-
 	template<size_t dim>
 	EXPORT constexpr Matrix<dim> MatrixOfCofactors(const Matrix<dim>& matrix)
 	{
@@ -399,52 +398,13 @@ namespace MathLib
 		return retMat;
 	}
 
-	// Old matrix classes
-
-	class EXPORT MatrixF
+	EXPORT constexpr Mat2 Vec2Mat(const Float2& v1, const Float2& v2)
 	{
-		double** m_Matrix;
-		unsigned int m_Rows, m_Columns;
-
-	public:
-		MatrixF(MatrixF&& other) noexcept;
-		MatrixF(const MatrixF& other);
-		MatrixF(const unsigned int& dim);
-		MatrixF(const unsigned int& columns, const unsigned int& rows);
-		MatrixF(const unsigned int& columns, const unsigned int& rows, const double** const columnArray);
-
-		void SetNum(const unsigned int& column, const unsigned int& row, const double& value);
-		void SetColumn(const unsigned int& column, const double* const content);
-		void SetMatrix(const double** const matrix);
-
-		const double& GetNum(const unsigned int& column, const unsigned int& row) const;
-		double* GetColumn(const unsigned int& column) const;
-		double* GetArray() const;
-		double** GetMatrix() const;
-		const unsigned int& GetRowCount() const;
-		const unsigned int& GetColumnCount() const;
-
-		void operator=(MatrixF&& other) noexcept;
-		void operator=(const MatrixF& other);
-		MatrixF operator+(const double& value) const;
-		MatrixF operator-(const double& value) const;
-		MatrixF operator*(const double& value) const;
-		MatrixF operator/(const double& value) const;
-		MatrixF operator+(const MatrixF& other) const;
-		MatrixF operator-(const MatrixF& other) const;
-		MatrixF operator*(const MatrixF& other) const;
-		double* operator[](const unsigned int& column);
-		const double* operator[](const unsigned int& column) const;
-
-		~MatrixF();
-	};
-
-	EXPORT void PrintContent(const MatrixF& mat);
-	EXPORT void PrintProperties(const MatrixF& mat);
-	EXPORT double MatrixGetDet(const MatrixF& mat);
-	EXPORT MatrixF MatrixOfMinors(const MatrixF& mat);
-	EXPORT MatrixF MatrixOfCofactors(const MatrixF& mat);
-	EXPORT MatrixF MatrixTranspose(const MatrixF& mat);
-	EXPORT MatrixF MatrixAdjugate(const MatrixF& mat);
-	EXPORT MatrixF MatrixInverse(const MatrixF& mat);
+		Mat2 mat;
+		mat.SetVal(0, v1.x);
+		mat.SetVal(1, v1.y);
+		mat.SetVal(2, v2.x);
+		mat.SetVal(3, v2.y);
+		return mat;
+	}
 }

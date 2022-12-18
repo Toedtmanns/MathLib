@@ -75,17 +75,17 @@ namespace MathLib
 	}
 
 	template<typename T>
-	EXPORT constexpr const T& Clamp(const T& val, const T& min, const T& max)
+	EXPORT constexpr const T& Clamp(const T& val, const T& Min, const T& Max)
 	{
-		if (val > max)
-			return max;
-		else if (val < min)
-			return min;
+		if (val > Max)
+			return Max;
+		else if (val < Min)
+			return Min;
 		return val;
 	}
 
 	template<typename T>
-	EXPORT constexpr const T& Pow(const T& base, size_t exponent)
+	EXPORT constexpr const T Pow(const T& base, size_t exponent)
 	{
 		T res = base;
 		for (; exponent > 0; exponent--)

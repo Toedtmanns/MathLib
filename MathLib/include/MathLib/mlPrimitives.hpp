@@ -28,33 +28,33 @@ namespace MathLib
 		{
 
 		}
-		Primitive2(const Primitive2<Type>& other)
+		constexpr Primitive2(const Primitive2<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
 		}
-		void operator=(const Primitive2<Type>& other)
+		constexpr void operator=(const Primitive2<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
 		}
 		template <typename OtherType>
-		Primitive2(const Primitive2<OtherType>& other)
+		constexpr Primitive2(const Primitive2<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
 		}
 		template <typename OtherType>
-		void operator=(const Primitive2<OtherType>& other)
+		constexpr void operator=(const Primitive2<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
 		}
-		constexpr double operator[](const size_t index)
+		constexpr Type operator[](const size_t index)
 		{
 			return content[index];
 		}
-		constexpr const double operator[](const size_t index) const
+		constexpr const Type operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -91,37 +91,37 @@ namespace MathLib
 		{
 
 		}
-		Primitive3(const Primitive3<Type>& other)
+		constexpr Primitive3(const Primitive3<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
 			z = (Type) other.z;
 		}
-		void operator=(const Primitive3<Type>& other)
+		constexpr void operator=(const Primitive3<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
 			z = (Type) other.z;
 		}
 		template <typename OtherType>
-		Primitive3(const Primitive3<OtherType>& other)
+		constexpr Primitive3(const Primitive3<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
 			z = (Type) round(other.z);
 		}
 		template <typename OtherType>
-		void operator=(const Primitive3<OtherType>& other)
+		constexpr void operator=(const Primitive3<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
 			z = (Type) round(other.z);
 		}
-		constexpr double operator[](const size_t index)
+		constexpr Type operator[](const size_t index)
 		{
 			return content[index];
 		}
-		constexpr const double operator[](const size_t index) const
+		constexpr const Type operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -160,14 +160,14 @@ namespace MathLib
 		{
 
 		}
-		Primitive4(const Primitive4<Type>& other)
+		constexpr Primitive4(const Primitive4<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
 			z = (Type) other.z;
 			w = (Type) other.w;
 		}
-		void operator=(const Primitive4<Type>& other)
+		constexpr void operator=(const Primitive4<Type>& other)
 		{
 			x = (Type) other.x;
 			y = (Type) other.y;
@@ -175,7 +175,7 @@ namespace MathLib
 			w = (Type) other.w;
 		}
 		template <typename OtherType>
-		Primitive4(const Primitive4<OtherType>& other)
+		constexpr Primitive4(const Primitive4<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
@@ -183,18 +183,18 @@ namespace MathLib
 			w = (Type) round(other.w);
 		}
 		template <typename OtherType>
-		void operator=(const Primitive4<OtherType>& other)
+		constexpr void operator=(const Primitive4<OtherType>& other)
 		{
 			x = (Type) round(other.x);
 			y = (Type) round(other.y);
 			z = (Type) round(other.z);
 			w = (Type) round(other.w);
 		}
-		constexpr double operator[](const size_t index)
+		constexpr Type operator[](const size_t index)
 		{
 			return content[index];
 		}
-		constexpr const double operator[](const size_t index) const
+		constexpr const Type operator[](const size_t index) const
 		{
 			return content[index];
 		}
@@ -206,9 +206,9 @@ namespace MathLib
 	typedef Primitive3<int> Int3;
 	typedef Primitive4<int> Int4;
 
-	typedef Primitive2<double> Float2;
-	typedef Primitive3<double> Float3;
-	typedef Primitive4<double> Float4;
+	typedef Primitive2<float> Float2;
+	typedef Primitive3<float> Float3;
+	typedef Primitive4<float> Float4;
 
 
 	// Operator overloads
@@ -363,5 +363,33 @@ namespace MathLib
 	EXPORT constexpr Primitive4<Type> operator*=(Primitive4<Type>& f1, const double f2)
 	{
 		f1 = Primitive4<Type>(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
+	}
+
+	template <typename Type>
+	EXPORT constexpr Primitive2<Type> Lerp(const Primitive2<Type>& start, const Primitive2<Type>& end, const float t)
+	{
+		return {
+			start.x + t * (end.x - start.x),
+			start.y + t * (end.y - start.y)
+		};
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive3<Type> Lerp(const Primitive3<Type>& start, const Primitive3<Type>& end, const float t)
+	{
+		return {
+			start.x + t * (end.x - start.x),
+			start.y + t * (end.y - start.y),
+			start.z + t * (end.z - start.z)
+		};
+	}
+	template <typename Type>
+	EXPORT constexpr Primitive4<Type> Lerp(const Primitive4<Type>& start, const Primitive4<Type>& end, const float t)
+	{
+		return {
+			start.x + t * (end.x - start.x),
+			start.y + t * (end.y - start.y),
+			start.z + t * (end.z - start.z),
+			start.w + t * (end.w - start.w)
+		};
 	}
 }

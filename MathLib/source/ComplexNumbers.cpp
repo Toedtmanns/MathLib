@@ -10,7 +10,7 @@ namespace MathLib
 	{
 
 	}
-	Quaternion::Quaternion(const double real, const double i, const double j, const double k)
+	Quaternion::Quaternion(const float real, const float i, const float j, const float k)
 		: real(real), i(i), j(j), k(k)
 	{
 
@@ -67,19 +67,19 @@ namespace MathLib
 		return (*this * pQuat * this->GetInverse()).GetPoint();
 	}
 
-	Quaternion QuaternionRotation(const double angle, const double iAxis, const double jAxis, const double kAxis)
+	Quaternion QuaternionRotation(const float angle, const float iAxis, const float jAxis, const float kAxis)
 	{
 		Quaternion retQuat(cos(Deg2Rad(angle)), 0, 0, 0);
-		double sinAngle = sin(Deg2Rad(angle));
+		float sinAngle = sin(Deg2Rad(angle));
 		retQuat.i = iAxis * sinAngle;
 		retQuat.j = jAxis * sinAngle;
 		retQuat.k = kAxis * sinAngle;
 		return retQuat;
 	}
-	Quaternion QuaternionRotation(const double angle, const Float3& axis)
+	Quaternion QuaternionRotation(const float angle, const Float3& axis)
 	{
 		Quaternion retQuat(cos(Deg2Rad(angle)), 0, 0, 0);
-		double sinAngle = sin(Deg2Rad(angle));
+		float sinAngle = sin(Deg2Rad(angle));
 		retQuat.i = axis.x * sinAngle;
 		retQuat.j = axis.y * sinAngle;
 		retQuat.k = axis.z * sinAngle;

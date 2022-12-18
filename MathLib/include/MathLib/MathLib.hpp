@@ -1,6 +1,7 @@
 #pragma once
 #include "mlPrimitives.hpp"
 #include "mlMatrices.hpp"
+#include <string.h>
 
 namespace MathLib
 {
@@ -16,7 +17,7 @@ namespace MathLib
 		double normal;
 
 		Line2D();
-		Line2D(const double x1, const double y1, const double x2, const double y2);
+		Line2D(const float x1, const float y1, const float x2, const float y2);
 		Line2D(const Float2& p1, const Float2& p2);
 
 		bool operator==(const Line2D& other);
@@ -33,12 +34,12 @@ namespace MathLib
 		Intersect(const Float2& pos, const bool intersecting, const bool collinear);
 	};
 
-	EXPORT double GetLength(const Line2D& line);
-	EXPORT double GetDistance(const Float2& p1, const Float2& p2);
-	EXPORT double GetDistance(const Float3& p1, const Float3& p2);
+	EXPORT float GetLength(const Line2D& line);
+	EXPORT float GetDistance(const Float2& p1, const Float2& p2);
+	EXPORT float GetDistance(const Float3& p1, const Float3& p2);
 
-	EXPORT double GetSlope(const Line2D& line);
-	EXPORT double GetYAxisSection(const Line2D& line);
+	EXPORT float GetSlope(const Line2D& line);
+	EXPORT float GetYAxisSection(const Line2D& line);
 	EXPORT bool IsParallel(const Line2D& l1, const Line2D& l2);
 	EXPORT Float2 GetIntersectPos(const Line2D& l1, const Line2D& l2);
 	EXPORT Intersect GetIntersect(const Line2D& l1, const Line2D& l2);
@@ -47,19 +48,19 @@ namespace MathLib
 	EXPORT void PrintProperties(const Line2D& l);
 	EXPORT void PrintProperties(const Intersect& i);
 
-	double Lerp(const double start, const double end, const double t);
-	Float2 Lerp(const Float2& start, const Float2& end, const double t);
-	Float2 Lerp(const Line2D& line, const double t);
+	float Lerp(const float start, const float end, const float t);
+	Float2 Lerp(const Float2& start, const Float2& end, const float t);
+	Float2 Lerp(const Line2D& line, const float t);
 
 	// Quaternions
 
 	class EXPORT Quaternion
 	{
 	public:
-		double real, i, j, k;
+		float real, i, j, k;
 
 		Quaternion();
-		Quaternion(const double real, const double i, const double j, const double k);
+		Quaternion(const float real, const float i, const float j, const float k);
 		Quaternion(const Float3& point);
 
 		Quaternion operator+(const Quaternion& other) const;
@@ -73,23 +74,13 @@ namespace MathLib
 		Float3 GetPoint() const;
 	};
 
-	EXPORT Quaternion QuaternionRotation(const double angle, const double iAxis, const double jAxis, const double kAxis);
-	EXPORT Quaternion QuaternionRotation(const double angle, const Float3& axis);
+	EXPORT Quaternion QuaternionRotation(const float angle, const float iAxis, const float jAxis, const float kAxis);
+	EXPORT Quaternion QuaternionRotation(const float angle, const Float3& axis);
 	EXPORT void PrintProperties(const Quaternion& quat);
 
 	// Quaternion operations
 
 	EXPORT Mat4 MatrixRotate(const Mat4& mat, const Quaternion& quat);
-
-	// Conversion and checking functions
-
-	EXPORT bool MatrixIsSquare(const MatrixF& mat, const int& dimension = -1);
-
-	// Helper functions
-
-	EXPORT MatrixF Point2Matrix(const Float2& point);
-	EXPORT MatrixF Point2Matrix(const Float3& point);
-	EXPORT MatrixF TransformF2x2(const Float2& p1, const Float2& p2);
 
 	// Vector math
 
@@ -98,15 +89,15 @@ namespace MathLib
 	public:
 		Vector2D();
 		Vector2D(const Float2& dir);
-		explicit Vector2D(const double x, const double y);
+		explicit Vector2D(const float x, const float y);
 		Vector2D(const Line2D& line);
 		Vector2D(const Float2& p1, const Float2& p2);
 
 		const Vector2D& Transform(const Mat2& transformMat);
-		const Vector2D& Scale(const double scale);
-		const Vector2D& Scale(const double scaleX, const double scaleY);
-		const Vector2D& SetScale(const double scale);
-		const Vector2D& Rotate(double angle);
+		const Vector2D& Scale(const float scale);
+		const Vector2D& Scale(const float scaleX, const float scaleY);
+		const Vector2D& SetScale(const float scale);
+		const Vector2D& Rotate(float angle);
 		const Vector2D& Rot90R();
 		const Vector2D& Rot90L();
 		const Vector2D& Normalize();
@@ -115,14 +106,14 @@ namespace MathLib
 
 		Vector2D operator+(const Vector2D& other) const;
 		Vector2D operator-(const Vector2D& other) const;
-		double operator*(const Vector2D& other) const;
-		Vector2D operator*(const double number) const;
+		float operator*(const Vector2D& other) const;
+		Vector2D operator*(const float number) const;
 		Vector2D operator*(const Mat2& matrix) const;
-		void operator*=(const double number);
+		void operator*=(const float number);
 		Vector2D operator-() const;
 
-		double GetAngle() const;
-		double GetLen() const;
+		float GetAngle() const;
+		float GetLen() const;
 		Mat2x1 GetRowVector() const;
 		Mat1x2 GetColVector() const;
 
@@ -134,44 +125,44 @@ namespace MathLib
 	public:
 		Vector3D();
 		Vector3D(const Float3& dir);
-		explicit Vector3D(const double x, const double y, const double z);
-		Vector3D(const Vector2D& vec, const double z = 0);
+		explicit Vector3D(const float x, const float y, const float z);
+		Vector3D(const Vector2D& vec, const float z = 0);
 		Vector3D(const Float3& p1, const Float3& p2);
 
 		const Vector3D& Transform(const Mat3& mat);
-		const Vector3D& Scale(const double& scale);
-		const Vector3D& Scale(const double& scaleX, const double& scaleY, const double& scaleZ);
-		const Vector3D& SetScale(const double& len);
-		const Vector3D& Rotate(const double& angle, const unsigned int& axis);
+		const Vector3D& Scale(const float& scale);
+		const Vector3D& Scale(const float& scaleX, const float& scaleY, const float& scaleZ);
+		const Vector3D& SetScale(const float& len);
+		const Vector3D& Rotate(const float& angle, const unsigned int& axis);
 		const Vector3D& Normalize();
 
 		Vector3D operator+(const Vector3D& other) const;
 		Vector3D operator-(const Vector3D& other) const;
-		double operator*(const Vector3D& other) const;
-		Vector3D operator*(const double number) const;
+		float operator*(const Vector3D& other) const;
+		Vector3D operator*(const float number) const;
 		Vector3D operator*(const Mat3& matrix) const;
-		void operator*=(const double number);
+		void operator*=(const float number);
 		Vector3D operator-() const;
 
-		double GetAngle(const int axis) const;
-		double GetLen() const;
+		float GetAngle(const int axis) const;
+		float GetLen() const;
 		Mat3x1 GetRowVector() const;
 		Mat1x3 GetColVector() const;
 
 		Float3 TransformPoint(Float3 point);
 	};
 
-	EXPORT Vector2D operator*(const Mat2& matrix, const Vector2D& vector);
+	EXPORT Vector2D operator*(const Mat2 & matrix, const Vector2D& vector);
 	EXPORT Vector3D operator*(const Mat3& matrix, const Vector3D& vector);
 
 	EXPORT Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2);
-	EXPORT double VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
-	EXPORT double VectorDotProduct(const Vector2D& v1, const Vector2D& v2);
+	EXPORT float VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
+	EXPORT float VectorDotProduct(const Vector2D& v1, const Vector2D& v2);
 	EXPORT Vector3D VectorCrossProduct(const Vector2D& v1, const Vector2D& v2);
 	EXPORT Vector3D VectorCrossProduct(const Vector3D& v1, const Vector3D& v2);
 	EXPORT Vector2D VectorTripleProduct(const Vector2D& v1, const Vector2D& v2);
 	EXPORT Vector3D VectorTripleProduct(const Vector3D& v1, const Vector3D& v2);
-	EXPORT double VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
+	EXPORT float VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
 	EXPORT void PrintProperties(const Vector2D& vector);
 	EXPORT void PrintProperties(const Vector3D& vector);
 
@@ -281,12 +272,12 @@ namespace MathLib
 		Polygon2D(const Float2* const pointArr, const size_t corners);
 
 		void Translate(const Float2& translation);
-		void Translate(const double translateX, const double translateY);
-		void Rotate(const double angle);
-		void Scale(const double scale);
-		void Scale(const double scaleX, const double scaleY);
+		void Translate(const float translateX, const float translateY);
+		void Rotate(const float angle);
+		void Scale(const float scale);
+		void Scale(const float scaleX, const float scaleY);
 
-		Float2 GetCenter() const;
+		Float2 getCenter() const;
 		Float2 SupportFunction(const Vector2D& direction) const;
 		bool CollidesWith(const Polygon2D& other) const;
 		bool CollidesWith(const Circle2D& other) const;
@@ -305,13 +296,13 @@ namespace MathLib
 	{
 	public:
 		Float2 position;
-		double radius;
+		float radius;
 
 		Circle2D();
-		Circle2D(const Float2& position, const double radius = 0.5);
+		Circle2D(const Float2& position, const float radius = 0.5);
 
 		void Translate(const Float2& translation);
-		void Translate(const double translateX, const double translateY);
+		void Translate(const float translateX, const float translateY);
 
 		Float2 SupportFunction(const Vector2D& direction) const;
 		bool CollidesWith(const Polygon2D& other) const;
@@ -339,27 +330,56 @@ namespace MathLib
 		Rectangle2D(const Rectangle2D& other);
 		Rectangle2D(const Float2& p1, const Float2& p2, const Float2& p3, const Float2& p4);
 		Rectangle2D(const Float2* const pointArr);
-		Rectangle2D(const Float2& position, const double rotation, const Float2& scale);
+		Rectangle2D(const Float2& position, const float rotation, const Float2& size);
 
 		void operator=(Rectangle2D&& other) noexcept;
 		void operator=(const Rectangle2D& other);
 	};
 
-	EXPORT bool Contains(const Rectangle2D& rect, const double rotation, const Float2& point);
-	EXPORT double* ProjectTo1D(const Polygon2D& polygon, const Vector2D& viewDir);
-	EXPORT double* ProjectTo1D(const Float2* pointArr, const size_t pointCount, const Vector2D& viewDir);
+	EXPORT bool Contains(const Rectangle2D& rect, const float rotation, const Float2& point);
+	EXPORT float* ProjectTo1D(const Polygon2D& polygon, const Vector2D& viewDir);
+	EXPORT float* ProjectTo1D(const Float2* pointArr, const size_t pointCount, const Vector2D& viewDir);
 
 	// Utility
-	EXPORT double MinFromArray(const double* arr, const size_t length);
-	EXPORT double MaxFromArray(const double* arr, const size_t length);
-	EXPORT Line2D Vector2Line(Vector2D vector, Float2 pos);
-	EXPORT int RandInt(int min, int max);
-	EXPORT inline double RoundFTo(const double num, const int decimal)
+	template <typename T>
+	T MinFromArray(const T* arr, const size_t length)
 	{
-		return round(pow(10, decimal) * num) / pow(10, decimal);
+		T Min = arr[0];
+		for (size_t i = 1; i < length; i++)
+		{
+			if (arr[i] < Min)
+				Min = arr[i];
+		}
+		return Min;
 	}
-	EXPORT MatrixF Vec2Mat(const Vector3D& vec, const int front = 0);
-	EXPORT Vector3D Mat2Vec(const MatrixF& mat, const int front = 0);
+	template <typename T>
+	T MaxFromArray(const T* arr, const size_t length)
+	{
+		T Max = arr[0];
+		for (size_t i = 1; i < length; i++)
+		{
+			if (arr[i] > Max)
+				Max = arr[i];
+		}
+		return Max;
+	}
+	EXPORT Line2D Vector2Line(Vector2D vector, Float2 pos);
+	EXPORT int RandInt(int Min, int Max);
+	inline double RoundFTo(const double num, const int decimal)
+	{
+		return round(Pow(10, decimal) * num) / Pow(10, decimal);
+	}
+	inline float RoundFTo(const float num, const int decimal)
+	{
+		return round(Pow(10, decimal) * num) / Pow(10, decimal);
+	}
 
-	EXPORT bool SetArraySize(void** array, const size_t currSize, const size_t newSize);
+	template <typename T>
+	void SetArraySize(T** arr, const size_t& curLen, const size_t& newLen)
+	{
+		T* newArr = new T[newLen];
+		memcpy(newArr, *arr, Min(curLen, newLen) * sizeof(**arr));
+		delete[] *arr;
+		*arr = newArr;
+	}
 }

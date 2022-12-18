@@ -16,7 +16,7 @@ namespace MathLib
 	{
 
 	}
-	Vector2D::Vector2D(const double x, const double y)
+	Vector2D::Vector2D(const float x, const float y)
 		: Float2(x, y)
 	{
 
@@ -36,26 +36,26 @@ namespace MathLib
 		*this = *this * transformMat;
 		return *this;
 	}
-	const Vector2D& Vector2D::Scale(const double scale)
+	const Vector2D& Vector2D::Scale(const float scale)
 	{
 		x *= scale;
 		y *= scale;
 		return *this;
 	}
-	const Vector2D& Vector2D::Scale(const double scaleX, const double scaleY)
+	const Vector2D& Vector2D::Scale(const float scaleX, const float scaleY)
 	{
 		x *= scaleX;
 		y *= scaleY;
 		return *this;
 	}
-	const Vector2D& Vector2D::SetScale(const double scale)
+	const Vector2D& Vector2D::SetScale(const float scale)
 	{
-		double factor = sqrt(pow(x, 2) + pow(y, 2));
+		float factor = sqrtf(Pow(x, 2) + Pow(y, 2));
 		if (factor != 0)
-			*this = *this * (1.0 / factor);
+			*this = *this * (float) (1.0 / factor);
 		return *this;
 	}
-	const Vector2D& Vector2D::Rotate(double angle)
+	const Vector2D& Vector2D::Rotate(float angle)
 	{
 		Mat2 rotMat = RotationMatrix2D(angle);
 
@@ -64,14 +64,14 @@ namespace MathLib
 	}
 	const Vector2D& Vector2D::Rot90R()
 	{
-		double tmp = x;
+		float tmp = x;
 		x = y;
 		y = -tmp;
 		return *this;
 	}
 	const Vector2D& Vector2D::Rot90L()
 	{
-		double tmp = x;
+		float tmp = x;
 		x = -y;
 		y = tmp;
 		return *this;
@@ -92,11 +92,11 @@ namespace MathLib
 	{
 		return Vector2D(x - other.x, y - other.y);
 	}
-	double Vector2D::operator*(const Vector2D& other) const
+	float Vector2D::operator*(const Vector2D& other) const
 	{
 		return x * other.x + y * other.y;
 	}
-	Vector2D Vector2D::operator*(const double number) const
+	Vector2D Vector2D::operator*(const float number) const
 	{
 		return Vector2D(
 			x * number,
@@ -108,7 +108,7 @@ namespace MathLib
 		Mat2x1 result = GetRowVector() * matrix;
 		return Vector2D(result.GetVal(0), result.GetVal(1));
 	}
-	void Vector2D::operator*=(const double number)
+	void Vector2D::operator*=(const float number)
 	{
 		x *= number;
 		y *= number;
@@ -117,19 +117,19 @@ namespace MathLib
 	{
 		return Vector2D(-x, -y);
 	}
-	double Vector2D::GetAngle() const
+	float Vector2D::GetAngle() const
 	{
-		double hyp = this->GetLen();
-		double angle = fmod(180.001 + Rad2Deg(acos(y / hyp)), 180.001);
+		float hyp = this->GetLen();
+		float angle = fmod(180.001 + Rad2Deg(acos(y / hyp)), 180.001);
 
 		if (x < 0)
 			angle = -angle;
 
 		return angle;
 	}
-	double Vector2D::GetLen() const
+	float Vector2D::GetLen() const
 	{
-		return sqrt(pow(x, 2) + pow(y, 2));
+		return sqrt(Pow(x, 2) + Pow(y, 2));
 	}
 	Mat2x1 Vector2D::GetRowVector() const
 	{
@@ -167,12 +167,12 @@ namespace MathLib
 	{
 
 	}
-	Vector3D::Vector3D(const double x, const double y, const double z)
+	Vector3D::Vector3D(const float x, const float y, const float z)
 		: Float3(x, y, z)
 	{
 
 	}
-	Vector3D::Vector3D(const Vector2D& vec, const double z)
+	Vector3D::Vector3D(const Vector2D& vec, const float z)
 		: Float3(vec.x, vec.y, z)
 	{
 
@@ -190,28 +190,28 @@ namespace MathLib
 		z = result.GetVal(2);
 		return *this;
 	}
-	const Vector3D& Vector3D::Scale(const double& s)
+	const Vector3D& Vector3D::Scale(const float& s)
 	{
 		x *= s;
 		y *= s;
 		z *= s;
 		return *this;
 	}
-	const Vector3D& Vector3D::Scale(const double& sX, const double& sY, const double& sZ)
+	const Vector3D& Vector3D::Scale(const float& sX, const float& sY, const float& sZ)
 	{
 		x *= sX;
 		y *= sY;
 		z *= sZ;
 		return *this;
 	}
-	const Vector3D& Vector3D::SetScale(const double& len)
+	const Vector3D& Vector3D::SetScale(const float& len)
 	{
-		double vecLen = GetLen();
+		float vecLen = GetLen();
 
 		Scale(vecLen * (len / vecLen));
 		return *this;
 	}
-	const Vector3D& Vector3D::Rotate(const double& angle, const unsigned int& axis)
+	const Vector3D& Vector3D::Rotate(const float& angle, const unsigned int& axis)
 	{
 		Vector2D calcVec = Vector2D();
 
@@ -240,7 +240,7 @@ namespace MathLib
 		SetScale(1);
 		return *this;
 	}
-	/*Vector3D Vector3D::Rotate(double angle, Vector3D *normal)
+	/*Vector3D Vector3D::Rotate(float angle, Vector3D *normal)
 	{
 
 	}*/
@@ -260,11 +260,11 @@ namespace MathLib
 			z - other.z
 		);
 	}
-	double Vector3D::operator*(const Vector3D& other) const
+	float Vector3D::operator*(const Vector3D& other) const
 	{
 		return x * other.x + y * other.y + z * other.z;
 	}
-	Vector3D Vector3D::operator*(const double number) const
+	Vector3D Vector3D::operator*(const float number) const
 	{
 		return Vector3D(x * number, y * number, z * number);
 	}
@@ -273,7 +273,7 @@ namespace MathLib
 		Mat3x1 result = GetRowVector() * matrix;
 		return Vector3D(result.GetVal(0), result.GetVal(1), result.GetVal(2));
 	}
-	void Vector3D::operator*=(const double number)
+	void Vector3D::operator*=(const float number)
 	{
 		x *= number;
 		y *= number;
@@ -283,10 +283,10 @@ namespace MathLib
 	{
 		return Vector3D(-x, -y, -z);
 	}
-	double Vector3D::GetAngle(const int axis) const
+	float Vector3D::GetAngle(const int axis) const
 	{
 		Vector2D calcVec = Vector2D();
-		double angle;
+		float angle;
 
 		switch (axis)
 		{
@@ -308,13 +308,13 @@ namespace MathLib
 
 		return angle;
 	}
-	/*double Vector3D::GetAngle(Vector3D *normal)
+	/*float Vector3D::GetAngle(Vector3D *normal)
 	{
 
 	}*/
-	double Vector3D::GetLen() const
+	float Vector3D::GetLen() const
 	{
-		return sqrt(pow(sqrt(pow(x, 2) + pow(y, 2)), 2) + pow(z, 2));
+		return sqrt(Pow(sqrt(Pow(x, 2) + Pow(y, 2)), 2) + Pow(z, 2));
 	}
 	Mat3x1 Vector3D::GetRowVector() const
 	{
@@ -364,25 +364,25 @@ namespace MathLib
 
 		return retVec;
 	}
-	double VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2)
+	float VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2)
 	{
-		double a1 = v1.GetAngle();
-		double a2 = v2.GetAngle();
+		float a1 = v1.GetAngle();
+		float a2 = v2.GetAngle();
 
-		double angle = (double) fmax(a1, a2) - (double) fmin(a1, a2);
+		float angle = (float) fmax(a1, a2) - (float) fmin(a1, a2);
 		if (angle > 180)
 			angle = 360 - angle;
 
 		return angle;
 	}
-	double VectorDotProduct(const Vector2D& v1, const Vector2D& v2)
+	float VectorDotProduct(const Vector2D& v1, const Vector2D& v2)
 	{
 		return v1.x * v2.x + v1.y * v2.y;
 	}
 	Vector3D VectorCrossProduct(const Vector2D& v1, const Vector2D& v2)
 	{
-		MatrixF vectors = TransformF2x2(v1, v2);
-		double zLength = MatrixGetDet(vectors);
+		Mat2 vectors = Vec2Mat(v1, v2);
+		float zLength = Determinant(vectors);
 		Vector3D cProduct = Vector3D(Float3(0, 0, zLength));
 
 		return cProduct;
@@ -404,10 +404,10 @@ namespace MathLib
 	{
 		return VectorCrossProduct(VectorCrossProduct(Vector3D(v1), Vector3D(v2)), Vector3D(v1));
 	}
-	double VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2)
+	float VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2)
 	{
-		MatrixF vectors = TransformF2x2(v1, v2);
-		return MatrixGetDet(vectors);
+		Mat2 vectors = Vec2Mat(v1, v2);
+		return Determinant(vectors);
 	}
 	void PrintProperties(const Vector2D& vector)
 	{

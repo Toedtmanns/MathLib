@@ -21,7 +21,7 @@ namespace MathLib
 		p2 = Float2();
 		normal = 0;
 	}
-	Line2D::Line2D(const double x1, const double y1, const double x2, const double y2)
+	Line2D::Line2D(const float x1, const float y1, const float x2, const float y2)
 	{
 		p1.x = x1;
 		p1.y = y1;
@@ -64,31 +64,31 @@ namespace MathLib
 
 	// Other functions
 
-	double GetLength(const Line2D& line)
+	float GetLength(const Line2D& line)
 	{
-		return sqrt(pow(line.p2.x - line.p1.x, 2) * pow(line.p2.y - line.p1.y, 2));
+		return sqrt(Pow(line.p2.x - line.p1.x, 2) * Pow(line.p2.y - line.p1.y, 2));
 	}
-	double GetDistance(const Float2& p1, const Float2& p2)
+	float GetDistance(const Float2& p1, const Float2& p2)
 	{
-		return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
+		return sqrt(Pow(p2.x - p1.x, 2) + Pow(p2.y - p1.y, 2));
 	}
-	double GetDistance(const Float3& p1, const Float3& p2)
+	float GetDistance(const Float3& p1, const Float3& p2)
 	{
-		return sqrt(pow(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + pow(p2.z - p1.z, 2));
+		return sqrt(Pow(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + Pow(p2.z - p1.z, 2));
 	}
 
-	double GetSlope(const Line2D& line)
+	float GetSlope(const Line2D& line)
 	{
 		return (line.p2.y - line.p1.y) / (line.p2.x - line.p1.x);
 	}
-	double GetYAxisSection(const Line2D& line)
+	float GetYAxisSection(const Line2D& line)
 	{
 		return line.p1.y - GetSlope(line) * line.p1.x;
 	}
 	bool IsParallel(const Line2D& l1, const Line2D& l2)
 	{
-		double slopeL1 = GetSlope(l1);
-		double slopeL2 = GetSlope(l2);
+		float slopeL1 = GetSlope(l1);
+		float slopeL2 = GetSlope(l2);
 
 		if (slopeL1 == slopeL2 || isinf(slopeL1) && isinf(slopeL2))
 			return true;
@@ -106,10 +106,10 @@ namespace MathLib
 	}
 	Intersect GetIntersect(const Line2D& l1, const Line2D& l2)
 	{
-		double m1 = GetSlope(l1);
-		double m2 = GetSlope(l2);
-		double b1 = l1.p1.y - l1.p1.x * m1;
-		double b2 = l2.p2.y - l2.p2.x * m2;
+		float m1 = GetSlope(l1);
+		float m2 = GetSlope(l2);
+		float b1 = l1.p1.y - l1.p1.x * m1;
+		float b2 = l2.p2.y - l2.p2.x * m2;
 		Intersect intersect = Intersect();
 
 		intersect.pos.x = (b2 - b1) / (m1 - m2) * 100 / 100;
@@ -165,8 +165,8 @@ namespace MathLib
 	}
 	Intersect GetIntersect(const Line2D& l, const Float2& p)
 	{
-		double m = GetSlope(l);
-		double b = l.p1.y - l.p1.x * m;
+		float m = GetSlope(l);
+		float b = l.p1.y - l.p1.x * m;
 		Intersect intersect = Intersect();
 
 		if (m * p.x + b == p.y)

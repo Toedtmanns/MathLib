@@ -40,8 +40,8 @@ namespace MathLib
 		isColliding = true;
 		if (m_IntersectCount + 1 >= m_IntersectArrLength)
 		{
-			if (SetArraySize((void**) &m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2))
-				m_IntersectArrLength += 2;
+			SetArraySize(&m_IntersectArray, m_IntersectCount, m_IntersectArrLength + 2);
+			m_IntersectArrLength += 2;
 		}
 		m_IntersectArray[m_IntersectCount] = Intersect(intersect);
 		m_IntersectCount++;
@@ -128,20 +128,20 @@ namespace MathLib
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += translation;
 	}
-	void Polygon2D::Translate(const double translateX, const double translateY)
+	void Polygon2D::Translate(const float translateX, const float translateY)
 	{
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += Float2(translateX, translateY);
 	}
-	void Polygon2D::Rotate(const double angle)
+	void Polygon2D::Rotate(const float angle)
 	{
 		Mat2 rotMat = RotationMatrix2D(angle);
 
-		Float2 center = GetCenter();
+		Float2 center = getCenter();
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] = Vector2D(m_CornerArr[c] - center) * rotMat + Vector2D(center);
 	}
-	void Polygon2D::Scale(const double scale)
+	void Polygon2D::Scale(const float scale)
 	{
 		for (Float2& corner : *this)
 		{
@@ -149,7 +149,7 @@ namespace MathLib
 			corner.y = corner.y * scale;
 		}
 	}
-	void Polygon2D::Scale(const double scaleX, const double scaleY)
+	void Polygon2D::Scale(const float scaleX, const float scaleY)
 	{
 		for (Float2& corner : *this)
 		{
@@ -157,7 +157,7 @@ namespace MathLib
 			corner.y = corner.y * scaleY;
 		}
 	}
-	Float2 Polygon2D::GetCenter() const
+	Float2 Polygon2D::getCenter() const
 	{
 		Float2 center = Float2();
 		for (size_t c = 0; c < m_NumCorners; c++)
@@ -168,7 +168,7 @@ namespace MathLib
 	}
 	Float2 Polygon2D::SupportFunction(const Vector2D& direction) const
 	{
-		Float2 center = GetCenter();
+		Float2 center = getCenter();
 		double maxDot;
 		Float2 matching = m_CornerArr[0];
 
@@ -335,7 +335,7 @@ namespace MathLib
 	{
 
 	}
-	Circle2D::Circle2D(const Float2& position, const double radius)
+	Circle2D::Circle2D(const Float2& position, const float radius)
 		: position(position), radius(radius)
 	{
 
@@ -344,7 +344,7 @@ namespace MathLib
 	{
 		position += translation;
 	}
-	void Circle2D::Translate(const double translateX, const double translateY)
+	void Circle2D::Translate(const float translateX, const float translateY)
 	{
 		position.x += translateX;
 		position.y += translateY;
@@ -435,7 +435,7 @@ namespace MathLib
 	{
 
 	}
-	Rectangle2D::Rectangle2D(const Float2& position, const double rotation, const Float2& scale)
+	Rectangle2D::Rectangle2D(const Float2& position, const float rotation, const Float2& size)
 		: Polygon2D(4)
 	{
 		m_CornerArr[0] = Float2(0.5, 0.5);
@@ -443,7 +443,7 @@ namespace MathLib
 		m_CornerArr[2] = Float2(-0.5, -0.5);
 		m_CornerArr[3] = Float2(-0.5, 0.5);
 
-		Scale(scale.x, scale.y);
+		Scale(size.x, size.y);
 		Rotate(rotation);
 		Translate(position);
 	}
@@ -456,13 +456,13 @@ namespace MathLib
 		Polygon2D::operator=(other);
 	}
 
-	bool Contains(const Rectangle2D& rect, const double rotation, const Float2& point)
+	bool Contains(const Rectangle2D& rect, const float rotation, const Float2& point)
 	{
 		Rectangle2D calcRect = rect;
 		calcRect.Rotate(-rotation);
-		Vector2D pointVec = {Line2D(rect.GetCenter(), point)};
+		Vector2D pointVec = {Line2D(rect.getCenter(), point)};
 		pointVec.Rotate(-rotation);
-		Float2 transPoint = pointVec.TransformPoint(calcRect.GetCenter());
+		Float2 transPoint = pointVec.TransformPoint(calcRect.getCenter());
 
 		double xArr[2] = {calcRect.m_CornerArr[0].x, calcRect.m_CornerArr[2].x};
 		double yArr[2] = {calcRect.m_CornerArr[0].y, calcRect.m_CornerArr[2].y};
@@ -470,9 +470,9 @@ namespace MathLib
 		return transPoint.x < MaxFromArray(xArr, 2) && transPoint.x > MinFromArray(xArr, 2) &&
 			transPoint.y < MaxFromArray(yArr, 2) && transPoint.y > MinFromArray(yArr, 2);
 	}
-	double* ProjectTo1D(const Polygon2D& polygon, const Vector2D& viewDir)
+	float* ProjectTo1D(const Polygon2D& polygon, const Vector2D& viewDir)
 	{
-		double* retArr = new double[polygon.m_NumCorners];
+		float* retArr = new float[polygon.m_NumCorners];
 
 		for (size_t p = 0; p < polygon.m_NumCorners; p++)
 		{
@@ -483,9 +483,9 @@ namespace MathLib
 
 		return retArr;
 	}
-	double* ProjectTo1D(const Float2* pointArr, const size_t pointCount, const Vector2D& viewDir)
+	float* ProjectTo1D(const Float2* pointArr, const size_t pointCount, const Vector2D& viewDir)
 	{
-		double* retArr = new double[pointCount];
+		float* retArr = new float[pointCount];
 
 		for (size_t p = 0; p < pointCount; p++)
 		{
