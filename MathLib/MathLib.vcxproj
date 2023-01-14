@@ -146,12 +146,11 @@
     <ClInclude Include="include\MathLib\mlMatrices.hpp" />
     <ClInclude Include="include\MathLib\mlPrimitives.hpp" />
     <ClInclude Include="include\MathLib\MathLib.hpp" />
+    <ClInclude Include="include\MathLib\mlVectors.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Geometry.cpp" />
-    <ClCompile Include="source\Vectors.cpp" />
     <ClCompile Include="source\ComplexNumbers.cpp" />
-    <ClCompile Include="source\Matrices.cpp" />
+    <ClCompile Include="source\Geometry.cpp" />
     <ClCompile Include="source\Primitives.cpp" />
     <ClCompile Include="source\Utility.cpp" />
   </ItemGroup>

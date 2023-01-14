@@ -4,51 +4,6 @@
 
 namespace MathLib
 {
-	void PrintProperties(const Float2& p)
-	{
-		printf("X: %.3f, Y: %.3f\n", p.x, p.y);
-	}
-	void PrintProperties(const Float3& p)
-	{
-		printf("X: %.3f, Y: %.3f, Z: %.3f\n", p.x, p.y, p.z);
-	}
-
-	// Lines
-
-	Line2D::Line2D()
-	{
-		p1 = Float2();
-		p2 = Float2();
-		normal = 0;
-	}
-	Line2D::Line2D(const float x1, const float y1, const float x2, const float y2)
-	{
-		p1.x = x1;
-		p1.y = y1;
-		p2.x = x2;
-		p2.y = y2;
-		normal = Vector2D(Float2(x1, y1), Float2(x2, y2)).GetAngle() + 90;
-	}
-	Line2D::Line2D(const Float2& p1, const Float2& p2)
-	{
-		this->p1.x = p1.x;
-		this->p1.y = p1.y;
-		this->p2.x = p2.x;
-		this->p2.y = p2.y;
-
-		normal = Vector2D(p1, p2).GetAngle() + 90;
-		if (normal < 0)
-			normal += 360;
-	}
-	bool Line2D::operator==(const Line2D& other)
-	{
-		return (p1 == other.p1 && p2 == other.p2);
-	}
-	bool Line2D::operator!=(const Line2D& other)
-	{
-		return !(p1 == other.p1 && p2 == other.p2);
-	}
-
 	// Intersects
 
 	Intersect::Intersect()
@@ -63,19 +18,6 @@ namespace MathLib
 	}
 
 	// Other functions
-
-	float GetLength(const Line2D& line)
-	{
-		return sqrt(Pow(line.p2.x - line.p1.x, 2) * Pow(line.p2.y - line.p1.y, 2));
-	}
-	float GetDistance(const Float2& p1, const Float2& p2)
-	{
-		return sqrt(Pow(p2.x - p1.x, 2) + Pow(p2.y - p1.y, 2));
-	}
-	float GetDistance(const Float3& p1, const Float3& p2)
-	{
-		return sqrt(Pow(GetDistance({p1.x, p1.y}, {p2.x, p2.y}), 2) + Pow(p2.z - p1.z, 2));
-	}
 
 	float GetSlope(const Line2D& line)
 	{
@@ -199,5 +141,13 @@ namespace MathLib
 	void PrintProperties(const Intersect& i)
 	{
 		printf("X: %.3f, Y: %.3f, Intersecting: %d, Collinear: %d\n", i.pos.x, i.pos.y, i.isIntersecting, i.isCollinear);
+	}
+	void PrintProperties(const Float2& p)
+	{
+		printf("X: %.3f, Y: %.3f\n", p.x, p.y);
+	}
+	void PrintProperties(const Float3& p)
+	{
+		printf("X: %.3f, Y: %.3f, Z: %.3f\n", p.x, p.y, p.z);
 	}
 }

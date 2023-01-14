@@ -23,6 +23,22 @@ namespace MathLib
 			line.p1.y + t * (line.p2.y - line.p1.y)
 		};
 	}
+	Float3 Lerp(const Float3& start, const Float3& end, const float t)
+	{
+		return {
+			start.x + t * (end.x - start.x),
+			start.y + t * (end.y - start.y),
+			start.z + t * (end.z - start.z)
+		};
+	}
+	Float3 Lerp(const Line3D& line, const float t)
+	{
+		return {
+			line.p1.x + t * (line.p2.x - line.p1.x),
+			line.p1.y + t * (line.p2.y - line.p1.y),
+			line.p1.z + t * (line.p2.z - line.p1.z)
+		};
+	}
 
 	Line2D Vector2Line(Vector2D vector, Float2 pos)
 	{

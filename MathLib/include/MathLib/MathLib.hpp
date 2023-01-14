@@ -1,28 +1,12 @@
 #pragma once
 #include "mlPrimitives.hpp"
 #include "mlMatrices.hpp"
+#include "mlVectors.hpp"
 #include <string.h>
 
 namespace MathLib
 {
-	EXPORT void PrintProperties(const Float2& p);
-	EXPORT void PrintProperties(const Float3& p);
-
 	// Lines
-
-	struct EXPORT Line2D
-	{
-		Float2 p1;
-		Float2 p2;
-		double normal;
-
-		Line2D();
-		Line2D(const float x1, const float y1, const float x2, const float y2);
-		Line2D(const Float2& p1, const Float2& p2);
-
-		bool operator==(const Line2D& other);
-		bool operator!=(const Line2D& other);
-	};
 
 	struct EXPORT Intersect
 	{
@@ -34,10 +18,6 @@ namespace MathLib
 		Intersect(const Float2& pos, const bool intersecting, const bool collinear);
 	};
 
-	EXPORT float GetLength(const Line2D& line);
-	EXPORT float GetDistance(const Float2& p1, const Float2& p2);
-	EXPORT float GetDistance(const Float3& p1, const Float3& p2);
-
 	EXPORT float GetSlope(const Line2D& line);
 	EXPORT float GetYAxisSection(const Line2D& line);
 	EXPORT bool IsParallel(const Line2D& l1, const Line2D& l2);
@@ -48,9 +28,11 @@ namespace MathLib
 	EXPORT void PrintProperties(const Line2D& l);
 	EXPORT void PrintProperties(const Intersect& i);
 
-	float Lerp(const float start, const float end, const float t);
-	Float2 Lerp(const Float2& start, const Float2& end, const float t);
-	Float2 Lerp(const Line2D& line, const float t);
+	EXPORT float Lerp(const float start, const float end, const float t);
+	EXPORT Float2 Lerp(const Float2& start, const Float2& end, const float t);
+	EXPORT Float2 Lerp(const Line2D& line, const float t);
+	EXPORT Float3 Lerp(const Float3& start, const Float3& end, const float t);
+	EXPORT Float3 Lerp(const Line3D& line, const float t);
 
 	// Quaternions
 
@@ -82,94 +64,10 @@ namespace MathLib
 
 	EXPORT Mat4 MatrixRotate(const Mat4& mat, const Quaternion& quat);
 
-	// Vector math
-
-	class EXPORT Vector2D : public Float2
-	{
-	public:
-		Vector2D();
-		Vector2D(const Float2& dir);
-		explicit Vector2D(const float x, const float y);
-		Vector2D(const Line2D& line);
-		Vector2D(const Float2& p1, const Float2& p2);
-
-		const Vector2D& Transform(const Mat2& transformMat);
-		const Vector2D& Scale(const float scale);
-		const Vector2D& Scale(const float scaleX, const float scaleY);
-		const Vector2D& SetScale(const float scale);
-		const Vector2D& Rotate(float angle);
-		const Vector2D& Rot90R();
-		const Vector2D& Rot90L();
-		const Vector2D& Normalize();
-
-		Vector2D TripleProduct(const Vector2D& other) const;
-
-		Vector2D operator+(const Vector2D& other) const;
-		Vector2D operator-(const Vector2D& other) const;
-		float operator*(const Vector2D& other) const;
-		Vector2D operator*(const float number) const;
-		Vector2D operator*(const Mat2& matrix) const;
-		void operator*=(const float number);
-		Vector2D operator-() const;
-
-		float GetAngle() const;
-		float GetLen() const;
-		Mat2x1 GetRowVector() const;
-		Mat1x2 GetColVector() const;
-
-		Float2 TransformPoint(Float2 point) const;
-	};
-
-	class EXPORT Vector3D : public Float3
-	{
-	public:
-		Vector3D();
-		Vector3D(const Float3& dir);
-		explicit Vector3D(const float x, const float y, const float z);
-		Vector3D(const Vector2D& vec, const float z = 0);
-		Vector3D(const Float3& p1, const Float3& p2);
-
-		const Vector3D& Transform(const Mat3& mat);
-		const Vector3D& Scale(const float& scale);
-		const Vector3D& Scale(const float& scaleX, const float& scaleY, const float& scaleZ);
-		const Vector3D& SetScale(const float& len);
-		const Vector3D& Rotate(const float& angle, const unsigned int& axis);
-		const Vector3D& Normalize();
-
-		Vector3D operator+(const Vector3D& other) const;
-		Vector3D operator-(const Vector3D& other) const;
-		float operator*(const Vector3D& other) const;
-		Vector3D operator*(const float number) const;
-		Vector3D operator*(const Mat3& matrix) const;
-		void operator*=(const float number);
-		Vector3D operator-() const;
-
-		float GetAngle(const int axis) const;
-		float GetLen() const;
-		Mat3x1 GetRowVector() const;
-		Mat1x3 GetColVector() const;
-
-		Float3 TransformPoint(Float3 point);
-	};
-
-	EXPORT Vector2D operator*(const Mat2 & matrix, const Vector2D& vector);
-	EXPORT Vector3D operator*(const Mat3& matrix, const Vector3D& vector);
-
-	EXPORT Vector3D GetRelativeVec(const Vector3D& vec1, const Vector3D& vec2);
-	EXPORT float VectorGetAngleDifference(const Vector2D& v1, const Vector2D& v2);
-	EXPORT float VectorDotProduct(const Vector2D& v1, const Vector2D& v2);
-	EXPORT Vector3D VectorCrossProduct(const Vector2D& v1, const Vector2D& v2);
-	EXPORT Vector3D VectorCrossProduct(const Vector3D& v1, const Vector3D& v2);
-	EXPORT Vector2D VectorTripleProduct(const Vector2D& v1, const Vector2D& v2);
-	EXPORT Vector3D VectorTripleProduct(const Vector3D& v1, const Vector3D& v2);
-	EXPORT float VectorGetDeterminant(const Vector2D& v1, const Vector2D& v2);
-	EXPORT void PrintProperties(const Vector2D& vector);
-	EXPORT void PrintProperties(const Vector3D& vector);
-
 	// Geometry maths
 
 	template<typename T>
-	class EXPORT BaseIterator
+	class BaseIterator
 	{
 	protected:
 		using ValType = typename T::ValueType;
@@ -242,7 +140,7 @@ namespace MathLib
 		GeoCollision(const GeoCollision& other);
 		GeoCollision(const Intersect* intersectArr, const size_t intersectArrLength);
 
-		void AddIntersect(const Intersect& intersect);
+		GeoCollision& AddIntersect(const Intersect& intersect);
 		size_t GetIntersectCount() const;
 
 		void operator=(GeoCollision&& other) noexcept;
@@ -271,11 +169,11 @@ namespace MathLib
 		Polygon2D(const size_t corners);
 		Polygon2D(const Float2* const pointArr, const size_t corners);
 
-		void Translate(const Float2& translation);
-		void Translate(const float translateX, const float translateY);
-		void Rotate(const float angle);
-		void Scale(const float scale);
-		void Scale(const float scaleX, const float scaleY);
+		Polygon2D& Translate(const Float2& translation);
+		Polygon2D& Translate(const float translateX, const float translateY);
+		Polygon2D& Rotate(const float angle);
+		Polygon2D& Scale(const float scale);
+		Polygon2D& Scale(const float scaleX, const float scaleY);
 
 		Float2 getCenter() const;
 		Float2 SupportFunction(const Vector2D& direction) const;
@@ -301,8 +199,8 @@ namespace MathLib
 		Circle2D();
 		Circle2D(const Float2& position, const float radius = 0.5);
 
-		void Translate(const Float2& translation);
-		void Translate(const float translateX, const float translateY);
+		Circle2D& Translate(const Float2& translation);
+		Circle2D& Translate(const float translateX, const float translateY);
 
 		Float2 SupportFunction(const Vector2D& direction) const;
 		bool CollidesWith(const Polygon2D& other) const;
@@ -334,6 +232,69 @@ namespace MathLib
 
 		void operator=(Rectangle2D&& other) noexcept;
 		void operator=(const Rectangle2D& other);
+	};
+
+	class EXPORT Quad
+	{
+	protected:
+		Float2 m_P1, m_P2, m_P3, m_P4;
+
+		void CalcP4();
+
+	public:
+		Quad();
+		Quad(const Float2& p1, const Float2& p2, const Float2& p3);
+
+		Quad& SetQuad(const Float2& p1, const Float2& p2, const Float2& p3);
+		Quad& SetP1(const Float2& point);
+		Quad& SetP2(const Float2& point);
+		Quad& SetP3(const Float2& point);
+
+		Float2 GetP1() const;
+		Float2 GetP2() const;
+		Float2 GetP3() const;
+		Float2 GetP4() const;
+		Float2* GetPoints() const;
+		bool Contains(const Float2& point) const;
+		bool Contains(const float xPos, const float yPos) const;
+	};
+
+	class EXPORT Plane
+	{
+	/// <summary>
+	/// A class modelling a 3-dimensional plane defined by 3 points.
+	/// The 3 points are expected to be in clockwise sequence.
+	/// </summary>
+	protected:
+		Float3 m_P1, m_P2, m_P3;
+		Vector3D m_Normal;
+
+		void CalcNormal();
+
+	public:
+		Plane();
+		Plane(const Float3& p1, const Float3& p2, const Float3& p3);
+		Plane(const Mat3& matrix);
+
+		Plane& SetPlane(const Float3& p1, const Float3& p2, const Float3& p3);
+		Plane& SetPlane(const Mat3& matrix);
+		Plane& SetP1(const Float3& point);
+		Plane& SetP2(const Float3& point);
+		Plane& SetP3(const Float3& point);
+		Plane& Transform(const Mat3& mat);
+		Plane& Translate(const Float3& translation);
+
+		bool IsIntersecting(const Line3D& line) const;
+		bool GetIntersection(const Line3D& line, Float3* intersection) const;
+		//bool IsIntersecting(const Plane& plane) const;
+		//Line3D GetIntersection(const Plane& plane, bool* isIntersecting) const;
+
+		Vector3D GetNormal() const;
+		Float3 GetP1() const;
+		Float3 GetP2() const;
+		Float3 GetP3() const;
+		Float3 GetP4() const;
+		Mat3 GetAsMat() const;
 	};
 
 	EXPORT bool Contains(const Rectangle2D& rect, const float rotation, const Float2& point);
@@ -382,4 +343,7 @@ namespace MathLib
 		delete[] *arr;
 		*arr = newArr;
 	}
+
+	EXPORT void PrintProperties(const Float2& p);
+	EXPORT void PrintProperties(const Float3& p);
 }

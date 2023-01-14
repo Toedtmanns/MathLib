@@ -59,7 +59,7 @@ namespace MathLib
 	// Generally useful functions
 
 	template<typename T>
-	EXPORT constexpr const T& Max(const T& t1, const T& t2)
+	constexpr const T& Max(const T& t1, const T& t2)
 	{
 		if (t1 > t2)
 			return t1;
@@ -67,7 +67,7 @@ namespace MathLib
 	}
 
 	template<typename T>
-	EXPORT constexpr const T& Min(const T& t1, const T& t2)
+	constexpr const T& Min(const T& t1, const T& t2)
 	{
 		if (t1 < t2)
 			return t1;
@@ -75,7 +75,7 @@ namespace MathLib
 	}
 
 	template<typename T>
-	EXPORT constexpr const T& Clamp(const T& val, const T& Min, const T& Max)
+	constexpr const T& Clamp(const T& val, const T& Min, const T& Max)
 	{
 		if (val > Max)
 			return Max;
@@ -85,14 +85,14 @@ namespace MathLib
 	}
 
 	template<typename T>
-	EXPORT constexpr const T Pow(const T& base, size_t exponent)
+	constexpr const T Pow(const T& base, size_t exponent)
 	{
 		T res = base;
-		for (; exponent > 0; exponent--)
+		for (; exponent > 1; exponent--)
 			res *= base;
 		return res;
 	}
-	EXPORT constexpr const size_t PowNeg1(size_t exponent)
+	constexpr const size_t PowNeg1(size_t exponent)
 	{
 		if (exponent % 2 == 0)
 			return 1;
@@ -100,11 +100,11 @@ namespace MathLib
 			return -1;
 	}
 
-	EXPORT constexpr double Deg2Rad(double deg)
+	constexpr double Deg2Rad(double deg)
 	{
 		return deg * PI / 180;
 	}
-	EXPORT constexpr double Rad2Deg(double rad)
+	constexpr double Rad2Deg(double rad)
 	{
 		return rad * 180 / PI;
 	}

@@ -1,6 +1,6 @@
 #include "../include/MathLib/MathLib.hpp"
 #include <cstring>
-#include <stdexcept>
+#include <utility>
 
 namespace MathLib
 {
@@ -35,7 +35,7 @@ namespace MathLib
 			memcpy(m_IntersectArray, intersectArr, intersectArrLength * sizeof(Intersect));
 		}
 	}
-	void GeoCollision::AddIntersect(const Intersect& intersect)
+	GeoCollision& GeoCollision::AddIntersect(const Intersect& intersect)
 	{
 		isColliding = true;
 		if (m_IntersectCount + 1 >= m_IntersectArrLength)
@@ -45,6 +45,7 @@ namespace MathLib
 		}
 		m_IntersectArray[m_IntersectCount] = Intersect(intersect);
 		m_IntersectCount++;
+		return *this;
 	}
 	size_t GeoCollision::GetIntersectCount() const
 	{
@@ -74,10 +75,7 @@ namespace MathLib
 	}
 	Intersect& GeoCollision::operator[](const size_t index)
 	{
-		if (index < m_IntersectCount)
-			return m_IntersectArray[index];
-		else
-			throw std::out_of_range("Intersect array access out of bounds!");
+		return m_IntersectArray[index];
 	}
 	GeoCollision::Iterator GeoCollision::begin()
 	{
@@ -123,39 +121,44 @@ namespace MathLib
 	{
 		memcpy(m_CornerArr, pointArr, corners * sizeof(Float2));
 	}
-	void Polygon2D::Translate(const Float2& translation)
+	Polygon2D& Polygon2D::Translate(const Float2& translation)
 	{
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += translation;
+		return *this;
 	}
-	void Polygon2D::Translate(const float translateX, const float translateY)
+	Polygon2D& Polygon2D::Translate(const float translateX, const float translateY)
 	{
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] += Float2(translateX, translateY);
+		return *this;
 	}
-	void Polygon2D::Rotate(const float angle)
+	Polygon2D& Polygon2D::Rotate(const float angle)
 	{
 		Mat2 rotMat = RotationMatrix2D(angle);
 
 		Float2 center = getCenter();
 		for (size_t c = 0; c < m_NumCorners; c++)
 			m_CornerArr[c] = Vector2D(m_CornerArr[c] - center) * rotMat + Vector2D(center);
+		return *this;
 	}
-	void Polygon2D::Scale(const float scale)
+	Polygon2D& Polygon2D::Scale(const float scale)
 	{
 		for (Float2& corner : *this)
 		{
 			corner.x = corner.x * scale;
 			corner.y = corner.y * scale;
 		}
+		return *this;
 	}
-	void Polygon2D::Scale(const float scaleX, const float scaleY)
+	Polygon2D& Polygon2D::Scale(const float scaleX, const float scaleY)
 	{
 		for (Float2& corner : *this)
 		{
 			corner.x = corner.x * scaleX;
 			corner.y = corner.y * scaleY;
 		}
+		return *this;
 	}
 	Float2 Polygon2D::getCenter() const
 	{
@@ -340,14 +343,16 @@ namespace MathLib
 	{
 
 	}
-	void Circle2D::Translate(const Float2& translation)
+	Circle2D& Circle2D::Translate(const Float2& translation)
 	{
 		position += translation;
+		return *this;
 	}
-	void Circle2D::Translate(const float translateX, const float translateY)
+	Circle2D& Circle2D::Translate(const float translateX, const float translateY)
 	{
 		position.x += translateX;
 		position.y += translateY;
+		return *this;
 	}
 	Float2 Circle2D::SupportFunction(const Vector2D& direction) const
 	{
@@ -454,6 +459,290 @@ namespace MathLib
 	void Rectangle2D::operator=(const Rectangle2D& other)
 	{
 		Polygon2D::operator=(other);
+	}
+
+	// Quad class definitions
+
+	Quad::Quad()
+		: m_P1(-0.5, 0.5), m_P2(0.5, 0.5), m_P3(0.5, -0.5), m_P4(-0.5, -0.5)
+	{
+
+	}
+	Quad::Quad(const Float2& p1, const Float2& p2, const Float2& p3)
+		: m_P1(p1), m_P2(p2), m_P3(p3)
+	{
+		CalcP4();
+	}
+	void Quad::CalcP4()
+	{
+		m_P4 = m_P1 + (m_P3 - m_P2);
+	}
+	Quad& Quad::SetQuad(const Float2& p1, const Float2& p2, const Float2& p3)
+	{
+		m_P1 = p1;
+		m_P2 = p2;
+		m_P3 = p3;
+		CalcP4();
+		return *this;
+	}
+	Quad& Quad::SetP1(const Float2& point)
+	{
+		m_P1 = point;
+		CalcP4();
+		return *this;
+	}
+	Quad& Quad::SetP2(const Float2& point)
+	{
+		m_P2 = point;
+		CalcP4();
+		return *this;
+	}
+	Quad& Quad::SetP3(const Float2& point)
+	{
+		m_P3 = point;
+		CalcP4();
+		return *this;
+	}
+	Float2 Quad::GetP1() const
+	{
+		return m_P1;
+	}
+	Float2 Quad::GetP2() const
+	{
+		return m_P2;
+	}
+	Float2 Quad::GetP3() const
+	{
+		return m_P3;
+	}
+	Float2 Quad::GetP4() const
+	{
+		return m_P4;
+	}
+	Float2* Quad::GetPoints() const
+	{
+		Float2* retArr = new Float2[4];
+		retArr[0] = m_P1;
+		retArr[1] = m_P2;
+		retArr[2] = m_P3;
+		retArr[3] = m_P4;
+		return retArr;
+	}
+	bool Quad::Contains(const Float2& point) const
+	{
+		Vector2D lVec{m_P1, m_P2};
+		Vector2D ltpVec{m_P1, point};
+
+		if (VectorCrossProduct(Vector2D(m_P1, point), Vector2D(m_P1, m_P2)).z < 0.0f)
+			return false;
+		if (VectorCrossProduct(Vector2D(m_P2, point), Vector2D(m_P2, m_P3)).z < 0.0f)
+			return false;
+		if (VectorCrossProduct(Vector2D(m_P3, point), Vector2D(m_P3, m_P4)).z < 0.0f)
+			return false;
+		if (VectorCrossProduct(Vector2D(m_P4, point), Vector2D(m_P4, m_P1)).z < 0.0f)
+			return false;
+
+		return true;
+	}
+	bool Quad::Contains(const float xPos, const float yPos) const
+	{
+		return Contains({xPos, yPos});
+	}
+
+	// Plane class definitions
+
+	Plane::Plane()
+		: m_P1(1, 0, 0), m_P2(), m_P3(0, 0, 1)
+	{
+		CalcNormal();
+	}
+	Plane::Plane(const Float3& p1, const Float3& p2, const Float3& p3)
+		: m_P1(p1), m_P2(p2), m_P3(p3)
+	{
+		CalcNormal();
+	}
+	Plane::Plane(const Mat3& matrix)
+		: m_P1(matrix[0][0], matrix[0][1], matrix[0][2]), m_P2(matrix[1][0], matrix[1][1], matrix[1][2]),
+		m_P3(matrix[2][0], matrix[2][1], matrix[2][2])
+	{
+		CalcNormal();
+	}
+	void Plane::CalcNormal()
+	{
+		m_Normal = VectorCrossProduct(Vector3D(m_P2, m_P1), Vector3D(m_P2, m_P3));
+	}
+	Plane& Plane::SetPlane(const Float3& p1, const Float3& p2, const Float3& p3)
+	{
+		m_P1 = p1;
+		m_P2 = p2;
+		m_P3 = p3;
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::SetPlane(const Mat3& matrix)
+	{
+		m_P1 = Float3(matrix[0][0], matrix[0][1], matrix[0][2]);
+		m_P2 = Float3(matrix[1][0], matrix[1][1], matrix[1][2]);
+		m_P3 = Float3(matrix[2][0], matrix[2][1], matrix[2][2]);
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::SetP1(const Float3& point)
+	{
+		m_P1 = point;
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::SetP2(const Float3& point)
+	{
+		m_P2 = point;
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::SetP3(const Float3& point)
+	{
+		m_P3 = point;
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::Transform(const Mat3& mat)
+	{
+		Mat3 pointMat = GetAsMat();
+		Mat3 resMat = mat * pointMat;
+		m_P1 = Float3(resMat[0][0], resMat[0][1], resMat[0][2]);
+		m_P2 = Float3(resMat[1][0], resMat[1][1], resMat[1][2]);
+		m_P3 = Float3(resMat[2][0], resMat[2][1], resMat[2][2]);
+		/*m_P1 = mat * m_P1;
+		m_P2 = mat * m_P2;
+		m_P3 = mat * m_P3;*/
+		CalcNormal();
+		return *this;
+	}
+	Plane& Plane::Translate(const Float3& translation)
+	{
+		m_P1 += translation;
+		m_P2 += translation;
+		m_P3 += translation;
+		return *this;
+	}
+	bool Plane::IsIntersecting(const Line3D& line) const
+	{
+		Vector3D lineVec{line};
+		float u = VectorDotProduct(m_Normal, Vector3D(line.p1, m_P1)) / VectorDotProduct(m_Normal, Vector3D(line.p1, line.p2));
+
+		if (u < 0.0f || u > 1.0f)
+			return false;
+
+		Float3 pPoint = Lerp(line, u);
+
+		Vector3D pLineVec{m_P1, m_P2};
+		Vector3D pPointLineVec{m_P1, pPoint};
+		Vector3D crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(m_P2, m_P3);
+		pPointLineVec = Vector3D(m_P2, pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(m_P3, GetP4());
+		pPointLineVec = Vector3D(m_P3, pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(GetP4(), m_P1);
+		pPointLineVec = Vector3D(GetP4(), pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+		return true;
+	}
+	bool Plane::GetIntersection(const Line3D& line, Float3* intersection) const
+	{
+		Vector3D lineVec{line};
+		float u = VectorDotProduct(m_Normal, Vector3D(line.p1, m_P1)) / VectorDotProduct(m_Normal, Vector3D(line.p1, line.p2));
+
+		if (u < 0.0f || u > 1.0f)
+			return false;
+
+		Float3 pPoint = Lerp(line, u);
+
+		Vector3D pLineVec{m_P1, m_P2};
+		Vector3D pPointLineVec{m_P1, pPoint};
+		Vector3D crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(m_P2, m_P3);
+		pPointLineVec = Vector3D(m_P2, pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(m_P3, GetP4());
+		pPointLineVec = Vector3D(m_P3, pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		pLineVec = Vector3D(GetP4(), m_P1);
+		pPointLineVec = Vector3D(GetP4(), pPoint);
+		crossVec = VectorCrossProduct(pLineVec, pPointLineVec);
+		u = (crossVec.x + crossVec.y + crossVec.z) / (m_Normal.x + m_Normal.y + m_Normal.z);
+		if (u > 0)
+			return false;
+
+		*intersection = pPoint;
+		return true;
+	}
+	/*bool Plane::IsIntersecting(const Plane& plane) const
+	{
+		return false;
+	}
+	Line3D Plane::GetIntersection(const Plane& plane, bool* isIntersecting) const
+	{
+		return Line3D();
+	}*/
+	Vector3D Plane::GetNormal() const
+	{
+		return m_Normal;
+	}
+	Float3 Plane::GetP1() const
+	{
+		return m_P1;
+	}
+	Float3 Plane::GetP2() const
+	{
+		return m_P2;
+	}
+	Float3 Plane::GetP3() const
+	{
+		return m_P3;
+	}
+	Float3 Plane::GetP4() const
+	{
+		return m_P3 + (m_P1 - m_P2);
+	}
+	Mat3 Plane::GetAsMat() const
+	{
+		float values[9] = {
+			m_P1.x, m_P1.y, m_P1.z,
+			m_P2.x, m_P2.y, m_P2.z,
+			m_P3.x, m_P3.y, m_P3.z,
+		};
+		Mat3 mat;
+		mat.SetMatrix(values);
+		return mat;
 	}
 
 	bool Contains(const Rectangle2D& rect, const float rotation, const Float2& point)
