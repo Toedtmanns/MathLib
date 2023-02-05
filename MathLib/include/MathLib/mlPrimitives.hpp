@@ -345,6 +345,21 @@ namespace MathLib
 	{
 		return Primitive4<Type>(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
 	}
+	template <typename Type>
+	constexpr Primitive2<Type> operator*(const double f2, const Primitive2<Type>& f1)
+	{
+		return Primitive2<Type>(f1.x * f2, f1.y * f2);
+	}
+	template <typename Type>
+	constexpr Primitive3<Type> operator*(const double f2, const Primitive3<Type>& f1)
+	{
+		return Primitive3<Type>(f1.x * f2, f1.y * f2, f1.z * f2);
+	}
+	template <typename Type>
+	constexpr Primitive4<Type> operator*(const double f2, const Primitive4<Type>& f1)
+	{
+		return Primitive4<Type>(f1.x * f2, f1.y * f2, f1.z * f2, f1.w * f2);
+	}
 
 	template <typename Type>
 	constexpr Primitive2<Type> operator*=(Primitive2<Type>& f1, const Primitive2<Type>& f2)
@@ -414,7 +429,12 @@ namespace MathLib
 	template <typename Type>
 	float GetDistance(const Primitive3<Type>& p1, const Primitive3<Type>& p2)
 	{
-		return sqrt(Pow(GetDistance<Type>({p1.x, p1.y}, {p2.x, p2.y}), 2) + Pow(p2.z - p1.z, 2));
+		return sqrt(Pow(p2.x - p1.x, 2) + Pow(p2.y - p1.y, 2) + Pow(p2.z - p1.z, 2));
+	}
+	template <typename Type>
+	float GetDistance(const Primitive4<Type>& p1, const Primitive4<Type>& p2)
+	{
+		return sqrt(Pow(p2.x - p1.x, 2) + Pow(p2.y - p1.y, 2) + Pow(p2.z - p1.z, 2) + Pow(p2.w - p1.w, 2));
 	}
 
 	// Lines

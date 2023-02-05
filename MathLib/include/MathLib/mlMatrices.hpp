@@ -25,9 +25,9 @@ namespace MathLib
 		template <size_t oColumns, size_t oRows>
 		constexpr Matrix(const Matrix<oColumns, oRows>& other)
 		{
-			for (size_t i = 0; i < Min(columns, oColumns) * rows; i += Min(columns, oColumns))
+			for (size_t i = 0, j = 0; i < columns * rows && j < oColumns * oRows; i += rows, j += oRows)
 			{
-				memcpy(m_Matrix + i, other.GetMatrix() + i + oRows - rows, Min(rows, oRows) * sizeof(float));
+				memcpy(m_Matrix + i, other.GetMatrix() + j, Min(rows, oRows) * sizeof(float));
 			}
 		}
 		constexpr Matrix()
@@ -516,8 +516,8 @@ namespace MathLib
 	constexpr Mat2 RotationMatrix2D(const float rotation)
 	{
 		Mat2 retMat;
-		retMat.SetVal(0, cos(Deg2Rad(rotation)));
-		retMat.SetVal(1, -sin(Deg2Rad(rotation)));
+		retMat.SetVal(0, cosf(Deg2Rad(rotation)));
+		retMat.SetVal(1, -sinf(Deg2Rad(rotation)));
 		retMat.SetVal(2, -retMat.GetVal(1));
 		retMat.SetVal(3, retMat.GetVal(0));
 
@@ -544,5 +544,19 @@ namespace MathLib
 		Mat3 mat;
 		mat.SetMatrix(values);
 		return mat;
+	}
+
+	constexpr Mat4 MatPerspective(const float fovY, const float aspect, const float zNear, const float zFar)
+	{
+		Mat4 perspMat{0};
+
+		float d = 1 / tan(MathLib::Deg2Rad(fovY / 2.0));
+		perspMat[0][0] = d / aspect;
+		perspMat[1][1] = d;
+		perspMat[2][2] = (zNear + zFar) / (zNear - zFar);
+		perspMat[2][3] = -1;
+		perspMat[3][2] = 2 * zNear * zFar / (zNear - zFar);
+
+		return perspMat;
 	}
 }

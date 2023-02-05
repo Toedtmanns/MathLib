@@ -332,7 +332,7 @@ namespace MathLib
 	}
 	inline float RoundFTo(const float num, const int decimal)
 	{
-		return round(Pow(10, decimal) * num) / Pow(10, decimal);
+		return roundf(Pow(10, decimal) * num) / Pow(10, decimal);
 	}
 
 	template <typename T>

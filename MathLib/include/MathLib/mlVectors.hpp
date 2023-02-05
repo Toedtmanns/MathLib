@@ -421,8 +421,8 @@ namespace MathLib
 	}
 	inline Mat3 Vec2Mat(const Vector3D& vector)
 	{
-		Vector3D perp1 = VectorCrossProduct(vector, Vector3D(-vector.z, vector.x, vector.y)).Normalize();
-		Vector3D perp2 = VectorCrossProduct(vector, perp1).Normalize();
+		Vector3D perp1 = VectorCrossProduct(vector, Vector3D(-vector.z, vector.x, vector.y));
+		Vector3D perp2 = VectorCrossProduct(vector, perp1);
 		float values[9] = {
 			perp1.x, perp1.y, perp1.z,
 			perp2.x, perp2.y, perp2.z,

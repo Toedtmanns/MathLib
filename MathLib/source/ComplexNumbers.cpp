@@ -78,11 +78,14 @@ namespace MathLib
 	}
 	Quaternion QuaternionRotation(const float angle, const Float3& axis)
 	{
-		Quaternion retQuat(cos(Deg2Rad(angle)), 0, 0, 0);
-		float sinAngle = sin(Deg2Rad(angle));
-		retQuat.i = axis.x * sinAngle;
-		retQuat.j = axis.y * sinAngle;
-		retQuat.k = axis.z * sinAngle;
+		Quaternion retQuat(cos(Deg2Rad(angle / 2)), 0, 0, 0);
+		float sinAngle = sin(Deg2Rad(angle / 2));
+
+		float value = sqrtf(Square(axis.x) + Square(axis.y) + Square(axis.z));
+
+		retQuat.i = axis.x / value * sinAngle;
+		retQuat.j = axis.y / value * sinAngle;
+		retQuat.k = axis.z / value * sinAngle;
 		return retQuat;
 	}
 	void PrintProperties(const Quaternion& quat)
@@ -94,25 +97,32 @@ namespace MathLib
 
 	Mat4 MatrixRotate(const Mat4& mat, const Quaternion& quat)
 	{
-		Quaternion xQuat{0, mat[0][0], mat[0][1], mat[0][2]};
-		Quaternion yQuat{0, mat[1][0], mat[1][1], mat[1][2]};
-		Quaternion zQuat{0, mat[2][0], mat[2][1], mat[2][2]};
+		MathLib::Vector3D xVec{mat[0][0], mat[0][1], mat[0][2]};
+		MathLib::Vector3D yVec{mat[1][0], mat[1][1], mat[1][2]};
+		MathLib::Vector3D zVec{mat[2][0], mat[2][1], mat[2][2]};
 
-		xQuat = quat.RotateQuaternion(xQuat);
-		yQuat = quat.RotateQuaternion(yQuat);
-		zQuat = quat.RotateQuaternion(zQuat);
+		// A faster algorithm than pure Quaternion math
+		// see https://blog.molecular-matters.com/2013/05/24/a-faster-quaternion-vector-multiplication/
+		MathLib::Vector3D t = 2.0f * VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, xVec);
+		xVec = MathLib::Float3(xVec) + quat.real * t + VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, t);
+
+		t = 2.0f * VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, yVec);
+		yVec = MathLib::Float3(yVec) + quat.real * t + VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, t);
+
+		t = 2.0f * VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, zVec);
+		zVec = MathLib::Float3(zVec) + quat.real * t + VectorCrossProduct(MathLib::Vector3D{quat.i, quat.j, quat.k}, t);
 
 		Mat4 retMat{mat};
 
-		retMat[0][0] = xQuat.i;
-		retMat[0][1] = xQuat.j;
-		retMat[0][2] = xQuat.k;
-		retMat[1][0] = yQuat.i;
-		retMat[1][1] = yQuat.j;
-		retMat[1][2] = yQuat.k;
-		retMat[2][0] = zQuat.i;
-		retMat[2][1] = zQuat.j;
-		retMat[2][2] = zQuat.k;
+		retMat[0][0] = xVec.x;
+		retMat[0][1] = xVec.y;
+		retMat[0][2] = xVec.z;
+		retMat[1][0] = yVec.x;
+		retMat[1][1] = yVec.y;
+		retMat[1][2] = yVec.z;
+		retMat[2][0] = zVec.x;
+		retMat[2][1] = zVec.y;
+		retMat[2][2] = zVec.z;
 
 		return retMat;
 	}

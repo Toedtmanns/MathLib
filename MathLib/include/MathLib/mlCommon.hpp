@@ -5,6 +5,7 @@
 #include <math.h>
 
 #define PI 3.14159265
+#define EULER 2.71828182
 
 #ifndef MATHLIB_STATIC
 	#ifndef EXPORT
@@ -85,6 +86,14 @@ namespace MathLib
 	}
 
 	template<typename T>
+	constexpr const T Abs(const T& val)
+	{
+		if (val < 0)
+			return -val;
+		return val;
+	}
+
+	template<typename T>
 	constexpr const T Pow(const T& base, size_t exponent)
 	{
 		T res = base;
@@ -98,6 +107,11 @@ namespace MathLib
 			return 1;
 		else
 			return -1;
+	}
+	template<typename T>
+	constexpr const T Square(const T& value)
+	{
+		return value * value;
 	}
 
 	constexpr double Deg2Rad(double deg)
